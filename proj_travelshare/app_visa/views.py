@@ -11,5 +11,5 @@ def visa_info(request):
         f"{cs}&destination={d}&language={lan}&key={SHERPA_API_KEY}"
     download = requests.get(path).json()
     for k, v in download.items():
-        pass
+        print(v)
 
