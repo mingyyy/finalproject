@@ -68,7 +68,7 @@ Register Form
 2. email
 3. password
 
-Or Social Authentication
+Or Social Authentication (V2)
 1. Google
 2. Facebook
 3. LinkedIn
@@ -76,7 +76,7 @@ Or Social Authentication
 5. Github
 6. Own Website
 
-##### 3. Update Profile
+##### 3. Update Profile (@login_required)
 **Page 0**
 
 Two options: Travelers Or Organizations
@@ -165,7 +165,7 @@ What we can offer:
 
 ##### 4. Update Availability (Calendar page)
 
-######Travelers Event Page
+###### Travelers Event Page
 - New event
     - location (country->city lists jquery)
     - description
@@ -177,7 +177,7 @@ What we can offer:
 travel time, destination 
 (traveling info helper, e.g. visa requirements)
 
-######Organizations Availability Page
+###### Organizations Availability Page
 - Create
     - address (default org address)
     - extra info (beyond the profile)
@@ -234,65 +234,52 @@ github repository: finalproject
                             -| Username
                             -| Email
                             -| Password
-                        -| Profile_Person_Basic (extension of User)
-                            -| First_Name (Char)
-                            -| Last_Name (Char)
-                            -| Gender (Dropdown)
+                        -| Profile_Person (extension of User)
+                            -| Gender (Choice)
                             -| Nationality (Char)
                             -| Language (ManyToMany: Language)
                             -| Phone ()
-                        -| Profile_Person_More (extension of User)
                             -| photo (image)
                             -| bio (Text)
                             -| expertise (ManyToMany: Expertise)
                             -| links (ManyToMany: Link)
-                        -| Profile_Person_Offer
-                            -| offer type (ManyToMany: EventType)
-                            -| topic (ManyToMany: Topics)
-                            -| title (Char)
-                            -| duration (Dropdown)
-                            -| description (Text)   
-                            -| requirements (Text)                        
-                        -| Profile_Org_Basic (extension of User)
+                        
+                        -| Profile_Org (extension of User)
                             -| Org Name (Char)
                             -| Org Type (Dropdown)
                             -| Org Description (Text)
                             -| Phone ()
                             -| Language (ManyToMany: Language)
                             -| Address (Google API)
-                        -| Profile_Org_More (extension of User)
                             -| photo (image)
-                            -| needs (Text)
                             -| interests (ManyToMany: Expertise)
+                            -| interests_details (Text)
                             -| links (ManyToMany: Link)                            
-                        -| Profile_Org_Offer 
-                            -| physical space (Text)
-                            -| equipments (Text)
-                            -| others (Text)
+ 
                         -| Language
-                            -| UserID
+                            -| UserID (ManyToMany)
                             -| Name
                         -| OrgType
+                            -| UserID (ManyToMany)
                             -| Name
-                            -| UserID
                         -| Address
                             -| Street
                             -| City
                             -| Country
                             -| PostCode
                         -| Expertise
+                            -| UserID (ManyToMany)
                             -| Name
-                            -| UserID
                             -| Level
-                        -| Topics
-                            -| Name
-                            -| UserID                           
+                        -| Topics - tag
+                            -| UserID (ManyToMany)
+                            -| Name                      
                         -| EventType
+                            -| UserID (ManyToMany)
                             -| Name
-                            -| UserID
                         -| Links
-                            -| Name
-                            -| UserID                                     
+                            -| UserID (ManyToMany)
+                            -| Name                                 
                                                                                
                     -| urls.py
                         -| register
@@ -318,15 +305,40 @@ github repository: finalproject
                     
                 -| app_main
                     -| forms.py
+                        -| FormTrip(ModelForm)
+                        -| FormPersonOffer (Form)
+                        -| FormOrgOffer (ModelForm)
                     -| models.py
+                        -| Person_Offer (User One to Many)
+                            -| event type (ManyToMany: EventType)
+                            -| topic (ManyToMany: Topics)
+                            -| title (Char)
+                            -| duration (Choice)
+                            -| details (Text)   
+                            -| requirements (Text)
+                        -| Org_Offer (User One to Many)
+                            -| title (char)
+                            -| details (text) 
+                        -| Person_Trip (User One to Many)
+                            - Location (Char)
+                            - Details (Text)
+                            - Start_Time (DateTimePicker)
+                            - End_Time (DateTimePicker)
                     -| urls.py
+                    
                     -| views.py
+                    
+                -| app_info
+                
+                  
                     
                 -| proj_travelshare
                     -| settings.py
                     -| urls.py
 
                 -| media
+                    -|profile_person
+                    -|profile_org
                 -| static
                     -| css
                     -| js
@@ -334,6 +346,7 @@ github repository: finalproject
                 -| templates
                     -| app_user
                     -| app_main
+                    -| app_info
             -| .gitignore
             -| mimi.py (secret file)
             -| README.md
