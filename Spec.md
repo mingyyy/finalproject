@@ -210,8 +210,20 @@ github repository: finalproject
                             -| photo (image)
                             -| interests (ManyToMany: Expertise)
                             -| interests_details (Text)
-                            -| links (ManyToMany: Link)                            
- 
+                            -| links (ManyToMany: Link)
+                                                        
+                        -| Person_Offer (User One to Many)
+                            -| event type (ManyToMany: EventType)
+                            -| topic (ManyToMany: Topics)
+                            -| title (Char)
+                            -| duration (Choice)
+                            -| details (Text)   
+                            -| requirements (Text)
+                            
+                        -| Org_Offer (User One to Many)
+                            -| title (char)
+                            -| details (text) 
+                            
                         -| Language
                             -| UserID (ManyToMany)
                             -| Name
@@ -253,32 +265,42 @@ github repository: finalproject
                         -| UserRegistration
                         -| UserLogin
                         -| UserLogout
-                        -| ProfileUpdate
-                        -| ProfileView
+                        -| ViewProfileUpdatePerson
+                        -| ViewProfileUpdateOrg
                     
                 -| app_main
                     -| forms.py
                         -| FormTrip(ModelForm)
-                        -| FormPersonEvent (Form)
-                        -| FormOrgEvent (ModelForm)
+                        -| FormPersonTrip (Form)
+                        -| FormOrgAvailability (ModelForm)
                     -| models.py
-                        -| Person_Offer (User One to Many)
-                            -| event type (ManyToMany: EventType)
-                            -| topic (ManyToMany: Topics)
-                            -| title (Char)
-                            -| duration (Choice)
-                            -| details (Text)   
-                            -| requirements (Text)
-                        -| Org_Offer (User One to Many)
-                            -| title (char)
-                            -| details (text) 
+
                         -| Person_Trip (User One to Many)
                             - Location (Char)
                             - Details (Text)
                             - Start_Time (DateTimePicker)
                             - End_Time (DateTimePicker)
+                        -| Org_Availability (User one to Many)
+                            - Address (Google Map)
+                            - Extra_info (Text)
+                            - Start_Time (DateTimePicker)
+                            - End_Time (DateTimePicker)
                     -| urls.py
+                        -| person_trip_update
+                        -| person_trip_create
+                        -| org_availability_update
+                        -| org_availability_create
+                        -| searchperson
+                        -| searchorg
+                        -| triplist
                     -| views.py
+                        -| ViewCreateTrip
+                        -| ViewUpdateTrip
+                        -| ViewCreateAvailability
+                        -| ViewUpdateAvilability
+                        -| ViewSearchPerson
+                        -| ViewSearchOrg
+                        -| ViewTripList
                     
                 -| app_info
                     - forms.py
