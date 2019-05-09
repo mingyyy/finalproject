@@ -25,8 +25,10 @@ class FormUserUpdate(forms.ModelForm):
 class FormProfilePersonUpdate(forms.ModelForm):
     class Meta:
         model = ProfilePerson
+        fields= []
 
 
 class FormProfileOrgUpdate(forms.ModelForm):
     class Meta:
         model = ProfilePerson
+        fields=[]
