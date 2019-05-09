@@ -4,7 +4,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from PIL import Image
-from .constants import CITIZENSHIP_CHOICE
+from .constants import CITIZENSHIP_CHOICE, GENDER_CHOICES, ORG_TYPE_CHOICE
 
 
 class Expertise(models.Model):
@@ -12,23 +12,26 @@ class Expertise(models.Model):
 
     def __str__(self):
         return self.name
-
+    class Meta:
+        ordering = ('name',)
 
 class Language(models.Model):
     name = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
-
+    class Meta:
+        ordering = ('name',)
 
 class Link(models.Model):
     category = models.CharField(max_length=50)
     name = models.CharField(max_length=100)
-    url = models.CharField(max_length=255)
+    url = models.URLField()
 
     def __str__(self):
         return self.name
-
+    class Meta:
+        ordering = ('category','name',)
 
 class Topic(models.Model):
     category = models.CharField(max_length=100)
@@ -36,6 +39,8 @@ class Topic(models.Model):
 
     def __str__(self):
         return self.name
+    class Meta:
+        ordering = ('name',)
 
 
 class User(AbstractUser):
@@ -44,19 +49,16 @@ class User(AbstractUser):
 
 
 class ProfilePerson(models.Model):
-
-    # in total 222 countries
-
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     gender = models.CharField(choices=GENDER_CHOICES)
     nationality = models.CharField(choices=CITIZENSHIP_CHOICE)
     phone = PhoneNumberField(unique=True, blank=True)
     birth_date = models.DateField(null=True, blank=True)
     bio = models.TextField(blank=True)
-    photo = models.ImageField(default='default.jpg', upload_to='profile_person')
-    expertise = models.ManyToManyField(Expertise, through='')
-    language = models.ManyToManyField(Language, related_name='')
-    link = models.ManyToManyField(Link, related_name='')
+    photo = models.ImageField(default='default.jpg')
+    expertise = models.ManyToManyField(Expertise)
+    language = models.ManyToManyField(Language)
+    link = models.ManyToManyField(Link)
 
     def __str__(self):
         return self.user.username
@@ -77,15 +79,15 @@ class ProfilePerson(models.Model):
 class ProfileOrganization(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     name = models.CharField(max_length=200, blank=False, null=False)
-    type = models.CharField(max_length=30)
+    type = models.CharField(choices=ORG_TYPE_CHOICE)
     description = models.TextField(blank=True)
     phone = PhoneNumberField(unique=True, blank=True)
     address = models.CharField(max_length=255)
     photo = models.ImageField(default='default.jpg', upload_to='profile_org')
-    interest = models.ManyToManyField(Expertise, through='')
+    interest = models.ManyToManyField(Expertise)
     interest_details = models.TextField(blank=True)
-    language = models.ManyToManyField(Language, related_name='')
-    link = models.ManyToManyField(Link, related_name='')
+    language = models.ManyToManyField(Language)
+    link = models.ManyToManyField(Link)
 
     def __str__(self):
         return self.user.username

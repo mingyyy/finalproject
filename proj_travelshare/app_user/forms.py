@@ -6,7 +6,8 @@ from .models import ProfileOrganization,ProfilePerson
 
 class FormRegister(UserCreationForm):
     email = forms.EmailField()
-    # default is required=True
+    person = forms.BooleanField()
+    org = forms.BooleanField()
 
     class Meta:
         model = User
@@ -24,11 +25,8 @@ class FormUserUpdate(forms.ModelForm):
 class FormProfilePersonUpdate(forms.ModelForm):
     class Meta:
         model = ProfilePerson
-        fields = ['photo']
-
 
 
 class FormProfileOrgUpdate(forms.ModelForm):
     class Meta:
         model = ProfilePerson
-        fields = ['photo']
