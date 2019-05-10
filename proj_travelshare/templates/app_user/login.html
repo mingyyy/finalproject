@@ -5,10 +5,10 @@
         <form method="post">
             {% csrf_token %}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Log In
+                <legend class="border-bottom mb-4">Please Login here
                     {% if user.type == '0' %}
                         <span class="badge badge-primary">Traveler</span>
-                    {% else %}
+                    {% elif user.type == '1' %}
                         <span class="badge badge-success">Local Host</span>
                     {% endif %}
                 </legend>

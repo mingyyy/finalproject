@@ -2,7 +2,7 @@ from django import forms
 from .models import User
 from django.contrib.auth.forms import UserCreationForm
 from phonenumber_field.formfields import PhoneNumberField
-from .models import ProfileOrganization, ProfilePerson
+from .models import ProfileTraveler, ProfileHost
 from django.db import transaction
 
 
@@ -22,20 +22,20 @@ class FormRegister(UserCreationForm):
 
 class FormUserUpdate(forms.ModelForm):
     first_name = forms.CharField(max_length=100)
-    last_name= forms.CharField(max_length=100)
+    last_name = forms.CharField(max_length=100)
 
     class Meta:
         model = User
         fields = ['first_name', 'last_name']
 
 
-class FormProfilePersonUpdate(forms.ModelForm):
+class FormProfileTravelerUpdate(forms.ModelForm):
     class Meta:
-        model = ProfilePerson
-        fields= ['gender', 'birth_date', 'nationality', 'bio', 'phone']
+        model = ProfileTraveler
+        fields = ['gender', 'birth_date', 'nationality', 'bio', 'phone']
 
 
-class FormProfileOrgUpdate(forms.ModelForm):
+class FormProfileHostUpdate(forms.ModelForm):
     class Meta:
-        model = ProfileOrganization
+        model = ProfileHost
         fields = ['name', 'type', 'description', 'phone']

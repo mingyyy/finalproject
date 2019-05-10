@@ -1,18 +1,19 @@
 
 ## Structure of the web app
 
-##### 1. Home page
+#### 1. Home page
 Simple landing page with description of the project and how to use it, who should use it. 
 
 NavBar: 
-1. *Register* and *Login*, (or *Logout* and *Profile Update* for logged-in users)
-2. Find *Traveler* info and *Organization* info.
+1. *Register as Traveler or Organization* 
+2. *Login* (or *Logout* and *Profile Update* for logged-in users)
+3. Find *Traveler* info and *Organization* info.
 
 Content:
 1. Overview of the webapp
 2. Upcoming *Trips*
 
-##### 2. Register Page
+#### 2. Register Page
 Register Form
 1. username
 2. email
@@ -25,14 +26,9 @@ Or Social Authentication (v2)
 4. Twitter (working)
 5. Github (not working yet)
 
-##### 3. Update Profile (@login_required)
-**Page 0**
+#### 3. Update Profile (@login_required @type_required)
 
-First time login
-
-Two options: Travelers Or Organizations
-
-###### Travelers
+##### Travelers
 **Page 1** 
 with progress bar
 
@@ -81,7 +77,7 @@ What do you offer (more than one topic - allowed):
 - Requirements (projector, internet, equipments etc)
 
 
-###### Organizations
+##### Organizations
 **Page 1** 
 with progress bar
 
@@ -121,9 +117,9 @@ What we can offer:
     - equipments
     - others (text area)
 
-##### 4. Update Availability (Calendar page)
+#### 4. Update Trips/Availability (@login_required @type_required)
 
-###### Travelers Event Page
+##### Travelers Event Page
 - New event
     - location (country->city lists jquery)
     - description
@@ -135,7 +131,7 @@ What we can offer:
 travel time, destination 
 (traveling info helper, e.g. visa requirements. local ccy, weather etc)
 
-###### Organizations Availability Page
+##### Organizations Availability Page
 - Create
     - address (default org address)
     - extra info (beyond the profile)
@@ -145,14 +141,14 @@ travel time, destination
 - Delete
 
 
-##### 5. List of Travelers 
+#### 5. List of Travelers 
 Search based on the following:
 - profile: language, gender, country of origin, area of expertise 
 - trip: country, date        
 
 Summary: List of results per traveler
 
-##### 6. List of Organizations
+#### 6. List of Organizations
 Search bar: 
 - profile: org type, area of interests, language, country
 - availability: date
@@ -176,7 +172,12 @@ github repository: finalproject
                 -| app_user
                     -| forms.py
                         -| FormRegister
+                            -| Username
+                            -| Email
+                            -| Password
                         -| FormLogin
+                            -| Username
+                            -| Password
                         -| FormLogout
                         -| FormPersonBasic
                         -| FormPersonMore
@@ -190,16 +191,17 @@ github repository: finalproject
                             -| Username
                             -| Email
                             -| Password
+                            -| first_name
+                            -| last_name
                         -| Profile_Person (extension of User)
                             -| Gender (Choice)
-                            -| Nationality (Char)
-                            -| Language (ManyToMany: Language)
-                            -| Phone ()
+                            -| Nationality (Choice)
+                            -| Phone (PhoneNumberField)
                             -| photo (image)
                             -| bio (Text)
                             -| expertise (ManyToMany: Expertise)
                             -| links (ManyToMany: Link)
-                        
+                            -| Language (ManyToMany: Language)
                         -| Profile_Org (extension of User)
                             -| Org Name (Char)
                             -| Org Type (Dropdown)
@@ -262,11 +264,11 @@ github repository: finalproject
                         -| profile_view_org
                         
                     -| views.py
-                        -| UserRegistration
+                        -| register
                         -| UserLogin
                         -| UserLogout
-                        -| ViewProfileUpdatePerson
-                        -| ViewProfileUpdateOrg
+                        -| profile_person
+                        -| profile_org
                     
                 -| app_main
                     -| forms.py
@@ -296,8 +298,8 @@ github repository: finalproject
                     -| views.py
                         -| ViewCreateTrip
                         -| ViewUpdateTrip
-                        -| ViewCreateAvailability
-                        -| ViewUpdateAvilability
+                        -| ViewCreateSpace
+                        -| ViewUpdateSpace
                         -| ViewSearchPerson
                         -| ViewSearchOrg
                         -| ViewTripList

@@ -2,8 +2,6 @@ from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from phonenumber_field.modelfields import PhoneNumberField
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 from PIL import Image
 from .constants import CITIZENSHIP_CHOICE, GENDER_CHOICES, ORG_TYPE_CHOICE
 
@@ -60,13 +58,13 @@ class User(AbstractUser):
 
 
 class ProfileStatus(models.Model):
-    user=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
     time_updated = models.DateTimeField(auto_now_add=True)
     completed_perc = models.PositiveSmallIntegerField()
 
 
-class ProfilePerson(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+class ProfileTraveler(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile_traveler')
     gender = models.CharField(choices=GENDER_CHOICES,max_length=1)
     nationality = models.CharField(choices=CITIZENSHIP_CHOICE, max_length=50)
     birth_date = models.DateField(null=True, blank=True)
@@ -93,8 +91,8 @@ class ProfilePerson(models.Model):
                 pass
 
 
-class ProfileOrganization(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+class ProfileHost(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile_host')
     name = models.CharField(max_length=200, blank=False, null=False)
     type = models.SmallIntegerField(choices=ORG_TYPE_CHOICE, null=True,blank=True)
     description = models.TextField(null=True,blank=True)
@@ -120,25 +118,3 @@ class ProfileOrganization(models.Model):
                 img.save(self.photo.name)
         except FileNotFoundError as e:
                 pass
-
-
-# @receiver(post_save, sender=User)
-# def create_user_profile(sender, instance, created, **kwargs):
-#     if created:
-#         if instance.is_person:
-#             ProfilePerson.objects.create(user=instance)
-#         else:
-#             ProfileOrganization.objects.create(user=instance)
-#
-#
-# @receiver(post_save, sender=User)
-# def save_user_profile(sender, instance, **kwargs):
-#
-#     if instance.is_person:
-#         instance.profileperson.save()
-#     else:
-#         instance.profileorg.save()
-
-
-
-

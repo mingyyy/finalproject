@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect,HttpResponseRedirect, reverse, get_
 from django.contrib import messages
 from .forms import FormRegister
 from django.contrib.auth.decorators import login_required
-from .decorators import org_required,person_required
+from .decorators import traveler_required, host_required
 
 
 def viewregister(request):
@@ -20,13 +20,13 @@ def viewregister(request):
 
 
 @login_required()
-@person_required()
+@traveler_required()
 def ViewProfilePersonUpdate(request):
     pass
 
 
 @login_required()
-@org_required()
+@host_required()
 def ViewProfileOrgUpdate(request):
     pass
 

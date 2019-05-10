@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-
+from mimi import SECRET_KEY
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '9#m+@_&n%pvc%x2i-=&z4gq1=mlceni%@0v)=hm9by#9)1@fgf'
+SECRET_KEY = SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -130,6 +130,12 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
   os.path.join(BASE_DIR, 'static'),
 )
+DEFAULT_FILE_STORAGE = 'proj_travelshare.storage_backends.MediaStorage'
+
+CRISPY_TEMPLATE_PACK = "bootstrap4"
+LOGIN_REDIRECT_URL = "/"
+LOGIN_URL = "login"
+
 AUTH_USER_MODEL = 'app_user.User'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media') #profile_pics will be located
 MEDIA_URL = '/media/' # how to access in the browser
