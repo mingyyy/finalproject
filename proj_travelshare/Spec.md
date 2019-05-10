@@ -15,6 +15,7 @@ Content:
 
 #### 2. Register Page
 Register Form
+0. account type
 1. username
 2. email
 3. password
@@ -77,7 +78,7 @@ What do you offer (more than one topic - allowed):
 - Requirements (projector, internet, equipments etc)
 
 
-##### Organizations
+##### Local Hosts
 **Page 1** 
 with progress bar
 
@@ -131,7 +132,7 @@ What we can offer:
 travel time, destination 
 (traveling info helper, e.g. visa requirements. local ccy, weather etc)
 
-##### Organizations Availability Page
+##### Local Host Availability Page
 - Create
     - address (default org address)
     - extra info (beyond the profile)
@@ -148,7 +149,7 @@ Search based on the following:
 
 Summary: List of results per traveler
 
-#### 6. List of Organizations
+#### 6. List of Local Hosts
 Search bar: 
 - profile: org type, area of interests, language, country
 - availability: date
@@ -159,7 +160,7 @@ Summary: List of results per org
 detailed traveler profile
 travel calendar
 
-##### 8. Detail page - per Organization (@login_required)
+##### 8. Detail page - per Local host (@login_required)
 detailed organization profile
 availability calendar
 
@@ -172,6 +173,7 @@ github repository: finalproject
                 -| app_user
                     -| forms.py
                         -| FormRegister
+                            -| Type
                             -| Username
                             -| Email
                             -| Password
@@ -188,33 +190,34 @@ github repository: finalproject
 
                     -| models.py
                         -| User
-                            -| Username
-                            -| Email
-                            -| Password
+                            -| type
+                            -| username
+                            -| email
+                            -| password
                             -| first_name
                             -| last_name
-                        -| Profile_Person (extension of User)
-                            -| Gender (Choice)
-                            -| Nationality (Choice)
-                            -| Phone (PhoneNumberField)
+                        -| ProfileTraveler (extension of User)
+                            -| gender (Choice)
+                            -| nationality (Choice)
+                            -| phone (PhoneNumberField)
                             -| photo (image)
                             -| bio (Text)
                             -| expertise (ManyToMany: Expertise)
                             -| links (ManyToMany: Link)
-                            -| Language (ManyToMany: Language)
-                        -| Profile_Org (extension of User)
-                            -| Org Name (Char)
-                            -| Org Type (Dropdown)
-                            -| Org Description (Text)
-                            -| Phone ()
-                            -| Language (ManyToMany: Language)
-                            -| Address (Google API)
+                            -| language (ManyToMany: Language)
+                        -| ProfileHost (extension of User)
+                            -| host Name (Char)
+                            -| host Type (Dropdown)
+                            -| host Description (Text)
+                            -| phone ()
+                            -| language (ManyToMany: Language)
+                            -| address (Google API)
                             -| photo (image)
                             -| interests (ManyToMany: Expertise)
                             -| interests_details (Text)
                             -| links (ManyToMany: Link)
                                                         
-                        -| Person_Offer (User One to Many)
+                        -| Traveler_Offer (User One to Many)
                             -| event type (ManyToMany: EventType)
                             -| topic (ManyToMany: Topics)
                             -| title (Char)
@@ -222,7 +225,7 @@ github repository: finalproject
                             -| details (Text)   
                             -| requirements (Text)
                             
-                        -| Org_Offer (User One to Many)
+                        -| Host_Offer (User One to Many)
                             -| title (char)
                             -| details (text) 
                             
@@ -267,31 +270,31 @@ github repository: finalproject
                         -| register
                         -| UserLogin
                         -| UserLogout
-                        -| profile_person
-                        -| profile_org
+                        -| profiletraveler
+                        -| profilehost
                     
                 -| app_main
                     -| forms.py
                         -| FormTrip(ModelForm)
-                        -| FormPersonTrip (Form)
-                        -| FormOrgAvailability (ModelForm)
+                        -| FormTravelerTrip (Form)
+                        -| FormHostAvailability (ModelForm)
                     -| models.py
 
-                        -| Person_Trip (User One to Many)
+                        -| Traveler_Trip (User One to Many)
                             - Location (Char)
                             - Details (Text)
                             - Start_Time (DateTimePicker)
                             - End_Time (DateTimePicker)
-                        -| Org_Availability (User one to Many)
+                        -| Host_Availability (User one to Many)
                             - Address (Google Map)
                             - Extra_info (Text)
                             - Start_Time (DateTimePicker)
                             - End_Time (DateTimePicker)
                     -| urls.py
-                        -| person_trip_update
-                        -| person_trip_create
-                        -| org_availability_update
-                        -| org_availability_create
+                        -| traveler_trip_update
+                        -| traveler_trip_create
+                        -| host_availability_update
+                        -| host_availability_create
                         -| searchperson
                         -| searchorg
                         -| triplist
@@ -322,8 +325,8 @@ github repository: finalproject
                     -| urls.py
 
                 -| media
-                    -|profile_person
-                    -|profile_org
+                    -|profile_traveler
+                    -|profile_host
                 -| static
                     -| css
                     -| js

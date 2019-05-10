@@ -126,7 +126,7 @@ class Migration(migrations.Migration):
                 ('description', models.TextField(blank=True, null=True)),
                 ('phone', phonenumber_field.modelfields.PhoneNumberField(blank=True, max_length=128, null=True, region=None, unique=True)),
                 ('address', models.CharField(max_length=255)),
-                ('photo', models.ImageField(default='default.jpg', upload_to='profile_org')),
+                ('photo', models.ImageField(default='default.jpg', upload_to='profile_host')),
                 ('interest_details', models.TextField(blank=True)),
                 ('interest', models.ManyToManyField(to='app_user.Expertise')),
                 ('language', models.ManyToManyField(to='app_user.Language')),
