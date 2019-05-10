@@ -25,9 +25,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('app_main.urls')),
     path('register/', user_views.viewregister, name='register'),
-    path('profile_traveler/',user_views.ViewProfilePersonUpdate, name='profile_traveler'),
-    path('profile_host/',user_views.ViewProfileOrgUpdate, name='profile_host'),
     path('login/', LoginView.as_view(template_name="app_user/login.html"), name="login"),
     path('logout/', LogoutView.as_view(template_name="app_user/logout.html"), name="logout"),
+    path('profile_update_traveler/', user_views.profile_update_traveler, name='profile_update_traveler'),
+    path('profile_update_host/', user_views.profile_update_host, name='profile_update_host'),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

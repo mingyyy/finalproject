@@ -32,10 +32,10 @@ class FormUserUpdate(forms.ModelForm):
 class FormProfileTravelerUpdate(forms.ModelForm):
     class Meta:
         model = ProfileTraveler
-        fields = ['gender', 'birth_date', 'nationality', 'bio', 'phone']
+        fields = ['gender', 'birth_date', 'nationality', 'phone' 'bio', ]
 
 
 class FormProfileHostUpdate(forms.ModelForm):
     class Meta:
         model = ProfileHost
-        fields = ['name', 'type', 'description', 'phone']
+        fields = ['name', 'type', 'phone', 'description', ]

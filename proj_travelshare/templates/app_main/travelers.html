@@ -3,14 +3,14 @@
 {% block content %}
     <h1>Welcome to the traveler's list!</h1>
     <article class="media content-section">
-        <img class="rounded-circle article-img" src="{{ user.profileperson.photo.url }}" alt="profile photo">
+        <img class="rounded-circle article-img" src="{{ user.profiletraveler.photo.url }}" alt="profile photo">
       <div class="media-body">
         <div class="article-metadata">
           <a class="mr-2" href="{% #">{{ user.first_name }}</a>
-          <small class="text-muted">{{ user.profileperson.language }}</small>
+          <small class="text-muted">{{ user.profiletraveler.language }}</small>
         </div>
-        <h2><a class="article-title" href="#">{{ user.profileperson.expertise }}</a></h2>
-        <p class="article-content">{{ user.profileperson.bio }}</p>
+        <h2><a class="article-title" href="#">{{ user.profiletraveler.expertise }}</a></h2>
+        <p class="article-content">{{ user.profiletraveler.bio }}</p>
       </div>
     </article>
 {% endblock %}

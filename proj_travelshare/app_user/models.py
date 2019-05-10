@@ -4,6 +4,8 @@ from django.contrib.auth.models import AbstractUser
 from phonenumber_field.modelfields import PhoneNumberField
 from PIL import Image
 from .constants import CITIZENSHIP_CHOICE, GENDER_CHOICES, ORG_TYPE_CHOICE
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class Expertise(models.Model):
@@ -64,7 +66,7 @@ class ProfileStatus(models.Model):
 
 
 class ProfileTraveler(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile_traveler')
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     gender = models.CharField(choices=GENDER_CHOICES,max_length=1)
     nationality = models.CharField(choices=CITIZENSHIP_CHOICE, max_length=50)
     birth_date = models.DateField(null=True, blank=True)
@@ -92,7 +94,7 @@ class ProfileTraveler(models.Model):
 
 
 class ProfileHost(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile_host')
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, blank=False, null=False)
     type = models.SmallIntegerField(choices=ORG_TYPE_CHOICE, null=True,blank=True)
     description = models.TextField(null=True,blank=True)
@@ -118,3 +120,20 @@ class ProfileHost(models.Model):
                 img.save(self.photo.name)
         except FileNotFoundError as e:
                 pass
+
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        if instance.type == '0':
+            ProfileTraveler.objects.create(user=instance)
+        elif instance.type == '1':
+            ProfileHost.objects.create(user=instance)
+
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def save_user_profile(sender, instance, **kwargs):
+    if instance.type == '0':
+        instance.profiletraveler.save()
+    elif instance.type == '1':
+        instance.profilehost.save()

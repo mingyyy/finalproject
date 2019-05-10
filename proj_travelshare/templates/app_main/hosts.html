@@ -1,10 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'app_main/base.html' %}
 
-</body>
-</html>
+{% block content %}
+    <h1>Welcome to the traveler's list!</h1>
+    <article class="media content-section">
+        <img class="rounded-circle article-img" src="{{ user.profilehost.photo.url }}" alt="profile photo">
+      <div class="media-body">
+        <div class="article-metadata">
+          <a class="mr-2" href="{% #">{{ user.first_name }}</a>
+          <small class="text-muted">{{ user.profilehost.language }}</small>
+        </div>
+        <h2><a class="article-title" href="#">{{ user.profilehost.expertise }}</a></h2>
+        <p class="article-content">{{ user.profilehost.bio }}</p>
+      </div>
+    </article>
+{% endblock %}

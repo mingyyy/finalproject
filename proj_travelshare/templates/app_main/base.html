@@ -4,21 +4,22 @@
     <meta charset="UTF-8">
     <title>Travel to Share</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.css">
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
-    <link rel="shortcut icon" href="{% static 'pic/favicon.ico' %}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
           integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <link rel="shortcut icon" href="{% static 'pic/favicon.ico' %}">
     <title>Share Away</title>
 </head>
 <body>
         <header class="site-header">
           <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
             <div class="container">
-              <img src="{% static 'pic/tts_logo.png' %}" alt="logo" href="{% url 'app_main:home' %}" width="63" height="63" style="background:white">
-              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+              <img src="{% static 'pic/tts_logo.png' %}" alt="logo" href="{% url 'app_main:home' %}"
+                   width="63" height="63" style="background:white">
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle"
+                      aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
               </button>
               <div class="collapse navbar-collapse" id="navbarToggle">
@@ -26,27 +27,23 @@
                   <a class="nav-item nav-link" href="#"><i class='fas fa-atlas' style='font-size:20px; color:lightgrey'></i> Coming Trips</a>
                   <a class="nav-item nav-link" href="#"><i class='fas fa-street-view' style='font-size:20px; color:lightgrey'></i> Travelers</a>
                   <a class="nav-item nav-link" href="#"><i class='fas fa-university' style='font-size:20px; color:lightgrey'></i> Local Hosts</a>
-
-
                 </div>
                 <!-- Navbar Right Side -->
                 <div class="navbar-nav">
                     {% if user.is_authenticated %}
-                          {% if user.is_person%}
-                            <a class="nav-item nav-link" href="#">New Event</a>
-                            <a class="nav-item nav-link" href="{% url 'profile_person' %}">Traveler Profile - {{user.username}}!</a>
-
-                          {% else %}
-                            <a class="nav-item nav-link" href="#">New Availability</a>
-                            <a class="nav-item nav-link" href="{% url 'profile_org' %}">Organization Profile - {{user.username}}!</a>
-                          {% endif %}
-                      <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+                        {% if user.type == '0' %}
+                            <a class="nav-item nav-link" href="{% url 'profile_update_traveler' %}">Hello {{user.username}}!</a>
+                            <a class="nav-item nav-link" href="#">Add Trip</a>
+                        {% elif user.type == '1' %}
+                            <a class="nav-item nav-link" href="{% url 'profile_update_host' %}">Hello {{user.username}}!</a>
+                            <a class="nav-item nav-link" href="#">Add Space</a>
+                        {% endif %}
+                        <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
                     {% else %}
-                      <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
-                      <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+                        <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+                        <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
                     {% endif %}
                 </div>
-
               </div>
             </div>
           </nav>
@@ -63,15 +60,12 @@
                     </div>
                 {% endfor%}
             {% endif %}
-            <br>
-            <br>
-
+            <br><br>
             {% block content %}
             {% endblock %}
 
             {% block script %}
             {% endblock %}
-
         </div>
         <div class="col-md-4">
             <br><br>
@@ -88,7 +82,6 @@
         </div>
       </div>
     </main>
-
 
 </body>
 </html>
