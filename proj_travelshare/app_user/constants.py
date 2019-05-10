@@ -59,12 +59,14 @@ CITIZENSHIP_CHOICE = (('AF', 'Afghanistan'), ('AL', 'Albania'), ('DZ', 'Algeria'
 DESTINATION_CHOICE = CITIZENSHIP_CHOICE
 
 EVENT_TYPE_CHOICE = ['Course', 'Consultation', 'Lecture', 'Show', 'Talk', 'Workshop', 'Others']
-EVENT_FREQ_CHOICE = ['Once', 'Multiple','Fexible']
+EVENT_FREQ_CHOICE = ((1,'Once'), (2,'Multiple'),(3,'Fexible'))
 
-ORG_TYPE_CHOICE = ['Association', 'Center', 'Club', 'Community', 'Company', 'Cooperative/Collective',
-           'Government/Town Council/Village',  'Institute', 'Museum', 'NGO/Foundation',
-           'Park', 'Political Party', 'School/Nursery/Kindergarten', 'Social Enterprise', 'Society',
-           'Station & Network', 'Support Group', 'Union', 'University', 'Others']
+ORG_TYPE_CHOICE = ((1, 'Association'), (2, 'Center'), (3, 'Club'), (4, 'Community'), (5, 'Company'),
+                   (6, 'Cooperative/Collective'), (7, 'Government/Town Council/Village'), (8, 'Institute'),
+                   (9, 'Museum'), (10, 'NGO/Foundation'), (11, 'Park'), (12, 'Political Party'),
+                   (13, 'School/Nursery/Kindergarten'), (14, 'Social Enterprise'), (15, 'Society'),
+                   (16, 'Station & Network'), (17, 'Support Group'), (18, 'Union'), (19, 'University'), (20, 'Others'))
+
 
 EXPERTISE_CHOICE = ['Accounting & Auditing', 'Admin & Clerical', 'Automotive', 'Banking', 'Biotech', 'Broadcast',
                   'Business Development', 'Construction', 'Consultant', 'Customer Service', 'Design', 'Distribution',

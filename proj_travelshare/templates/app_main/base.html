@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <title>Travel to Share</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    {% load static %}
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.css">
+    {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
     <link rel="shortcut icon" href="{% static 'pic/favicon-ming.ico' %}">
 
@@ -15,26 +16,27 @@
         <header class="site-header">
           <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
             <div class="container">
-              <a class="navbar-brand mr-4" href="/">Share while traveling</a>
+              <img src="{% static 'pic/tts_logo.png' %}" alt="logo" href="{% url 'app_main:home' %}" width="63" height="63">
+              <a class="navbar-brand mr-4" href="/">Traveling & Sharing</a>
               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
               </button>
               <div class="collapse navbar-collapse" id="navbarToggle">
                 <div class="navbar-nav mr-auto">
-                  <a class="nav-item nav-link" href="{% url 'app_main:home' %}">Home</a>
-                  <a class="nav-item nav-link" href="{% url 'app_main:org_list' %}">Organizations</a>
-                  <a class="nav-item nav-link" href="{% url 'app_main:person_list' %}">Travelers</a>
+                  <a class="nav-item nav-link" href="#">Coming Trips</a>
+                  <a class="nav-item nav-link" href="#">Local Hosts</a>
+                  <a class="nav-item nav-link" href="#">Travelers</a>
                 </div>
                 <!-- Navbar Right Side -->
                 <div class="navbar-nav">
                     {% if user.is_authenticated %}
                           {% if user.is_person%}
-                            <a class="nav-item nav-link" href="{% url 'app_main:create_trip' %}">New Event</a>
-                            <a class="nav-item nav-link" href="{% url 'app_user: profile_person_update' %}">Traveler Profile - {{user.username}}!</a>
+                            <a class="nav-item nav-link" href="#">New Event</a>
+                            <a class="nav-item nav-link" href="{% url 'profile_person' %}">Traveler Profile - {{user.username}}!</a>
 
                           {% else %}
-                            <a class="nav-item nav-link" href="{% url 'app_user:create_space' %}">New Availability</a>
-                            <a class="nav-item nav-link" href="{% url 'app_user: profile_org_update' %}">Organization Profile - {{user.username}}!</a>
+                            <a class="nav-item nav-link" href="#">New Availability</a>
+                            <a class="nav-item nav-link" href="{% url 'profile_org' %}">Organization Profile - {{user.username}}!</a>
                           {% endif %}
                       <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
                     {% else %}
@@ -51,6 +53,7 @@
     <main role="main" class="container">
       <div class="row">
         <div class="col-md-8">
+            <br>
             {% if messages %}
                 {% for message in messages%}
                     <div class="alert alert-{{ message.tags }}">
@@ -58,14 +61,18 @@
                     </div>
                 {% endfor%}
             {% endif %}
+            <br>
+            <br>
 
             {% block content %}
             {% endblock %}
 
-            {% blog script %}
+            {% block script %}
             {% endblock %}
+
         </div>
         <div class="col-md-4">
+            <br><br>
           <div class="content-section">
             <h3>Search bar</h3>
             <p class='text-muted'>Please check back later, still under construction.

@@ -25,7 +25,7 @@ SECRET_KEY = '9#m+@_&n%pvc%x2i-=&z4gq1=mlceni%@0v)=hm9by#9)1@fgf'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'app_info',
     # third party
     'phonenumber_field',
+    'crispy_forms',
 ]
 
 
@@ -126,4 +127,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+  os.path.join(BASE_DIR, 'static'),
+)
 AUTH_USER_MODEL = 'app_user.User'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media') #profile_pics will be located
+MEDIA_URL = '/media/' # how to access in the browser
