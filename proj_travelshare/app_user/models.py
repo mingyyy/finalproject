@@ -53,16 +53,17 @@ class Topic(models.Model):
 
 
 class User(AbstractUser):
-    is_person = models.BooleanField(default=False)
-    is_org = models.BooleanField(default=False)
+    TYPE_CHOICES = (('0', 'Traveler'), ('1', 'Local Host'))
+    type = models.CharField(max_length=1, default=None, null=True, choices=TYPE_CHOICES, verbose_name='Account Type')
 
-    REQUIRED_FIELDS = ['is_person', 'is_org','email' ]
+    REQUIRED_FIELDS = ['type', 'email']
 
 
 class ProfileStatus(models.Model):
     user=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
     time_updated = models.DateTimeField(auto_now_add=True)
     completed_perc = models.PositiveSmallIntegerField()
+
 
 class ProfilePerson(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
