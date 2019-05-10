@@ -24,12 +24,10 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('app_main.urls')),
-    path('register/', user_views.ViewRegister, name='register'),
-    path('register_person/', user_views.ViewRegisterPerson, name='register_person'),
-    path('register_org/', user_views.ViewRegisterOrg, name='register_org'),
+    path('register/', user_views.viewregister, name='register'),
     path('profile_person/',user_views.ViewProfilePersonUpdate, name='profile_person'),
     path('profile_org/',user_views.ViewProfileOrgUpdate, name='profile_org'),
     path('login/', LoginView.as_view(template_name="app_user/login.html"), name="login"),
     path('logout/', LogoutView.as_view(template_name="app_user/logout.html"), name="logout"),
-] +  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

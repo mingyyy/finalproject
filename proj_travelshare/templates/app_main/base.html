@@ -8,24 +8,26 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.css">
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
-    <link rel="shortcut icon" href="{% static 'pic/favicon-ming.ico' %}">
-
+    <link rel="shortcut icon" href="{% static 'pic/favicon.ico' %}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+          integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <title>Share Away</title>
 </head>
 <body>
         <header class="site-header">
           <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
             <div class="container">
-              <img src="{% static 'pic/tts_logo.png' %}" alt="logo" href="{% url 'app_main:home' %}" width="63" height="63">
-              <a class="navbar-brand mr-4" href="/">Traveling & Sharing</a>
+              <img src="{% static 'pic/tts_logo.png' %}" alt="logo" href="{% url 'app_main:home' %}" width="63" height="63" style="background:white">
               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
               </button>
               <div class="collapse navbar-collapse" id="navbarToggle">
                 <div class="navbar-nav mr-auto">
-                  <a class="nav-item nav-link" href="#">Coming Trips</a>
-                  <a class="nav-item nav-link" href="#">Local Hosts</a>
-                  <a class="nav-item nav-link" href="#">Travelers</a>
+                  <a class="nav-item nav-link" href="#"><i class='fas fa-atlas' style='font-size:20px; color:lightgrey'></i> Coming Trips</a>
+                  <a class="nav-item nav-link" href="#"><i class='fas fa-street-view' style='font-size:20px; color:lightgrey'></i> Travelers</a>
+                  <a class="nav-item nav-link" href="#"><i class='fas fa-university' style='font-size:20px; color:lightgrey'></i> Local Hosts</a>
+
+
                 </div>
                 <!-- Navbar Right Side -->
                 <div class="navbar-nav">
