@@ -29,6 +29,9 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(template_name="app_user/logout.html"), name="logout"),
     path('profile_update_traveler/', user_views.profile_update_traveler, name='profile_update_traveler'),
     path('profile_update_host/', user_views.profile_update_host, name='profile_update_host'),
-
+    path('profile_update_traveler2/', user_views.profile_update_traveler2, name='profile_update_traveler2'),
+    path('profile_update_host2/', user_views.profile_update_host2, name='profile_update_host2'),
+    path('profiletraveler/<int:pk>/', user_views.TravelerDetailView.as_view(), name='profiletraveler-detail'),
+    path('profilehost/<int:pk>/', user_views.HostDetailView.as_view(), name='profilehost-detail'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

@@ -30,12 +30,37 @@ class FormUserUpdate(forms.ModelForm):
 
 
 class FormProfileTravelerUpdate(forms.ModelForm):
+    phone = PhoneNumberField(widget=forms.TextInput(attrs={}), label='Phone Number', required=False)
+    birth_date = forms.DateField(input_formats=['%d/%m/%Y'])
+
     class Meta:
         model = ProfileTraveler
-        fields = ['gender', 'birth_date', 'nationality', 'phone' 'bio', ]
+        fields = ['gender', 'birth_date', 'nationality', 'phone', 'bio', 'photo', ]
+        widgets = {
+            'bio': forms.Textarea(attrs={'placeholder': 'Tell us more about yourself.'},),
+
+                    }
 
 
 class FormProfileHostUpdate(forms.ModelForm):
+    phone = PhoneNumberField(widget=forms.TextInput(attrs={'placeholder': 'Phone'}),
+                             label="Phone number", required=False)
+
     class Meta:
         model = ProfileHost
-        fields = ['name', 'type', 'phone', 'description', ]
+        fields = ['name', 'type', 'phone', 'description', 'address', 'photo', ]
+        widgets = {'description': forms.Textarea(attrs={'placeholder': 'Tell us more about organization.'})}
+
+
+class FormProfileTravelerUpdate2(forms.ModelForm):
+
+    class Meta:
+        model = ProfileTraveler
+        fields = ['language']
+
+
+class FormProfileHostUpdate2(forms.ModelForm):
+
+    class Meta:
+        model = ProfileHost
+        fields = ['interest', 'interest_details']

@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     # third party
     'phonenumber_field',
     'crispy_forms',
+    'datetimepicker',
+    'bootstrap_datepicker_plus',
 ]
 
 
@@ -130,7 +132,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
   os.path.join(BASE_DIR, 'static'),
 )
-DEFAULT_FILE_STORAGE = 'proj_travelshare.storage_backends.MediaStorage'
+
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 LOGIN_REDIRECT_URL = "/"
@@ -139,3 +141,6 @@ LOGIN_URL = "login"
 AUTH_USER_MODEL = 'app_user.User'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media') #profile_pics will be located
 MEDIA_URL = '/media/' # how to access in the browser
+
+PHONENUMBER_DB_FORMAT = 'INTERNATIONAL'
+PHONENUMBER_DEFAULT_REGION='US'

@@ -25,6 +25,7 @@ class Language(models.Model):
 
     def __str__(self):
         return self.name
+
     class Meta:
         ordering = ('name',)
 
@@ -37,6 +38,7 @@ class Link(models.Model):
 
     def __str__(self):
         return self.name
+
     class Meta:
         ordering = ('category','name',)
 
@@ -48,6 +50,7 @@ class Topic(models.Model):
 
     def __str__(self):
         return self.name
+
     class Meta:
         ordering = ('name',)
 

@@ -8,7 +8,7 @@
     {% endif %}
     <div class="content-section">
       <div class="media">
-        <img class="rounded-circle account-img" src="{{ user.profile_host.photo.url }}">
+        <img class="rounded-circle account-img" src="{{ user.profilehost.photo.url }}">
         <div class="media-body">
           <h2 class="account-heading">{{ user.username }}</h2>
           <p class="text-secondary">{{ user.email }}</p>
@@ -22,7 +22,8 @@
                         {{h_form|crispy}}
                 </fieldset>
                 <div class="form-group">
-                    <button class="btn btn-outline-info" type="submit">Update</button>
+                    <button class="btn btn-outline-info" type="submit">Save</button>
+                    <a href="{% url 'profile_update_host2' %}" class="btn-outline-info float-right" role="button">Next Section</a>
                 </div>
             </form>
     </div>

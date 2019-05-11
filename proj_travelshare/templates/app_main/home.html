@@ -6,4 +6,17 @@
   <p class="lead">Select below the type of account you want to create</p>
   <a href="{% url 'register' %}" class="btn btn-info btn-lg" role="button">I'm a traveler</a>
   <a href="{% url 'register' %}" class="btn btn-info btn-lg" role="button">I'm a local host</a>
+
+    <br><br>
+
+    <div>
+        <input id="datepicker">
+          <script>
+            $(function () {
+              $("#datepicker").datepicker(
+              {format: 'yyyy/mm/dd'});
+            });
+          </script>
+    </div>
+
 {% endblock %}

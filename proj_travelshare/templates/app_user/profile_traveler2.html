@@ -1,4 +1,4 @@
-{% extends 'app_main/base.html' %}
+% extends 'app_main/base.html' %}
 {% load crispy_forms_tags%}
 {% block content %}
 
@@ -28,37 +28,20 @@
                 <fieldset class="form-group" >
                     <legend class="border-bottom mb-4">
                         {% if user.type == '0' %}
-                            Traveler Personal Info
+                            Traveler Professional Info
                         {% elif user.type == '1' %}
-                            Local Host Basic Info
+                            Local Host Extra Info
                         {% endif %}
                     </legend>
-                        {{u_form|crispy}}
-                        {{t_form|crispy}}
+                        {{form|crispy}}
                 </fieldset>
                 <div class="form-group">
                     <button class="btn btn-outline-info" type="submit">Save</button>
-                    <a href="{% url 'profile_update_traveler2' %}" class="btn-outline-info float-right" role="button">Next Section</a>
-
+                    <!--<button class="btn btn-outline-info float-right" type="button">Next Section</button>-->
+                    <a href="{% url 'profile_update_traveler3' %}" class="btn-outline-info float-right" role="button">Next Section</a>
                 </div>
 
             </form>
-                <!--<ul class="pagination">-->
-                  <!--<li class="page-item"><a class="page-link" href="#">Save</a></li>-->
-                  <!--<li class="page-item"><a class="page-link" href="#">Links</a></li>-->
-                  <!--<li class="page-item"><a class="page-link" href="#">Professional</a></li>-->
-                  <!--<li class="page-item"><a class="page-link" href="#">Offer</a></li>-->
-                <!--</ul>-->
-
     </div>
 
 {% endblock content %}
-
-{% block script %}
-      <script>
-        $(function () {
-          $("#id_birth_date").datepicker(
-          {format: 'dd/mm/yyyy'});
-        });
-      </script>
-{% endblock %}
