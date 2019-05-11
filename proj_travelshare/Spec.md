@@ -113,6 +113,7 @@ with progress bar
 
 What we can offer: 
 - title
+- type of offer
 - details
     - physical space
     - equipments

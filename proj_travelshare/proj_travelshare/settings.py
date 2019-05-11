@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'datetimepicker',
     'bootstrap_datepicker_plus',
+    'ktag',
 ]
 
 

@@ -3,7 +3,7 @@
 {% block content %}
 
     <div class="progress">
-      <div class="progress-bar bg-secondary" style="width:35%">
+      <div class="progress-bar bg-primary" style="width:35%">
         Personal
       </div>
       <!--<div class="progress-bar bg-warning" style="width:25%">-->
@@ -37,18 +37,12 @@
                         {{t_form|crispy}}
                 </fieldset>
                 <div class="form-group">
-                    <button class="btn btn-outline-info" type="submit">Save</button>
+                    <button class="btn btn-info btn-sm" type="submit">Save & Review</button>
                     <a href="{% url 'profile_update_traveler2' %}" class="btn-outline-info float-right" role="button">Next Section</a>
 
                 </div>
 
             </form>
-                <!--<ul class="pagination">-->
-                  <!--<li class="page-item"><a class="page-link" href="#">Save</a></li>-->
-                  <!--<li class="page-item"><a class="page-link" href="#">Links</a></li>-->
-                  <!--<li class="page-item"><a class="page-link" href="#">Professional</a></li>-->
-                  <!--<li class="page-item"><a class="page-link" href="#">Offer</a></li>-->
-                <!--</ul>-->
 
     </div>
 

@@ -58,8 +58,9 @@ CITIZENSHIP_CHOICE = (('AF', 'Afghanistan'), ('AL', 'Albania'), ('DZ', 'Algeria'
                       ('VN', 'Viet Nam'), ('YE', 'Yemen'), ('ZM', 'Zambia'), ('ZW', 'Zimbabwe'))
 DESTINATION_CHOICE = CITIZENSHIP_CHOICE
 
-EVENT_TYPE_CHOICE = ['Course', 'Consultation', 'Lecture', 'Show', 'Talk', 'Workshop', 'Others']
+EVENT_TYPE_CHOICE = ((1,'Course'), (2, 'Consultation'), (3, 'Lecture'), (4, 'Show'), (5, 'Talk'), (6, 'Workshop'), (7, 'Others'))
 EVENT_FREQ_CHOICE = ((1,'Once'), (2,'Multiple'),(3,'Fexible'))
+EVENT_DURATION_CHOICE = ((1, 'Less than 2 hours'), (2, '2 to 4 hours'), (3, '4 to 8 hours'),(4, 'More than 8 hours'))
 
 ORG_TYPE_CHOICE = ((1, 'Association'), (2, 'Center'), (3, 'Club'), (4, 'Community'), (5, 'Company'),
                    (6, 'Cooperative/Collective'), (7, 'Government/Town Council/Village'), (8, 'Institute'),
@@ -76,7 +77,7 @@ EXPERTISE_CHOICE = ['Accounting & Auditing', 'Admin & Clerical', 'Automotive', '
                   'Journalism', 'Journalism', 'Legal', 'Legal Admin', 'Maint', 'Management', 'Manufacturing',
                   'Marketing', 'Media', 'New Grad', 'Newspaper', 'Nonprofit', 'Nurse', 'Other', 'Pharmaceutical',
                   'Planning', 'Procurement', 'Professional Services', 'Purchasing', 'QA', 'Quality Control',
-                  'Real Estate', 'Repair', 'Research', 'Restaurant - Food Service', 'Retail', 'Sales', 'Science',
+                  'Real Estate', 'Repair', 'Research', 'Restaurant/Food Service', 'Retail', 'Sales', 'Science',
                   'Shipping', 'Skilled Labor', 'Social Services', 'Strategy', 'Supply Chain', 'Teaching',
                   'Telecommunications', 'Trades', 'Training', 'Transportation', 'Warehouse']
 
@@ -120,3 +121,5 @@ LANGUAGE_CHOICE = ['Abkhaz', 'Afar', 'African', 'Afrikaans', 'Akan', 'Albanian',
              'Tonga', 'Tongan', 'Tosk', 'Tshiluba', 'Turkic', 'Turkish', 'Turkmen', 'Tuvaluan', 'Ukrainian', 'Ulithian',
              'Urdu', 'Uzbek', 'Vietnamese', 'Waray', 'Welsh', 'Woleaian', 'Wolof', 'Wu', 'Xhosa', 'Xiang', 'Xichangana',
              'Xinca', 'Xitsonga', 'Yapase', 'Yezidi', 'Yoruba', 'Yue', 'Zande', 'Zulu']
+
+TOPIC_CHOICE = ()

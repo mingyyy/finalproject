@@ -1,4 +1,4 @@
-% extends 'app_main/base.html' %}
+{% extends 'app_main/base.html' %}
 {% load crispy_forms_tags%}
 {% block content %}
 
@@ -6,9 +6,9 @@
       <div class="progress-bar bg-secondary" style="width:35%">
         Personal
       </div>
-      <!--<div class="progress-bar bg-warning" style="width:25%">-->
-        <!--Contact-->
-      <!--</div>-->
+      <div class="progress-bar bg-primary" style="width:35%">
+        Expertise
+      </div>
       <!--<div class="progress-bar bg-danger" style="width:25%">-->
         <!--Professional-->
       <!--</div>-->
@@ -36,11 +36,19 @@
                         {{form|crispy}}
                 </fieldset>
                 <div class="form-group">
-                    <button class="btn btn-outline-info" type="submit">Save</button>
-                    <!--<button class="btn btn-outline-info float-right" type="button">Next Section</button>-->
-                    <a href="{% url 'profile_update_traveler3' %}" class="btn-outline-info float-right" role="button">Next Section</a>
-                </div>
 
+                    <div class="container">
+                      <div class="row">
+                        <div class="col text-center">
+                          <button class="btn btn-outline-info btn-sm" type="submit">Save & Review</button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <a href="{% url 'profile_update_traveler' %}" class="btn-outline-info float-left" role="button">Previous Section</a>
+                    <a href="{% url 'profile_update_traveler3' %}" class="btn-outline-info float-right" role="button">Next Section</a>
+
+                </div>
             </form>
     </div>
 

@@ -3,9 +3,11 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from phonenumber_field.modelfields import PhoneNumberField
 from PIL import Image
-from .constants import CITIZENSHIP_CHOICE, GENDER_CHOICES, ORG_TYPE_CHOICE
+from .constants import CITIZENSHIP_CHOICE, GENDER_CHOICES, ORG_TYPE_CHOICE, TOPIC_CHOICE, \
+    EVENT_FREQ_CHOICE, EVENT_TYPE_CHOICE, EVENT_DURATION_CHOICE, EXPERTISE_CHOICE
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from ktag.fields import TagField
 
 
 class Expertise(models.Model):
@@ -22,6 +24,7 @@ class Expertise(models.Model):
 class Language(models.Model):
     user = models.ManyToManyField(settings.AUTH_USER_MODEL)
     name = models.CharField(max_length=100)
+    level = models.SmallIntegerField()
 
     def __str__(self):
         return self.name
@@ -55,6 +58,20 @@ class Topic(models.Model):
         ordering = ('name',)
 
 
+class Program(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None, null=False, blank=False)
+    type = models.PositiveSmallIntegerField(choices=EVENT_TYPE_CHOICE)
+    frequency = models.PositiveSmallIntegerField(choices=EVENT_FREQ_CHOICE)
+    duration = models.PositiveSmallIntegerField(choices=EVENT_DURATION_CHOICE)
+    topic = models.CharField(max_length=20)
+    title = models.CharField(max_length=120, null=False)
+    description = models.TextField()
+    requirement = models.TextField()
+
+    def __str__(self):
+        return self.name
+
+
 class User(AbstractUser):
     TYPE_CHOICES = (('0', 'Traveler'), ('1', 'Local Host'))
     type = models.CharField(max_length=1, default=None, null=True, choices=TYPE_CHOICES, verbose_name='Account Type')
@@ -76,6 +93,7 @@ class ProfileTraveler(models.Model):
     bio = models.TextField(null=True, blank=True)
     phone = PhoneNumberField(unique=True, null=True,blank=True)
     photo = models.ImageField(default='default.jpg', upload_to='profile_traveler')
+    experience = models.TextField(null=True, blank=True)
     expertise = models.ManyToManyField(Expertise)
     language = models.ManyToManyField(Language)
     link = models.ManyToManyField(Link)
@@ -99,7 +117,7 @@ class ProfileTraveler(models.Model):
 class ProfileHost(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, blank=False, null=False)
-    type = models.SmallIntegerField(choices=ORG_TYPE_CHOICE, null=True,blank=True)
+    type = models.PositiveSmallIntegerField(choices=ORG_TYPE_CHOICE, null=True,blank=True)
     description = models.TextField(null=True,blank=True)
     phone = PhoneNumberField(unique=True, null=True,blank=True)
     address = models.CharField(max_length=255)
