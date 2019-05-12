@@ -3,73 +3,12 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from phonenumber_field.modelfields import PhoneNumberField
 from PIL import Image
-from .constants import CITIZENSHIP_CHOICE, GENDER_CHOICES, ORG_TYPE_CHOICE, TOPIC_CHOICE, \
-    EVENT_FREQ_CHOICE, EVENT_TYPE_CHOICE, EVENT_DURATION_CHOICE, EXPERTISE_CHOICE
+from .constants import CITIZENSHIP_CHOICE, GENDER_CHOICES, ORG_TYPE_CHOICE, SUBJECT_CHOICE, \
+    EVENT_FREQ_CHOICE, EVENT_TYPE_CHOICE, EVENT_DURATION_CHOICE, EXPERTISE_CHOICE, LANGUAGE_CHOICE
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from ktag.fields import TagField
 
-
-class Expertise(models.Model):
-    user = models.ManyToManyField(settings.AUTH_USER_MODEL)
-    name = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        ordering = ('name',)
-
-
-class Language(models.Model):
-    user = models.ManyToManyField(settings.AUTH_USER_MODEL)
-    name = models.CharField(max_length=100)
-    level = models.SmallIntegerField()
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        ordering = ('name',)
-
-
-class Link(models.Model):
-    category = models.CharField(max_length=50)
-    name = models.CharField(max_length=100)
-    url = models.URLField()
-    user = models.ManyToManyField(settings.AUTH_USER_MODEL)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        ordering = ('category','name',)
-
-
-class Topic(models.Model):
-    user = models.ManyToManyField(settings.AUTH_USER_MODEL)
-    category = models.CharField(max_length=100)
-    name = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        ordering = ('name',)
-
-
-class Program(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None, null=False, blank=False)
-    type = models.PositiveSmallIntegerField(choices=EVENT_TYPE_CHOICE)
-    frequency = models.PositiveSmallIntegerField(choices=EVENT_FREQ_CHOICE)
-    duration = models.PositiveSmallIntegerField(choices=EVENT_DURATION_CHOICE)
-    topic = models.CharField(max_length=20)
-    title = models.CharField(max_length=120, null=False)
-    description = models.TextField()
-    requirement = models.TextField()
-
-    def __str__(self):
-        return self.name
 
 
 class User(AbstractUser):
@@ -85,18 +24,51 @@ class ProfileStatus(models.Model):
     completed_perc = models.PositiveSmallIntegerField()
 
 
+class Language(models.Model):
+    language = models.PositiveSmallIntegerField(choices=LANGUAGE_CHOICE)
+
+    def __str__(self):
+        return self.language
+
+    class Meta:
+        ordering = ('language',)
+
+
+class Link(models.Model):
+    category = models.CharField(max_length=50) # social
+    name = models.CharField(max_length=100) # instagram
+    url = models.URLField() # www.instagram.com/xxxx/
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ('category','name',)
+
+
+class Topic(models.Model):
+    category = models.CharField(max_length=100)
+    topic = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.topic
+
+    class Meta:
+        ordering = ('topic',)
+
+
 class ProfileTraveler(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     gender = models.CharField(choices=GENDER_CHOICES,max_length=1)
     nationality = models.CharField(choices=CITIZENSHIP_CHOICE, max_length=50)
     birth_date = models.DateField(null=True, blank=True)
-    bio = models.TextField(null=True, blank=True)
     phone = PhoneNumberField(unique=True, null=True,blank=True)
     photo = models.ImageField(default='default.jpg', upload_to='profile_traveler')
+    bio = models.TextField(null=True, blank=True)
     experience = models.TextField(null=True, blank=True)
-    expertise = models.ManyToManyField(Expertise)
     language = models.ManyToManyField(Language)
     link = models.ManyToManyField(Link)
+
 
     def __str__(self):
         return self.user.username
@@ -114,6 +86,22 @@ class ProfileTraveler(models.Model):
                 pass
 
 
+class Program(models.Model):
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None, null=False, blank=False)
+    subject = models.ForeignKey(Topic, on_delete=models.CASCADE)
+
+    type = models.PositiveSmallIntegerField(choices=EVENT_TYPE_CHOICE)
+    frequency = models.PositiveSmallIntegerField(choices=EVENT_FREQ_CHOICE)
+    duration = models.PositiveSmallIntegerField(choices=EVENT_DURATION_CHOICE)
+
+    title = models.CharField(max_length=120, null=False)
+    description = models.TextField()
+    requirement = models.TextField()
+
+    def __str__(self):
+        return self.name
+
+
 class ProfileHost(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, blank=False, null=False)
@@ -122,7 +110,7 @@ class ProfileHost(models.Model):
     phone = PhoneNumberField(unique=True, null=True,blank=True)
     address = models.CharField(max_length=255)
     photo = models.ImageField(default='default.jpg', upload_to='profile_host')
-    interest = models.ManyToManyField(Expertise)
+    interest = models.ManyToManyField(Topic)
     interest_details = models.TextField(blank=True)
     language = models.ManyToManyField(Language)
     link = models.ManyToManyField(Link)

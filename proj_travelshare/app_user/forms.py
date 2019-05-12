@@ -1,11 +1,11 @@
 from django import forms
-from .models import User
+from .models import User, Language, ProfileTraveler, ProfileHost
 from django.contrib.auth.forms import UserCreationForm
 from phonenumber_field.formfields import PhoneNumberField
-from .models import ProfileTraveler, ProfileHost
+
 from django.db import transaction
 from ktag.fields import TagField
-from .constants import EXPERTISE_CHOICE
+from .constants import SUBJECT_LIST
 
 
 class FormRegister(UserCreationForm):
@@ -44,13 +44,20 @@ class FormProfileTravelerUpdate(forms.ModelForm):
 
 
 class FormProfileTravelerUpdate2(forms.ModelForm):
-    expertise = TagField(label='Area of expertise:', delimiters=',', data_list=EXPERTISE_CHOICE, initial='Education', max_tags=8,
-                       help_text="Not more than 10 tags are allowed.")
+    SUBJECT_LIST.sort(reverse=True)
+    expertise = TagField(label='Area of expertise:', delimiters=',', data_list=SUBJECT_LIST,
+                         initial='Education', max_tags=8, help_text="Not more than 8 tags please.")
     class Meta:
         model = ProfileTraveler
         fields = ['expertise', 'language', 'experience', 'link']
 
 
+class FormLanguage(forms.ModelForm):
+    class Meta:
+        model = Language
+        fields = ['language',]
+        widgets = {'language': forms.Textarea(attrs={'help_text': 'Language you master professionally.'})}
+        lables = {'language': 'Language'}
 
 
 class FormProfileHostUpdate(forms.ModelForm):
@@ -67,4 +74,5 @@ class FormProfileHostUpdate2(forms.ModelForm):
 
     class Meta:
         model = ProfileHost
+
         fields = ['interest', 'interest_details']

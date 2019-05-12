@@ -1,5 +1,6 @@
 {% extends 'app_main/base.html' %}
 {% load crispy_forms_tags%}
+{% load static %}
 {% block content %}
 
     <div class="progress">
@@ -25,6 +26,7 @@
       </div>
           <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
+                <script src="{% static 'ktag/js/tagify.min.js' %}"> </script>
                 <fieldset class="form-group" >
                     <legend class="border-bottom mb-4">
                         {% if user.type == '0' %}
@@ -33,7 +35,8 @@
                             Local Host Extra Info
                         {% endif %}
                     </legend>
-                        {{form|crispy}}
+
+                        {{form.as_p}}
                 </fieldset>
                 <div class="form-group">
 

@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect,HttpResponseRedirect, reverse, get_object_or_404
 from django.contrib import messages
 from .forms import FormRegister, FormUserUpdate, FormProfileTravelerUpdate, FormProfileHostUpdate, \
-    FormProfileHostUpdate2, FormProfileTravelerUpdate2
+    FormProfileHostUpdate2, FormProfileTravelerUpdate2, FormLanguage
 from django.contrib.auth.decorators import login_required
 from .decorators import traveler_required, host_required
 from django.views.generic import DetailView
@@ -41,15 +41,19 @@ def profile_update_traveler(request):
 
 @login_required()
 def profile_update_traveler2(request):
+    print(request.user.profiletraveler.language)
     if request.method == 'POST':
+        # form_lan = FormLanguage(request.POST, instance=request.user.profiletraveler.language_set.all())
         form = FormProfileTravelerUpdate2(request.POST,
                            request.FILES, instance=request.user.profiletraveler)
         if form.is_valid():
             form.save()
+            # form_lan.save()
             messages.success(request, "Expertise section has been updated")
             return redirect('app_main:home')
     else:
         form = FormProfileTravelerUpdate2(instance=request.user.profiletraveler)
+        # form_lan = FormLanguage(instance=request.user.profiletraveler.language_set.all())
 
     context = {'form': form}
     return render(request, "app_user/profile_traveler2.html", context)
