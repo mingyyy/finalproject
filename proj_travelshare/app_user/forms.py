@@ -5,8 +5,8 @@ from phonenumber_field.formfields import PhoneNumberField
 
 from django.db import transaction
 from ktag.fields import TagField
-from .constants import SUBJECT_LIST
-
+from .constants import SUBJECT_LIST, LANGUAGE_LIST
+from django_google_maps.widgets import GoogleMapsAddressWidget
 
 class FormRegister(UserCreationForm):
     class Meta():
@@ -33,31 +33,47 @@ class FormUserUpdate(forms.ModelForm):
 
 class FormProfileTravelerUpdate(forms.ModelForm):
     phone = PhoneNumberField(widget=forms.TextInput(attrs={}), label='Phone Number', required=False)
-    birth_date = forms.DateField(input_formats=['%d/%m/%Y'])
+    birth_date = forms.DateField(input_formats=['%Y/%m/%d'])
 
     class Meta:
         model = ProfileTraveler
-        fields = ['gender', 'birth_date', 'nationality', 'phone', 'bio', 'photo', ]
-        widgets = {
-            'bio': forms.Textarea(attrs={'placeholder': 'Tell us more about yourself.'},),
-                    }
+        fields = ['gender', 'birth_date', 'nationality', 'phone']
 
 
 class FormProfileTravelerUpdate2(forms.ModelForm):
-    SUBJECT_LIST.sort(reverse=True)
-    expertise = TagField(label='Area of expertise:', delimiters=',', data_list=SUBJECT_LIST,
-                         initial='Education', max_tags=8, help_text="Not more than 8 tags please.")
+    languages = TagField(label='Language', delimiters=',', data_list=LANGUAGE_LIST, initial='English')
+
     class Meta:
         model = ProfileTraveler
-        fields = ['expertise', 'language', 'experience', 'link']
+        fields = ['bio', 'experience', 'languages', 'photo']
+        widgets = {
+            'bio': forms.Textarea(attrs={'placeholder': 'Tell us more about yourself.'}, ),
+            'experience': forms.Textarea(attrs={'placeholder': 'Tell us more about your professional experience.'},),
+                    }
+
+    # def save(self):
+    #     ProfileTraveler = self.instance
+    #     ProfileTraveler.bio = self.cleaned_data['bio']
+    #     ProfileTraveler.experience = self.cleaned_data['experience']
+    #     language_0 = forms.ChoiceField(choices=LANGUAGE_LIST)
+    #     language_1 = forms.ChoiceField(choices=LANGUAGE_LIST)
+    #     language_2 = forms.ChoiceField(choices=LANGUAGE_LIST)
+    #
+    #     language = forms.ModelMultipleChoiceField(queryset=Language.objects.all())
+    #     ProfileTraveler.language_set.all().delete()
+    #     for i in range(3):
+    #         language = self.cleaned_data[f'language_{format(i)}']
+    #         ProfileTraveler.objects.create(languages=language)
 
 
 class FormLanguage(forms.ModelForm):
+    language = TagField(label='Language:', delimiters=',', data_list=LANGUAGE_LIST, initial='English')
+
     class Meta:
-        model = Language
+        model = ProfileTraveler
         fields = ['language',]
-        widgets = {'language': forms.Textarea(attrs={'help_text': 'Language you master professionally.'})}
-        lables = {'language': 'Language'}
+        widgets = {'language': forms.Textarea(attrs={'help_text': 'Only languages you master professionally.'})}
+        labels = {'language': 'Languages'}
 
 
 class FormProfileHostUpdate(forms.ModelForm):
@@ -66,13 +82,32 @@ class FormProfileHostUpdate(forms.ModelForm):
 
     class Meta:
         model = ProfileHost
-        fields = ['name', 'type', 'phone', 'description', 'address', 'photo', ]
-        widgets = {'description': forms.Textarea(attrs={'placeholder': 'Tell us more about your organization.'})}
+        fields = ['photo', 'name', 'type', 'phone', 'description', 'address', 'geolocation']
+        labels = {'photo': "Profile photo",
+                  'name': "Organization Name",
+                  'type': "Organization Type",
+                  }
+        widgets = {"address": GoogleMapsAddressWidget,
+            "geolocation": forms.TextInput(attrs={'placeholder': 'To be filled automatically.',}),
+            'description': forms.Textarea(attrs={'placeholder': 'Tell us more about your organization.'})
+                   }
+
+
+class FormAddress(forms.ModelForm):
+    class Meta:
+        model = ProfileHost
+        fields = ['address', 'geolocation',]
+        widgets = {
+            "address": GoogleMapsAddressWidget,
+            "geolocation": forms.TextInput(attrs={'placeholder': 'To be filled automatically.',
+                                                 'rows': 1,
+                                                 'cols': 10, })
+
+        }
 
 
 class FormProfileHostUpdate2(forms.ModelForm):
 
     class Meta:
         model = ProfileHost
-
-        fields = ['interest', 'interest_details']
+        fields = ['interests', 'interest_details']

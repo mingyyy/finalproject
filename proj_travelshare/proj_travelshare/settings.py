@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-from mimi import SECRET_KEY
+from mimi import SECRET_KEY, GOOGLE_MAPS_API_KEY
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'datetimepicker',
     'bootstrap_datepicker_plus',
     'ktag',
+    'django_google_maps',
 ]
 
 
@@ -145,3 +146,4 @@ MEDIA_URL = '/media/' # how to access in the browser
 
 PHONENUMBER_DB_FORMAT = 'INTERNATIONAL'
 PHONENUMBER_DEFAULT_REGION='US'
+

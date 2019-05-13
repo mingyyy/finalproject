@@ -1,7 +1,7 @@
-from django.shortcuts import render,redirect,HttpResponseRedirect, reverse, get_object_or_404
+from django.shortcuts import render,redirect,HttpResponseRedirect, reverse, get_object_or_404, HttpResponse
 from django.contrib import messages
 from .forms import FormRegister, FormUserUpdate, FormProfileTravelerUpdate, FormProfileHostUpdate, \
-    FormProfileHostUpdate2, FormProfileTravelerUpdate2, FormLanguage
+    FormProfileHostUpdate2, FormProfileTravelerUpdate2, FormLanguage, FormAddress
 from django.contrib.auth.decorators import login_required
 from .decorators import traveler_required, host_required
 from django.views.generic import DetailView
@@ -25,13 +25,15 @@ def viewregister(request):
 def profile_update_traveler(request):
     if request.method == 'POST':
         u_form = FormUserUpdate(request.POST, instance=request.user)
-        t_form = FormProfileTravelerUpdate(request.POST,
-                           request.FILES, instance=request.user.profiletraveler)
+        t_form = FormProfileTravelerUpdate(request.POST, request.FILES, instance=request.user.profiletraveler)
         if u_form.is_valid() and t_form.is_valid():
             u_form.save()
             t_form.save()
             messages.success(request, "Personal section has been updated")
-            return redirect('app_main:home')
+            if request.POST['save'] == "next":
+                return redirect('profile_update_traveler2')
+            elif request.POST['save'] == "save":
+                return redirect('app_main:home')
     else:
         u_form = FormUserUpdate(instance=request.user)
         t_form = FormProfileTravelerUpdate(instance=request.user.profiletraveler)
@@ -39,23 +41,23 @@ def profile_update_traveler(request):
     context = {'u_form': u_form, 't_form': t_form}
     return render(request, "app_user/profile_traveler.html", context)
 
+
 @login_required()
 def profile_update_traveler2(request):
-    print(request.user.profiletraveler.language)
+
     if request.method == 'POST':
-        # form_lan = FormLanguage(request.POST, instance=request.user.profiletraveler.language_set.all())
-        form = FormProfileTravelerUpdate2(request.POST,
-                           request.FILES, instance=request.user.profiletraveler)
+        # form_lan = FormLanguage(request.POST)
+        form = FormProfileTravelerUpdate2(request.POST, instance=request.user.profiletraveler)
         if form.is_valid():
             form.save()
-            # form_lan.save()
+            form.save_m2m()
             messages.success(request, "Expertise section has been updated")
             return redirect('app_main:home')
     else:
-        form = FormProfileTravelerUpdate2(instance=request.user.profiletraveler)
-        # form_lan = FormLanguage(instance=request.user.profiletraveler.language_set.all())
+        form = FormProfileTravelerUpdate2()
+        # form_lan = FormLanguage(instance=request.user.profiletraveler.objects.language_set.all())
 
-    context = {'form': form}
+    context = {'form': form }
     return render(request, "app_user/profile_traveler2.html", context)
 
 
@@ -76,21 +78,35 @@ def profile_update_traveler3(request):
 
 
 @login_required()
+def address_update(request):
+    if request.method == 'POST':
+        form = FormAddress(request.POST)
+        if form.is_valid():
+            address = form.cleaned_data.get("address")
+            geolocation = form.cleaned_data.get('geolocation')
+            form.save()
+        return HttpResponseRedirect(reverse('profile_update_host'))
+    else:
+        form = FormAddress()
+    return render(request, "app_user/profile_address.html", {'form': form})
+
+
+@login_required()
 def profile_update_host(request):
     if request.method == 'POST':
-        u_form = FormUserUpdate(request.POST, instance=request.user)
         h_form = FormProfileHostUpdate(request.POST,
                            request.FILES, instance=request.user.profilehost)
-        if u_form.is_valid() and h_form.is_valid():
-            u_form.save()
+        if h_form.is_valid():
             h_form.save()
             messages.success(request, "Local host profile has been updated!")
-            return redirect('home.html')
+            if request.POST['save'] == "next":
+                return redirect('profile_update_host2')
+            elif request.POST['save'] == "save":
+                return redirect('app_main:home')
     else:
-        u_form = FormUserUpdate(instance=request.user)
         h_form = FormProfileHostUpdate(instance=request.user.profilehost)
 
-    context = {'u_form': u_form, 'h_form': h_form}
+    context = {'h_form': h_form}
     return render(request, "app_user/profile_host.html", context)
 
 
@@ -98,9 +114,9 @@ def profile_update_host(request):
 def profile_update_host2(request):
     if request.method == 'POST':
         form = FormUserUpdate(request.POST, instance=request.user.profilehost)
-
         if form.is_valid():
             form.save()
+            form.save_m2m()
             messages.success(request, "Section 2 of the profile has been updated!")
             return redirect('home.html')
     else:

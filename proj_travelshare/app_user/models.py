@@ -7,8 +7,7 @@ from .constants import CITIZENSHIP_CHOICE, GENDER_CHOICES, ORG_TYPE_CHOICE, SUBJ
     EVENT_FREQ_CHOICE, EVENT_TYPE_CHOICE, EVENT_DURATION_CHOICE, EXPERTISE_CHOICE, LANGUAGE_CHOICE
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from ktag.fields import TagField
-
+from django_google_maps.fields import AddressField, GeoLocationField
 
 
 class User(AbstractUser):
@@ -19,13 +18,13 @@ class User(AbstractUser):
 
 
 class ProfileStatus(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     time_updated = models.DateTimeField(auto_now_add=True)
     completed_perc = models.PositiveSmallIntegerField()
 
 
 class Language(models.Model):
-    language = models.PositiveSmallIntegerField(choices=LANGUAGE_CHOICE)
+    language = models.CharField(max_length=50)
 
     def __str__(self):
         return self.language
@@ -59,16 +58,16 @@ class Topic(models.Model):
 
 class ProfileTraveler(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    gender = models.CharField(choices=GENDER_CHOICES,max_length=1)
+    gender = models.CharField(choices=GENDER_CHOICES, max_length=1)
     nationality = models.CharField(choices=CITIZENSHIP_CHOICE, max_length=50)
     birth_date = models.DateField(null=True, blank=True)
-    phone = PhoneNumberField(unique=True, null=True,blank=True)
     photo = models.ImageField(default='default.jpg', upload_to='profile_traveler')
     bio = models.TextField(null=True, blank=True)
     experience = models.TextField(null=True, blank=True)
-    language = models.ManyToManyField(Language)
-    link = models.ManyToManyField(Link)
-
+    languages = models.ManyToManyField(Language)
+    # contact info
+    phone = PhoneNumberField(unique=True, null=True, blank=True)
+    links = models.ManyToManyField(Link)
 
     def __str__(self):
         return self.user.username
@@ -105,15 +104,16 @@ class Program(models.Model):
 class ProfileHost(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, blank=False, null=False)
-    type = models.PositiveSmallIntegerField(choices=ORG_TYPE_CHOICE, null=True,blank=True)
-    description = models.TextField(null=True,blank=True)
-    phone = PhoneNumberField(unique=True, null=True,blank=True)
-    address = models.CharField(max_length=255)
+    type = models.PositiveSmallIntegerField(choices=ORG_TYPE_CHOICE, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    phone = PhoneNumberField(unique=True, null=True, blank=True)
+    address = AddressField(max_length=200)
+    geolocation = GeoLocationField(blank=True)
     photo = models.ImageField(default='default.jpg', upload_to='profile_host')
-    interest = models.ManyToManyField(Topic)
+    interests = models.ManyToManyField(Topic)
     interest_details = models.TextField(blank=True)
-    language = models.ManyToManyField(Language)
-    link = models.ManyToManyField(Link)
+    languages = models.ManyToManyField(Language)
+    links = models.ManyToManyField(Link)
 
     def __str__(self):
         return self.user.username

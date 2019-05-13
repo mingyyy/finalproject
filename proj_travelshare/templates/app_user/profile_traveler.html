@@ -37,13 +37,11 @@
                         {{t_form|crispy}}
                 </fieldset>
                 <div class="form-group">
-                    <button class="btn btn-info btn-sm" type="submit">Save & Review</button>
-                    <a href="{% url 'profile_update_traveler2' %}" class="btn-outline-info float-right" role="button">Next Section</a>
-
+                    <button class="btn btn-info btn-sm" type="submit" name="save" value="save">Save & Review</button>
+                    <button class="btn btn-info btn-sm float-right" type="submit" name="save" value="next">Save & Continue</button>
                 </div>
 
             </form>
-
     </div>
 
 {% endblock content %}
@@ -52,7 +50,7 @@
       <script>
         $(function () {
           $("#id_birth_date").datepicker(
-          {format: 'dd/mm/yyyy'});
+          {format: 'yyyy/mm/dd'});
         });
       </script>
 {% endblock %}

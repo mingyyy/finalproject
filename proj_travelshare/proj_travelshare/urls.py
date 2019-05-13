@@ -35,5 +35,6 @@ urlpatterns = [
     path('profile_update_host3/', user_views.profile_update_host3, name='profile_update_host3'),
     path('profiletraveler/<int:pk>/', user_views.TravelerDetailView.as_view(), name='profiletraveler-detail'),
     path('profilehost/<int:pk>/', user_views.HostDetailView.as_view(), name='profilehost-detail'),
+    path('address_update/', user_views.address_update, name='address_update'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

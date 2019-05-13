@@ -18,7 +18,7 @@
                 {% csrf_token %}
                 <fieldset class="form-group" >
                     <legend class="border-bottom mb-4">Profile Info</legend>
-                        {{h_form|crispy}}
+                        {{form.as_p}}
                 </fieldset>
 
                 <div class="form-group">
@@ -27,12 +27,7 @@
                 </div>
             </form>
 
-            <br>
-
-            <div>
-                {{ h_form.media }}
-            </div>
-
+            {{form.media}}
     </div>
 
 {% endblock content %}
