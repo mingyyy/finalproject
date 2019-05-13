@@ -30,7 +30,7 @@ urlpatterns = [
 
     path('profile_update_host/', user_views.profile_update_host, name='profile_update_host'),
     path('profile_update_host2/', user_views.profile_update_host2, name='profile_update_host2'),
-    path('profile_update_host3/', user_views.profile_update_host3, name='profile_update_host3'),
+    path('space_update_host/<int:pk>/', user_views.space_update_host, name='space_update_host'),
 
     path('profile_update_traveler/', user_views.profile_update_traveler, name='profile_update_traveler'),
     path('profile_update_traveler2/', user_views.profile_update_traveler2, name='profile_update_traveler2'),

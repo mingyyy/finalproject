@@ -5,16 +5,20 @@ from .forms import FormRegister, FormUserUpdate, FormProfileTravelerUpdate, Form
 from django.contrib.auth.decorators import login_required
 from .decorators import traveler_required, host_required
 from django.views.generic import DetailView
-from .models import ProfileTraveler, ProfileHost
+from .models import ProfileTraveler, ProfileHost, Space, Program
+from django.contrib.auth import logout, login, authenticate
 
 
 def viewregister(request):
     if request.method == 'POST':
         form = FormRegister(request.POST)
         if form.is_valid():
-            form.save()
+            new_user=form.save()
             username = form.cleaned_data.get('username')
-            messages.success(request, f"{username}! You are now ready to log in!")
+            authenticated_user = authenticate(username=new_user.username,
+                                              password=request.POST['password1'])
+            login(request, authenticated_user)
+            messages.success(request, f"{username}! Thanks for signing up with us! You are now logged in.")
             return redirect('login')
     else:
         form = FormRegister()
@@ -58,8 +62,7 @@ def profile_update_traveler2(request):
             elif request.POST['save'] == "save":
                 return redirect('profile_update_traveler')
     else:
-        form = FormProfileTravelerUpdate2()
-        # form_lan = FormLanguage(instance=request.user.profiletraveler.objects.language_set.all())
+        form = FormProfileTravelerUpdate2(instance=request.user.profiletraveler)
 
     context = {'form': form }
     return render(request, "app_user/profile_traveler2.html", context)
@@ -131,7 +134,7 @@ def profile_update_host2(request):
             form.save_m2m()
             messages.success(request, "Interest section has been updated!")
             if request.POST['save'] == "next":
-                return redirect('profile_update_host3')
+                return redirect('app_main:home')
             elif request.POST['save'] == "save":
                 return redirect('profile_update_host')
     else:
@@ -142,21 +145,25 @@ def profile_update_host2(request):
 
 
 @login_required()
-def profile_update_host3(request):
+def space_update_host(request, space_id):
+
+    space = Space.objects.get(owner_id=space_id)
     if request.method == 'POST':
-        form = FormSpace(request.POST, instance=request.user)
+        form = FormSpace(request.POST, instance=space)
         if form.is_valid():
-            form.save()
+            space = form.save(commit=False)
+            space.owner = request.user
+            space.save()
             messages.success(request, "Availability section has been updated!")
             if request.POST['save'] == "next":
                 return redirect('app_main:home')
             elif request.POST['save'] == "save":
                 return redirect('profile_update_host2')
     else:
-        form = FormSpace(instance=request.user)
+        form = FormSpace(instance=space)
 
     context = {'form': form}
-    return render(request, "app_user/profile_host3.html", context)
+    return render(request, "app_user/space_update_host.html", context)
 
 
 class TravelerDetailView(DetailView):
