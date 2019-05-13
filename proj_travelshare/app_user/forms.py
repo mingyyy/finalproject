@@ -1,12 +1,13 @@
 from django import forms
-from .models import User, Language, ProfileTraveler, ProfileHost
+from .models import User, Language, ProfileTraveler, ProfileHost, Space, Program
 from django.contrib.auth.forms import UserCreationForm
 from phonenumber_field.formfields import PhoneNumberField
 
 from django.db import transaction
 from ktag.fields import TagField
-from .constants import SUBJECT_LIST, LANGUAGE_LIST
+from .constants import SUBJECT_LIST, LANGUAGE_LIST, SUBJECT_CHOICE
 from django_google_maps.widgets import GoogleMapsAddressWidget
+
 
 class FormRegister(UserCreationForm):
     class Meta():
@@ -41,6 +42,7 @@ class FormProfileTravelerUpdate(forms.ModelForm):
 
 
 class FormProfileTravelerUpdate2(forms.ModelForm):
+
     languages = TagField(label='Language', delimiters=',', data_list=LANGUAGE_LIST, initial='English')
 
     class Meta:
@@ -94,16 +96,40 @@ class FormProfileHostUpdate(forms.ModelForm):
 
 
 class FormProfileHostUpdate2(forms.ModelForm):
+    LANGUAGE_LIST.sort(reverse=True)
+    SUBJECT_LIST.sort(reverse=True)
     languages = TagField(label='Language', delimiters=',', data_list=LANGUAGE_LIST, initial='English')
     interests = TagField(label="Topics of your interest", delimiters=',', data_list=SUBJECT_LIST, initial='Education')
 
     class Meta:
         model = ProfileHost
         fields = ['interests', 'interest_details',  'languages']
-        labels = {'interest_details': "More of your interests",
+        labels = {'interest_details': "Detail of your interests",
                   }
         widgets = {'language': forms.Textarea(attrs={'help_text': 'Languages you need for the event.'})
                    }
+
+
+class FormSpace(forms.ModelForm):
+    class Meta:
+        model = Space
+        fields = ['title', 'detail']
+        widgets = {
+            'title': forms.TextInput(attrs={'placeholder': 'e.g. Meeting room for 50 people',}),
+            'detail': forms.Textarea(attrs={'placeholder': 'Details of the space, equipments etc',}),
+        }
+
+
+class FormProgram(forms.ModelForm):
+    SUBJECT_LIST.sort(reverse=True)
+    subject = TagField(label='Subject', delimiters=',', data_list=SUBJECT_LIST, initial='Education')
+
+    class Meta:
+        model = Program
+        fields = ['subject', 'type', 'frequency', 'duration', 'title', 'description', 'requirement']
+        labels = {'type': "Type of event",
+                  }
+
 
 # testing address
 class FormAddress(forms.ModelForm):

@@ -1,6 +1,7 @@
 {% extends 'app_main/base.html' %}
 {% load crispy_forms_tags%}
 {% load static %}
+
 {% block content %}
 
     <div class="progress">
@@ -37,20 +38,12 @@
                     </legend>
                         {{form|crispy}}
                 </fieldset>
+
                 <div class="form-group">
-
-                    <div class="container">
-                      <div class="row">
-                        <div class="col text-center">
-                          <button class="btn btn-outline-info btn-sm" type="submit">Save & Review</button>
-                        </div>
-                      </div>
-                    </div>
-
-                    <a href="{% url 'profile_update_host' %}" class="btn-outline-info float-left" role="button">Previous Section</a>
-                    <a href="{% url 'profile_update_host3' %}" class="btn-outline-info float-right" role="button">Next Section</a>
-
+                    <button class="btn btn-info btn-sm" type="submit" name="save" value="save">Save & Review</button>
+                    <button class="btn btn-info btn-sm float-right" type="submit" name="save" value="next">Save & Continue</button>
                 </div>
+
             </form>
     </div>
 

@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect,HttpResponseRedirect, reverse, get_object_or_404, HttpResponse
 from django.contrib import messages
 from .forms import FormRegister, FormUserUpdate, FormProfileTravelerUpdate, FormProfileHostUpdate, \
-    FormProfileHostUpdate2, FormProfileTravelerUpdate2, FormLanguage, FormAddress
+    FormProfileHostUpdate2, FormProfileTravelerUpdate2, FormLanguage, FormAddress, FormProgram, FormSpace
 from django.contrib.auth.decorators import login_required
 from .decorators import traveler_required, host_required
 from django.views.generic import DetailView
@@ -67,17 +67,18 @@ def profile_update_traveler2(request):
 @login_required()
 def profile_update_traveler3(request):
     if request.method == 'POST':
-        form = FormProfileTravelerUpdate(request.POST,
-                           request.FILES, instance=request.user.profiletraveler)
+        form = FormProgram(request.POST,
+                           request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
+
             messages.success(request, "Programs section has been updated")
             if request.POST['save'] == "next":
                 return redirect('app_main:home')
             elif request.POST['save'] == "save":
                 return redirect('app_main:home')
     else:
-        form = FormUserUpdate(instance=request.user.profiletraveler)
+        form = FormProgram(instance=request.user)
 
     context = {'form': form}
     return render(request, "app_user/profile_traveler3.html", context)
@@ -119,9 +120,9 @@ def profile_update_host(request):
 @login_required()
 def profile_update_host2(request):
     if request.method == 'POST':
-        form = FormUserUpdate(request.POST, instance=request.user.profilehost)
+        form = FormProfileHostUpdate2(request.POST, instance=request.user.profilehost)
         if form.is_valid():
-            form.save()
+
             form.save_m2m()
             messages.success(request, "Interest section has been updated!")
             if request.POST['save'] == "next":
@@ -129,7 +130,7 @@ def profile_update_host2(request):
             elif request.POST['save'] == "save":
                 return redirect('app_main:home')
     else:
-        form = FormProfileHostUpdate(instance=request.user.profilehost)
+        form = FormProfileHostUpdate2(instance=request.user.profilehost)
 
     context = {'form': form}
     return render(request, "app_user/profile_host2.html", context)
@@ -138,7 +139,7 @@ def profile_update_host2(request):
 @login_required()
 def profile_update_host3(request):
     if request.method == 'POST':
-        form = FormUserUpdate(request.POST, instance=request.user.profilehost)
+        form = FormSpace(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
             messages.success(request, "Availability section has been updated!")
@@ -147,7 +148,7 @@ def profile_update_host3(request):
             elif request.POST['save'] == "save":
                 return redirect('app_main:home')
     else:
-        form = FormProfileHostUpdate(instance=request.user.profilehost)
+        form = FormSpace(instance=request.user)
 
     context = {'form': form}
     return render(request, "app_user/profile_host3.html", context)

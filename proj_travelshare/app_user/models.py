@@ -46,7 +46,6 @@ class Link(models.Model):
 
 
 class Topic(models.Model):
-    category = models.CharField(max_length=100)
     topic = models.CharField(max_length=100)
 
     def __str__(self):
