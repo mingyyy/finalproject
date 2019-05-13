@@ -33,6 +33,16 @@ class Language(models.Model):
         ordering = ('language',)
 
 
+class Topic(models.Model):
+    topic = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.topic
+
+    class Meta:
+        ordering = ('topic',)
+
+
 class Link(models.Model):
     category = models.CharField(max_length=50) # social
     name = models.CharField(max_length=100) # instagram
@@ -43,16 +53,6 @@ class Link(models.Model):
 
     class Meta:
         ordering = ('category','name',)
-
-
-class Topic(models.Model):
-    topic = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.topic
-
-    class Meta:
-        ordering = ('topic',)
 
 
 class ProfileTraveler(models.Model):

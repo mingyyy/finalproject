@@ -1,5 +1,5 @@
 from django import forms
-from .models import User, Language, ProfileTraveler, ProfileHost, Space, Program
+from .models import User, Language, ProfileTraveler, ProfileHost, Space, Program, Topic
 from django.contrib.auth.forms import UserCreationForm
 from phonenumber_field.formfields import PhoneNumberField
 
@@ -42,30 +42,15 @@ class FormProfileTravelerUpdate(forms.ModelForm):
 
 
 class FormProfileTravelerUpdate2(forms.ModelForm):
-
-    languages = TagField(label='Language', delimiters=',', data_list=LANGUAGE_LIST, initial='English')
+    languages = forms.ModelMultipleChoiceField(queryset=Language.objects.all())
 
     class Meta:
         model = ProfileTraveler
         fields = ['bio', 'experience', 'languages', 'photo']
         widgets = {
             'bio': forms.Textarea(attrs={'placeholder': 'Tell us more about yourself.'}, ),
-            'experience': forms.Textarea(attrs={'placeholder': 'Tell us more about your professional experience.'},),
+            'experience': forms.Textarea(attrs={'placeholder': 'Tell us your professional experience.'},),
                     }
-
-    # def save(self):
-    #     ProfileTraveler = self.instance
-    #     ProfileTraveler.bio = self.cleaned_data['bio']
-    #     ProfileTraveler.experience = self.cleaned_data['experience']
-    #     language_0 = forms.ChoiceField(choices=LANGUAGE_LIST)
-    #     language_1 = forms.ChoiceField(choices=LANGUAGE_LIST)
-    #     language_2 = forms.ChoiceField(choices=LANGUAGE_LIST)
-    #
-    #     language = forms.ModelMultipleChoiceField(queryset=Language.objects.all())
-    #     ProfileTraveler.language_set.all().delete()
-    #     for i in range(3):
-    #         language = self.cleaned_data[f'language_{format(i)}']
-    #         ProfileTraveler.objects.create(languages=language)
 
 
 class FormLanguage(forms.ModelForm):
@@ -95,18 +80,32 @@ class FormProfileHostUpdate(forms.ModelForm):
                    }
 
 
+# class FormProfileHostUpdate2(forms.ModelForm):
+#     LANGUAGE_LIST.sort(reverse=True)
+#     SUBJECT_LIST.sort(reverse=True)
+#     languages = TagField(label='Language', delimiters=',', data_list=LANGUAGE_LIST, initial='English')
+#     interests = TagField(label="Topics of your interest", delimiters=',', data_list=SUBJECT_LIST, initial='Education')
+#
+#     class Meta:
+#         model = ProfileHost
+#         fields = ['interests', 'interest_details',  'languages']
+#         labels = {'interest_details': "Detail of your interests",
+#                   }
+#         widgets = {'languages': forms.Textarea(attrs={'help_text': 'Languages you need for the event.'})
+#                    }
+
+
 class FormProfileHostUpdate2(forms.ModelForm):
-    LANGUAGE_LIST.sort(reverse=True)
-    SUBJECT_LIST.sort(reverse=True)
-    languages = TagField(label='Language', delimiters=',', data_list=LANGUAGE_LIST, initial='English')
-    interests = TagField(label="Topics of your interest", delimiters=',', data_list=SUBJECT_LIST, initial='Education')
+    languages = forms.ModelMultipleChoiceField(queryset=Language.objects.all())
+    interests = forms.ModelMultipleChoiceField(queryset=Topic.objects.all())
 
     class Meta:
         model = ProfileHost
-        fields = ['interests', 'interest_details',  'languages']
-        labels = {'interest_details': "Detail of your interests",
+        fields = ['interests', 'interest_details', 'languages']
+        labels = {'interests': "Subjects of interest",
+                  'interest_details': "Tell us more about your interests",
                   }
-        widgets = {'language': forms.Textarea(attrs={'help_text': 'Languages you need for the event.'})
+        widgets = {'languages': forms.Textarea(attrs={'help_text': 'Languages you need for the event.'}),
                    }
 
 
@@ -114,6 +113,7 @@ class FormSpace(forms.ModelForm):
     class Meta:
         model = Space
         fields = ['title', 'detail']
+        label = {'title': "What you offer"}
         widgets = {
             'title': forms.TextInput(attrs={'placeholder': 'e.g. Meeting room for 50 people',}),
             'detail': forms.Textarea(attrs={'placeholder': 'Details of the space, equipments etc',}),
@@ -121,9 +121,10 @@ class FormSpace(forms.ModelForm):
 
 
 class FormProgram(forms.ModelForm):
-    SUBJECT_LIST.sort(reverse=True)
-    subject = TagField(label='Subject', delimiters=',', data_list=SUBJECT_LIST, initial='Education')
+    # SUBJECT_LIST.sort(reverse=True)
+    # subject = TagField(label='Subject', delimiters=',', data_list=SUBJECT_LIST, initial='Education')
 
+    subject = forms.ModelMultipleChoiceField(queryset=Topic.objects.all())
     class Meta:
         model = Program
         fields = ['subject', 'type', 'frequency', 'duration', 'title', 'description', 'requirement']

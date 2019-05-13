@@ -46,16 +46,17 @@ def profile_update_traveler(request):
 def profile_update_traveler2(request):
 
     if request.method == 'POST':
-        # form_lan = FormLanguage(request.POST)
         form = FormProfileTravelerUpdate2(request.POST, instance=request.user.profiletraveler)
         if form.is_valid():
-            form.save()
+            profile = form.save(commit=False)
+            profile.user = request.user
+            profile.save()
             form.save_m2m()
             messages.success(request, "Expertise section has been updated")
             if request.POST['save'] == "next":
                 return redirect('profile_update_traveler3')
             elif request.POST['save'] == "save":
-                return redirect('app_main:home')
+                return redirect('profile_update_traveler')
     else:
         form = FormProfileTravelerUpdate2()
         # form_lan = FormLanguage(instance=request.user.profiletraveler.objects.language_set.all())
@@ -66,20 +67,22 @@ def profile_update_traveler2(request):
 
 @login_required()
 def profile_update_traveler3(request):
+
     if request.method == 'POST':
-        form = FormProgram(request.POST,
-                           request.FILES, instance=request.user)
+        form = FormProgram(request.POST, instance=request.user)
+        form.clean()
         if form.is_valid():
             form.save()
-
             messages.success(request, "Programs section has been updated")
             if request.POST['save'] == "next":
                 return redirect('app_main:home')
             elif request.POST['save'] == "save":
-                return redirect('app_main:home')
+                return redirect('profile_update_traveler2')
+        else:
+            messages.warning(request, "Form is not valid!")
     else:
-        form = FormProgram(instance=request.user)
 
+        form = FormProgram(instance=request.user)
     context = {'form': form}
     return render(request, "app_user/profile_traveler3.html", context)
 
@@ -122,13 +125,15 @@ def profile_update_host2(request):
     if request.method == 'POST':
         form = FormProfileHostUpdate2(request.POST, instance=request.user.profilehost)
         if form.is_valid():
-
+            profile = form.save(commit=False)
+            profile.user = request.user
+            profile.save()
             form.save_m2m()
             messages.success(request, "Interest section has been updated!")
             if request.POST['save'] == "next":
                 return redirect('profile_update_host3')
             elif request.POST['save'] == "save":
-                return redirect('app_main:home')
+                return redirect('profile_update_host')
     else:
         form = FormProfileHostUpdate2(instance=request.user.profilehost)
 
@@ -146,7 +151,7 @@ def profile_update_host3(request):
             if request.POST['save'] == "next":
                 return redirect('app_main:home')
             elif request.POST['save'] == "save":
-                return redirect('app_main:home')
+                return redirect('profile_update_host2')
     else:
         form = FormSpace(instance=request.user)
 
