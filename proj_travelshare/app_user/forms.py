@@ -132,6 +132,18 @@ class FormProgram(forms.ModelForm):
                   }
 
 
+class DeleteProgramForm(forms.ModelForm):
+    class Meta:
+        model = Program
+        fields = []
+
+
+class DeleteSpaceForm(forms.ModelForm):
+    class Meta:
+        model = Space
+        fields = []
+
+
 # testing address
 class FormAddress(forms.ModelForm):
     class Meta:

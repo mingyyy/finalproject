@@ -1,7 +1,8 @@
 from django.shortcuts import render,redirect,HttpResponseRedirect, reverse, get_object_or_404, HttpResponse
 from django.contrib import messages
 from .forms import FormRegister, FormUserUpdate, FormProfileTravelerUpdate, FormProfileHostUpdate, \
-    FormProfileHostUpdate2, FormProfileTravelerUpdate2, FormLanguage, FormAddress, FormProgram, FormSpace
+    FormProfileHostUpdate2, FormProfileTravelerUpdate2, FormAddress, FormProgram, FormSpace, \
+    DeleteProgramForm, DeleteSpaceForm
 from django.contrib.auth.decorators import login_required
 from .decorators import traveler_required, host_required
 from django.views.generic import DetailView
@@ -15,11 +16,12 @@ def viewregister(request):
         if form.is_valid():
             new_user=form.save()
             username = form.cleaned_data.get('username')
+            type = form.cleaned_data.get('type')
             authenticated_user = authenticate(username=new_user.username,
                                               password=request.POST['password1'])
             login(request, authenticated_user)
             messages.success(request, f"{username}! Thanks for signing up with us! You are now logged in.")
-            return redirect('login')
+            return redirect('app_main:home')
     else:
         form = FormRegister()
     return render(request, 'app_user/register.html', {'form': form})
@@ -48,7 +50,6 @@ def profile_update_traveler(request):
 
 @login_required()
 def profile_update_traveler2(request):
-
     if request.method == 'POST':
         form = FormProfileTravelerUpdate2(request.POST, instance=request.user.profiletraveler)
         if form.is_valid():
@@ -64,30 +65,69 @@ def profile_update_traveler2(request):
     else:
         form = FormProfileTravelerUpdate2(instance=request.user.profiletraveler)
 
-    context = {'form': form }
+    context = {'form': form}
     return render(request, "app_user/profile_traveler2.html", context)
 
 
 @login_required()
-def profile_update_traveler3(request):
+def program_add(request):
+    if request.method != 'POST':
+        form = FormProgram()
+    else:
+        form = FormProgram(request.POST, request.user)
+        if form.is_valid():
+            new_program = form.save(commit=False)
+            new_program.owner = request.user
+            new_program.save()
+            messages.success(request, "Program has been added!")
+            return HttpResponseRedirect(reverse('program_detail'))
+    context = {'form': form}
+    return render(request, 'app_user/program_add.html', context)
 
+
+@login_required()
+def program_update(request, program_id):
+    program = Program.objects.get(id=program_id)
     if request.method == 'POST':
-        form = FormProgram(request.POST, instance=request.user)
+        form = FormProgram(request.POST, instance=program)
         form.clean()
         if form.is_valid():
             form.save()
-            messages.success(request, "Programs section has been updated")
+            messages.success(request, "Program has been updated!")
             if request.POST['save'] == "next":
-                return redirect('app_main:home')
+                return HttpResponseRedirect(reverse("program_detail", args=[program.id]))
             elif request.POST['save'] == "save":
-                return redirect('profile_update_traveler2')
+                return redirect('program_update')
         else:
             messages.warning(request, "Form is not valid!")
     else:
+        form = FormProgram(instance=program)
+    context = {'form': form, 'program': program}
+    return render(request, "app_user/program_update.html", context)
 
-        form = FormProgram(instance=request.user)
-    context = {'form': form}
-    return render(request, "app_user/profile_traveler3.html", context)
+
+@login_required
+def program_delete(request, program_id):
+    '''delete an existng program.'''
+    program = Program.objects.get(id=program_id)
+    program_to_delete = get_object_or_404(Program, id=program_id)
+    if request.method != 'POST':
+        form = DeleteProgramForm(instance=program)
+    else:
+        form = DeleteProgramForm(instance=program, data=request.POST)
+        if form.is_valid():
+            program_to_delete.delete()
+            return HttpResponseRedirect(reverse('app_main:home'))
+    context = {'program': program, 'form': form}
+    return render(request, 'program_delete.html', context)
+
+
+@login_required
+def program_detail(request, program_id):
+    '''show a program'''
+    program = Program.objects.filter(owner=request.user).get(id=program_id)
+    context = {"program": program}
+    return render(request, "program_detail.html", context)
 
 
 @login_required()
@@ -118,7 +158,6 @@ def profile_update_host(request):
                 return redirect('app_main:home')
     else:
         h_form = FormProfileHostUpdate(instance=request.user.profilehost)
-
     context = {'h_form': h_form}
     return render(request, "app_user/profile_host.html", context)
 
@@ -139,31 +178,71 @@ def profile_update_host2(request):
                 return redirect('profile_update_host')
     else:
         form = FormProfileHostUpdate2(instance=request.user.profilehost)
-
     context = {'form': form}
     return render(request, "app_user/profile_host2.html", context)
 
 
 @login_required()
-def space_update_host(request, space_id):
+def space_add(request):
+    if request.method == 'POST':
+        form = FormSpace(request.POST)
+        if form.is_valid():
+            space = form.save(commit=False)
+            space.owner = request.user
+            space.save()
+            messages.success(request, "Availability has been added!")
+            if request.POST['save'] == "next":
+                return redirect('app_main:home')
+            elif request.POST['save'] == "save":
+                return redirect('profile_update_host2')
+    else:
+        form = FormSpace()
+    context = {'form': form}
+    return render(request, "app_user/space_add.html", context)
 
-    space = Space.objects.get(owner_id=space_id)
+
+@login_required()
+def space_update(request, space_id):
+    space = Space.objects.get(id=request.user.id)
     if request.method == 'POST':
         form = FormSpace(request.POST, instance=space)
         if form.is_valid():
             space = form.save(commit=False)
             space.owner = request.user
             space.save()
-            messages.success(request, "Availability section has been updated!")
+            messages.success(request, "Availability has been updated!")
             if request.POST['save'] == "next":
                 return redirect('app_main:home')
             elif request.POST['save'] == "save":
                 return redirect('profile_update_host2')
     else:
         form = FormSpace(instance=space)
-
     context = {'form': form}
-    return render(request, "app_user/space_update_host.html", context)
+    return render(request, "app_user/space_update.html", context)
+
+
+@login_required
+def space_detail(request, space_id):
+    '''show a program'''
+    space = Space.objects.filter(owner=request.user).get(id=space_id)
+    context = {"space": space}
+    return render(request, "space_detail.html", context)
+
+
+@login_required
+def space_delete(request, space_id):
+    '''delete an existng program.'''
+    space = Space.objects.get(id=space_id)
+    space_to_delete = get_object_or_404(Program, id=space_id)
+    if request.method != 'POST':
+        form = DeleteSpaceForm(instance=space)
+    else:
+        form = DeleteSpaceForm(instance=space, data=request.POST)
+        if form.is_valid():
+            space_to_delete.delete()
+            return HttpResponseRedirect(reverse('app_main:home'))
+    context = {'space': space, 'form': form}
+    return render(request, 'space_delete.html', context)
 
 
 class TravelerDetailView(DetailView):

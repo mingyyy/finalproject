@@ -30,11 +30,19 @@ urlpatterns = [
 
     path('profile_update_host/', user_views.profile_update_host, name='profile_update_host'),
     path('profile_update_host2/', user_views.profile_update_host2, name='profile_update_host2'),
-    path('space_update_host/<int:pk>/', user_views.space_update_host, name='space_update_host'),
+
+    path('space_add/', user_views.space_add, name='space_add'),
+    path('space_update/<int:pk>/', user_views.space_update, name='space_update'),
+    path('space_delete/<int:pk>/', user_views.space_delete, name='space_delete'),
+    path('space_detail/<int:pk>/', user_views.space_detail, name='space_detail'),
 
     path('profile_update_traveler/', user_views.profile_update_traveler, name='profile_update_traveler'),
     path('profile_update_traveler2/', user_views.profile_update_traveler2, name='profile_update_traveler2'),
-    path('profile_update_traveler3/', user_views.profile_update_traveler3,name='profile_update_traveler3'),
+
+    path('program_add/', user_views.program_add, name='program_add'),
+    path('program_update/<int:pk>/', user_views.program_update, name='program_update'),
+    path('program_delete/<int:pk>/', user_views.program_delete, name='program_delete'),
+    path('program_detail/<int:pk>/', user_views.program_detail, name='program_detail'),
 
     path('profiletraveler/<int:pk>/', user_views.TravelerDetailView.as_view(), name='profiletraveler-detail'),
     path('profilehost/<int:pk>/', user_views.HostDetailView.as_view(), name='profilehost-detail'),
