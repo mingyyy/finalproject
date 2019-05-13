@@ -52,7 +52,10 @@ def profile_update_traveler2(request):
             form.save()
             form.save_m2m()
             messages.success(request, "Expertise section has been updated")
-            return redirect('app_main:home')
+            if request.POST['save'] == "next":
+                return redirect('profile_update_traveler3')
+            elif request.POST['save'] == "save":
+                return redirect('app_main:home')
     else:
         form = FormProfileTravelerUpdate2()
         # form_lan = FormLanguage(instance=request.user.profiletraveler.objects.language_set.all())
@@ -68,8 +71,11 @@ def profile_update_traveler3(request):
                            request.FILES, instance=request.user.profiletraveler)
         if form.is_valid():
             form.save()
-            messages.success(request, "Professional section has been updated")
-            return redirect('app_main:home')
+            messages.success(request, "Programs section has been updated")
+            if request.POST['save'] == "next":
+                return redirect('app_main:home')
+            elif request.POST['save'] == "save":
+                return redirect('app_main:home')
     else:
         form = FormUserUpdate(instance=request.user.profiletraveler)
 
@@ -98,7 +104,7 @@ def profile_update_host(request):
                            request.FILES, instance=request.user.profilehost)
         if h_form.is_valid():
             h_form.save()
-            messages.success(request, "Local host profile has been updated!")
+            messages.success(request, "Basic section has been updated!")
             if request.POST['save'] == "next":
                 return redirect('profile_update_host2')
             elif request.POST['save'] == "save":
@@ -117,8 +123,11 @@ def profile_update_host2(request):
         if form.is_valid():
             form.save()
             form.save_m2m()
-            messages.success(request, "Section 2 of the profile has been updated!")
-            return redirect('home.html')
+            messages.success(request, "Interest section has been updated!")
+            if request.POST['save'] == "next":
+                return redirect('profile_update_host3')
+            elif request.POST['save'] == "save":
+                return redirect('app_main:home')
     else:
         form = FormProfileHostUpdate(instance=request.user.profilehost)
 
@@ -130,11 +139,13 @@ def profile_update_host2(request):
 def profile_update_host3(request):
     if request.method == 'POST':
         form = FormUserUpdate(request.POST, instance=request.user.profilehost)
-
         if form.is_valid():
             form.save()
-            messages.success(request, "Section 3 of the profile has been updated!")
-            return redirect('home.html')
+            messages.success(request, "Availability section has been updated!")
+            if request.POST['save'] == "next":
+                return redirect('app_main:home')
+            elif request.POST['save'] == "save":
+                return redirect('app_main:home')
     else:
         form = FormProfileHostUpdate(instance=request.user.profilehost)
 

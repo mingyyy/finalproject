@@ -27,14 +27,18 @@ urlpatterns = [
     path('register/', user_views.viewregister, name='register'),
     path('login/', LoginView.as_view(template_name="app_user/login.html"), name="login"),
     path('logout/', LogoutView.as_view(template_name="app_user/logout.html"), name="logout"),
-    path('profile_update_traveler/', user_views.profile_update_traveler, name='profile_update_traveler'),
+
     path('profile_update_host/', user_views.profile_update_host, name='profile_update_host'),
-    path('profile_update_traveler2/', user_views.profile_update_traveler2, name='profile_update_traveler2'),
     path('profile_update_host2/', user_views.profile_update_host2, name='profile_update_host2'),
-    path('profile_update_traveler3/', user_views.profile_update_traveler3,name='profile_update_traveler3'),
     path('profile_update_host3/', user_views.profile_update_host3, name='profile_update_host3'),
+
+    path('profile_update_traveler/', user_views.profile_update_traveler, name='profile_update_traveler'),
+    path('profile_update_traveler2/', user_views.profile_update_traveler2, name='profile_update_traveler2'),
+    path('profile_update_traveler3/', user_views.profile_update_traveler3,name='profile_update_traveler3'),
+
     path('profiletraveler/<int:pk>/', user_views.TravelerDetailView.as_view(), name='profiletraveler-detail'),
     path('profilehost/<int:pk>/', user_views.HostDetailView.as_view(), name='profilehost-detail'),
-    path('address_update/', user_views.address_update, name='address_update'),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
+    path('address_update/', user_views.address_update, name='address_update'),
+
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

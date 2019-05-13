@@ -98,7 +98,16 @@ class Program(models.Model):
     requirement = models.TextField()
 
     def __str__(self):
-        return self.name
+        return self.title
+
+
+class Space(models.Model):
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None, null=False, blank=False)
+    title = models.CharField(max_length=120, null=False)
+    detail = models.TextField()
+
+    def __str__(self):
+        return self.title
 
 
 class ProfileHost(models.Model):

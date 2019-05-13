@@ -1,11 +1,27 @@
 {% extends 'app_main/base.html' %}
 {% load crispy_forms_tags%}
 {% block content %}
+
     {% if user.type == '0' %}
         <span class="badge badge-primary">Traveler</span>
     {% elif user.type == '1' %}
         <span class="badge badge-success">Local Host</span>
     {% endif %}
+    <br>
+
+    <div class="progress">
+      <div class="progress-bar bg-primary" style="width:35%">
+        Basics
+      </div>
+      <!--<div class="progress-bar bg-warning" style="width:25%">-->
+        <!--Contact-->
+      <!--</div>-->
+      <!--<div class="progress-bar bg-danger" style="width:25%">-->
+        <!--Professional-->
+      <!--</div>-->
+    </div>
+    <br>
+
     <div class="content-section">
       <div class="media">
         <img class="rounded-circle account-img" src="{{ user.profilehost.photo.url }}">

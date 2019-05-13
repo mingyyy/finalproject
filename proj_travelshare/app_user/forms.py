@@ -93,6 +93,19 @@ class FormProfileHostUpdate(forms.ModelForm):
                    }
 
 
+class FormProfileHostUpdate2(forms.ModelForm):
+    languages = TagField(label='Language', delimiters=',', data_list=LANGUAGE_LIST, initial='English')
+    interests = TagField(label="Topics of your interest", delimiters=',', data_list=SUBJECT_LIST, initial='Education')
+
+    class Meta:
+        model = ProfileHost
+        fields = ['interests', 'interest_details',  'languages']
+        labels = {'interest_details': "More of your interests",
+                  }
+        widgets = {'language': forms.Textarea(attrs={'help_text': 'Languages you need for the event.'})
+                   }
+
+# testing address
 class FormAddress(forms.ModelForm):
     class Meta:
         model = ProfileHost
@@ -102,12 +115,4 @@ class FormAddress(forms.ModelForm):
             "geolocation": forms.TextInput(attrs={'placeholder': 'To be filled automatically.',
                                                  'rows': 1,
                                                  'cols': 10, })
-
         }
-
-
-class FormProfileHostUpdate2(forms.ModelForm):
-
-    class Meta:
-        model = ProfileHost
-        fields = ['interests', 'interest_details']
