@@ -8,17 +8,40 @@
     <div class="row">
         <div class="col-sm-3">
             {% if profile.photo %}
-                <img src="{{profile.photo.url}}" alt="profile picture" width="90%"><br>
+                <img id='article-img' src="{{profile.photo.url}}" alt="profile picture" width="90%"><br>
             {% endif %}
         </div>
         <div class="col-sm-9">
-            <p>Traveler Name: {{ profile.user.first_name }} {{ profile.user.last_name }}</p>
-            <p>Gender: {{ profile.gender }}</p>
-            <p>Birth date: {{ profile.birth_date }} </p>
-            <p>From: {{ profile.nationality }} </p>
-            <p>Languages: {{ profile.languages.language }}</p>
-            <p>Phone: {{ profile.phone }}</p>
-            <p>Bio: {{ profile.bio }}</p>
+            <div class="content-section">
+                <div class="article-metadata">
+                    <p><span class='text-muted'>Traveler Name: </span>{{ profile.user.first_name }} {{ profile.user.last_name }}</p>
+                </div>
+
+                <div class="article-metadata">
+                    <p><span class='text-muted'>Gender: </span> {{ profile.gender }}</p>
+                </div>
+
+                <div class="article-metadata">
+                    <p><span class='text-muted'>Birth date: </span> {{ profile.birth_date }} </p>
+                </div>
+
+                <div class="article-metadata">
+                    <p><span class='text-muted'>From: </span> {{ profile.nationality }} </p>
+                </div>
+
+                <div class="article-metadata">
+                    <p><span class='text-muted'>Languages: </span> {{ profile.languages.language }}</p>
+                </div>
+
+                <div class="article-metadata">
+                    <p><span class='text-muted'>Phone: </span> {{ profile.phone }}</p>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <p><span class='text-muted'>Bio: </span> {{ profile.bio }}</p>
+            </div>
+
         </div>
     </div>
 

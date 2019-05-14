@@ -1,7 +1,7 @@
 GENDER_CHOICES = (
-    ('F', 'Female'),
-    ('M', 'Male'),
-    ('O', 'Other'),
+    ('Female', 'Female'),
+    ('Male', 'Male'),
+    ('Other', 'Other'),
 )
 CITIZENSHIP_CHOICE = (('AF', 'Afghanistan'), ('AL', 'Albania'), ('DZ', 'Algeria'), ('AS', 'American Samoa'),
                       ('AD', 'Andorra'), ('AO', 'Angola'), ('AI', 'Anguilla'), ('AG', 'Antigua and Barbuda'),
@@ -58,17 +58,33 @@ CITIZENSHIP_CHOICE = (('AF', 'Afghanistan'), ('AL', 'Albania'), ('DZ', 'Algeria'
                       ('VN', 'Viet Nam'), ('YE', 'Yemen'), ('ZM', 'Zambia'), ('ZW', 'Zimbabwe'))
 DESTINATION_CHOICE = CITIZENSHIP_CHOICE
 
-EVENT_TYPE_CHOICE = ((1, 'Course'), (2, 'Consultation'), (3, 'Lecture'), (4, 'Show'), (5, 'Talk'), (6, 'Workshop'), (7, 'Others'))
-EVENT_FREQ_CHOICE = ((1, 'Once'), (2, 'Multiple'),(3, 'Fexible'))
-EVENT_DURATION_CHOICE = ((1, 'Less than 2 hours'), (2, '2 to 4 hours'), (3, '4 to 8 hours'),(4, 'More than 8 hours'))
+EVENT_TYPE_CHOICE = (('Course', 'Course'), ('Consultation', 'Consultation'), ('Lecture', 'Lecture'), ('Show', 'Show'), ('Talk', 'Talk'), ('Workshop', 'Workshop'), ('Others', 'Others'))
+EVENT_FREQ_CHOICE = (('Once', 'Once'), ('Multiple', 'Multiple'),('Fexible', 'Fexible'))
+EVENT_DURATION_CHOICE = (('Less than 2 hours', 'Less than 2 hours'), ('2 to 4 hours', '2 to 4 hours'), ('4 to 8 hours', '4 to 8 hours'), ('More than 8 hours', 'More than 8 hours'))
 
-ORG_TYPE_CHOICE = ((1, 'Association'), (2, 'Center'), (3, 'Club'), (4, 'Community'), (5, 'Company'),
-                   (6, 'Cooperative/Collective'), (7, 'Government/Town Council/Village'), (8, 'Institute'),
-                   (9, 'Museum'), (10, 'NGO/Foundation'), (11, 'Park'), (12, 'Political Party'),
-                   (13, 'School/Nursery/Kindergarten'), (14, 'Social Enterprise'), (15, 'Society'),
-                   (16, 'Station & Network'), (17, 'Support Group'), (18, 'Union'), (19, 'University'), (20, 'Others'))
+ORG_TYPE_CHOICE = (('Association', 'Association'), ('Center', 'Center'), ('Club', 'Club'), ('Community', 'Community'), ('Company', 'Company'),
+                   ('Cooperative/Collective', 'Cooperative/Collective'), ('Government/Town Council/Village', 'Government/Town Council/Village'), ('Institute', 'Institute'),
+                   ('Museum', 'Museum'), ('NGO/Foundation', 'NGO/Foundation'), ('Park', 'Park'), ('Political Party', 'Political Party'),
+                   ('School/Nursery/Kindergarten', 'School/Nursery/Kindergarten'), ('Social Enterprise', 'Social Enterprise'), ('Society', 'Society'),
+                   ('Station & Network', 'Station & Network'), ('Support Group', 'Support Group'), ('Union', 'Union'), ('University', 'University'), ('Others', 'Others'))
 
-EXPERTISE_CHOICE = ((1, 'Accounting & Auditing'), (2, 'Admin & Clerical'), (3, 'Agriculture'), (4, 'Automotive'), (5, 'Banking'), (6, 'Biotech'), (7, 'Broadcast'), (8, 'Business Development'), (9, 'Construction'), (10, 'Consultant'), (11, 'Customer Service'), (12, 'Design'), (13, 'Distribution'), (14, 'Education'), (15, 'Engineering'), (16, 'Entry Level'), (17, 'Executive'), (18, 'Facilities'), (19, 'Finance'), (20, 'Franchise'), (21, 'General Business'), (22, 'General Labor'), (23, 'Government'), (24, 'Grocery'), (25, 'Health Care'), (26, 'Hospitality'), (27, 'Hotel'), (28, 'Human Resources'), (29, 'Information Technology'), (30, 'Installation'), (31, 'Insurance'), (32, 'Inventory'), (33, 'Journalism'), (34, 'Journalism'), (35, 'Legal'), (36, 'Legal Admin'), (37, 'Maint'), (38, 'Management'), (39, 'Manufacturing'), (40, 'Marketing'), (41, 'Media'), (42, 'New Grad'), (43, 'Newspaper'), (44, 'Nonprofit'), (45, 'Nurse'), (46, 'Other'), (47, 'Pharmaceutical'), (48, 'Planning'), (49, 'Procurement'), (50, 'Professional Services'), (51, 'Purchasing'), (52, 'QA'), (53, 'Quality Control'), (54, 'Real Estate'), (55, 'Repair'), (56, 'Research'), (57, 'Restaurant/Food Service'), (58, 'Retail'), (59, 'Sales'), (60, 'Science'), (61, 'Shipping'), (62, 'Skilled Labor'), (63, 'Social Services'), (64, 'Strategy'), (65, 'Supply Chain'), (66, 'Teaching'), (67, 'Telecommunications'), (68, 'Trades'), (69, 'Training'), (70, 'Transportation'), (71, 'Warehouse'))
+EXPERTISE_CHOICE = ((1, 'Accounting & Auditing'), (2, 'Admin & Clerical'), (3, 'Agriculture'), (4, 'Automotive'),
+                    (5, 'Banking'), (6, 'Biotech'), (7, 'Broadcast'), (8, 'Business Development'), (9, 'Construction'),
+                    (10, 'Consultant'), (11, 'Customer Service'), (12, 'Design'), (13, 'Distribution'),
+                    (14, 'Education'), (15, 'Engineering'), (16, 'Entry Level'), (17, 'Executive'),
+                    (18, 'Facilities'), (19, 'Finance'), (20, 'Franchise'), (21, 'General Business'),
+                    (22, 'General Labor'), (23, 'Government'), (24, 'Grocery'), (25, 'Health Care'),
+                    (26, 'Hospitality'), (27, 'Hotel'), (28, 'Human Resources'), (29, 'Information Technology'),
+                    (30, 'Installation'), (31, 'Insurance'), (32, 'Inventory'), (33, 'Journalism'),
+                    (34, 'Journalism'), (35, 'Legal'), (36, 'Legal Admin'), (37, 'Maint'), (38, 'Management'),
+                    (39, 'Manufacturing'), (40, 'Marketing'), (41, 'Media'), (42, 'New Grad'), (43, 'Newspaper'),
+                    (44, 'Nonprofit'), (45, 'Nurse'), (46, 'Other'), (47, 'Pharmaceutical'), (48, 'Planning'),
+                    (49, 'Procurement'), (50, 'Professional Services'), (51, 'Purchasing'), (52, 'QA'),
+                    (53, 'Quality Control'), (54, 'Real Estate'), (55, 'Repair'), (56, 'Research'),
+                    (57, 'Restaurant/Food Service'), (58, 'Retail'), (59, 'Sales'), (60, 'Science'),
+                    (61, 'Shipping'), (62, 'Skilled Labor'), (63, 'Social Services'), (64, 'Strategy'),
+                    (65, 'Supply Chain'), (66, 'Teaching'), (67, 'Telecommunications'), (68, 'Trades'),
+                    (69, 'Training'), (70, 'Transportation'), (71, 'Warehouse'))
 
 # 71 expertise
 EXPERTISE_LIST = ['Accounting & Auditing', 'Admin & Clerical', 'Agriculture', 'Automotive', 'Banking', 'Biotech', 'Broadcast',

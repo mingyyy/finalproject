@@ -39,7 +39,7 @@ class Topic(models.Model):
 
 class ProfileTraveler(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    gender = models.CharField(choices=GENDER_CHOICES, max_length=1)
+    gender = models.CharField(choices=GENDER_CHOICES, max_length=10)
     nationality = models.CharField(choices=CITIZENSHIP_CHOICE, max_length=50)
     birth_date = models.DateField(null=True, blank=True)
     photo = models.ImageField(default='default.jpg', upload_to='profile_traveler')
@@ -66,7 +66,7 @@ class ProfileTraveler(models.Model):
 class ProfileHost(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, blank=False, null=False)
-    type = models.PositiveSmallIntegerField(choices=ORG_TYPE_CHOICE, null=True, blank=True)
+    type = models.CharField(choices=ORG_TYPE_CHOICE, max_length=20, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     phone = PhoneNumberField(unique=True, null=True, blank=True)
     address = AddressField(max_length=200)
@@ -113,9 +113,9 @@ class Program(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None, null=False, blank=False)
     subject = models.ForeignKey(Topic, on_delete=models.CASCADE)
 
-    type = models.PositiveSmallIntegerField(choices=EVENT_TYPE_CHOICE)
-    frequency = models.PositiveSmallIntegerField(choices=EVENT_FREQ_CHOICE)
-    duration = models.PositiveSmallIntegerField(choices=EVENT_DURATION_CHOICE)
+    type = models.CharField(choices=EVENT_TYPE_CHOICE, max_length=10)
+    frequency = models.CharField(choices=EVENT_FREQ_CHOICE, max_length=10)
+    duration = models.CharField(choices=EVENT_DURATION_CHOICE, max_length=20)
 
     title = models.CharField(max_length=120, null=False)
     description = models.TextField()
@@ -151,7 +151,7 @@ class Trip(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None, null=False, blank=False)
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
-    destination = models.CharField(choices=CITIZENSHIP_CHOICE, max_length=50)
+    destination = models.CharField(choices=CITIZENSHIP_CHOICE, max_length=30)
     details = models.TextField()
 
     def __str__(self):
