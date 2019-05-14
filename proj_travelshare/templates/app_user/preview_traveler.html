@@ -1,0 +1,13 @@
+{% extends 'app_main/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<h1>Local Host Profile: {{ profile.name }}</h1>
+<p>Profile picture: {{ profile.photo }}</p>
+<p>Org Type: {{ profile.bio }}</p>
+<p>Description: {{ profile.birth_date }}</p>
+<p>Phone: {{ profile.phone }}</p>
+<p>Languages: {{ profile.languages }}</p>
+
+{% endblock %}

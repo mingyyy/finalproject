@@ -17,12 +17,6 @@ class User(AbstractUser):
     REQUIRED_FIELDS = ['type', 'email']
 
 
-class ProfileStatus(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    time_updated = models.DateTimeField(auto_now_add=True)
-    completed_perc = models.PositiveSmallIntegerField()
-
-
 class Language(models.Model):
     language = models.CharField(max_length=50)
 
@@ -34,25 +28,13 @@ class Language(models.Model):
 
 
 class Topic(models.Model):
-    topic = models.CharField(max_length=100)
+    topic = models.CharField(max_length=50)
 
     def __str__(self):
         return self.topic
 
     class Meta:
         ordering = ('topic',)
-
-
-class Link(models.Model):
-    category = models.CharField(max_length=50) # social
-    name = models.CharField(max_length=100) # instagram
-    url = models.URLField() # www.instagram.com/xxxx/
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        ordering = ('category','name',)
 
 
 class ProfileTraveler(models.Model):
@@ -62,11 +44,8 @@ class ProfileTraveler(models.Model):
     birth_date = models.DateField(null=True, blank=True)
     photo = models.ImageField(default='default.jpg', upload_to='profile_traveler')
     bio = models.TextField(null=True, blank=True)
-    experience = models.TextField(null=True, blank=True)
     languages = models.ManyToManyField(Language)
-    # contact info
     phone = PhoneNumberField(unique=True, null=True, blank=True)
-    links = models.ManyToManyField(Link)
 
     def __str__(self):
         return self.user.username
@@ -84,31 +63,6 @@ class ProfileTraveler(models.Model):
                 pass
 
 
-class Program(models.Model):
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None, null=False, blank=False)
-    subject = models.ForeignKey(Topic, on_delete=models.CASCADE)
-
-    type = models.PositiveSmallIntegerField(choices=EVENT_TYPE_CHOICE)
-    frequency = models.PositiveSmallIntegerField(choices=EVENT_FREQ_CHOICE)
-    duration = models.PositiveSmallIntegerField(choices=EVENT_DURATION_CHOICE)
-
-    title = models.CharField(max_length=120, null=False)
-    description = models.TextField()
-    requirement = models.TextField()
-
-    def __str__(self):
-        return self.title
-
-
-class Space(models.Model):
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None, null=False, blank=False)
-    title = models.CharField(max_length=120, null=False)
-    detail = models.TextField()
-
-    def __str__(self):
-        return self.title
-
-
 class ProfileHost(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, blank=False, null=False)
@@ -121,7 +75,6 @@ class ProfileHost(models.Model):
     interests = models.ManyToManyField(Topic)
     interest_details = models.TextField(blank=True)
     languages = models.ManyToManyField(Language)
-    links = models.ManyToManyField(Link)
 
     def __str__(self):
         return self.user.username
@@ -154,3 +107,66 @@ def save_user_profile(sender, instance, **kwargs):
         instance.profiletraveler.save()
     elif instance.type == '1':
         instance.profilehost.save()
+
+
+class Program(models.Model):
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None, null=False, blank=False)
+    subject = models.ForeignKey(Topic, on_delete=models.CASCADE)
+
+    type = models.PositiveSmallIntegerField(choices=EVENT_TYPE_CHOICE)
+    frequency = models.PositiveSmallIntegerField(choices=EVENT_FREQ_CHOICE)
+    duration = models.PositiveSmallIntegerField(choices=EVENT_DURATION_CHOICE)
+
+    title = models.CharField(max_length=120, null=False)
+    description = models.TextField()
+    requirement = models.TextField()
+
+    def __str__(self):
+        return self.title
+
+
+class Space(models.Model):
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None, null=False, blank=False)
+    title = models.CharField(max_length=120, null=False)
+    detail = models.TextField()
+
+    def __str__(self):
+        return self.title
+
+
+class Link(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None, null=False, blank=False)
+    category = models.CharField(max_length=50) # social
+    name = models.CharField(max_length=100) # instagram
+    url = models.URLField() # www.instagram.com/xxxx/
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ('category', 'name',)
+
+
+class Trip(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None, null=False, blank=False)
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+    destination = models.CharField(choices=CITIZENSHIP_CHOICE, max_length=50)
+    details = models.TextField()
+
+    def __str__(self):
+        return self.destination
+
+    class Meta:
+        ordering = ('start_date',)
+
+
+class Publish(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None, null=False, blank=False)
+    on_profile = models.BooleanField()
+    on_program = models.BooleanField()
+    on_space = models.BooleanField()
+    on_trip = models.BooleanField()
+
+    def __str__(self):
+        return self.name

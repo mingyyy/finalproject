@@ -10,6 +10,8 @@ from django_google_maps.widgets import GoogleMapsAddressWidget
 
 
 class FormRegister(UserCreationForm):
+    email = forms.EmailField()
+
     class Meta():
         model = User
         fields = ['type', 'username', 'email', 'password1', 'password2']
@@ -39,6 +41,7 @@ class FormProfileTravelerUpdate(forms.ModelForm):
     class Meta:
         model = ProfileTraveler
         fields = ['gender', 'birth_date', 'nationality', 'phone']
+        labels = {'nationality': 'Where are you from'}
 
 
 class FormProfileTravelerUpdate2(forms.ModelForm):
@@ -46,21 +49,13 @@ class FormProfileTravelerUpdate2(forms.ModelForm):
 
     class Meta:
         model = ProfileTraveler
-        fields = ['bio', 'experience', 'languages', 'photo']
+        fields = ['bio', 'languages', 'photo']
+        labels = {'language': 'Languages', 'photo': 'Profile picture'}
         widgets = {
             'bio': forms.Textarea(attrs={'placeholder': 'Tell us more about yourself.'}, ),
             'experience': forms.Textarea(attrs={'placeholder': 'Tell us your professional experience.'},),
+            'language': forms.Textarea(attrs={'help_text': 'Only those languages you master professionally.'}),
                     }
-
-
-class FormLanguage(forms.ModelForm):
-    language = TagField(label='Language:', delimiters=',', data_list=LANGUAGE_LIST, initial='English')
-
-    class Meta:
-        model = ProfileTraveler
-        fields = ['language',]
-        widgets = {'language': forms.Textarea(attrs={'help_text': 'Only languages you master professionally.'})}
-        labels = {'language': 'Languages'}
 
 
 class FormProfileHostUpdate(forms.ModelForm):
@@ -70,7 +65,7 @@ class FormProfileHostUpdate(forms.ModelForm):
     class Meta:
         model = ProfileHost
         fields = ['photo', 'name', 'type', 'phone', 'description', 'address', 'geolocation']
-        labels = {'photo': "Profile photo",
+        labels = {'photo': "Profile picture",
                   'name': "Organization Name",
                   'type': "Organization Type",
                   }
@@ -123,12 +118,12 @@ class FormSpace(forms.ModelForm):
 class FormProgram(forms.ModelForm):
     # SUBJECT_LIST.sort(reverse=True)
     # subject = TagField(label='Subject', delimiters=',', data_list=SUBJECT_LIST, initial='Education')
-
     subject = forms.ModelMultipleChoiceField(queryset=Topic.objects.all())
+
     class Meta:
         model = Program
         fields = ['subject', 'type', 'frequency', 'duration', 'title', 'description', 'requirement']
-        labels = {'type': "Type of event",
+        labels = {'type': "What kind of event",
                   }
 
 
@@ -155,3 +150,14 @@ class FormAddress(forms.ModelForm):
                                                  'rows': 1,
                                                  'cols': 10, })
         }
+
+
+# testing language
+class FormLanguage(forms.ModelForm):
+    language = TagField(label='Language:', delimiters=',', data_list=LANGUAGE_LIST, initial='English')
+
+    class Meta:
+        model = ProfileTraveler
+        fields = ['language',]
+        widgets = {'language': forms.Textarea(attrs={'help_text': 'Only languages you master professionally.'})}
+        labels = {'language': 'Languages'}

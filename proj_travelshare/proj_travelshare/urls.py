@@ -27,6 +27,7 @@ urlpatterns = [
     path('register/', user_views.viewregister, name='register'),
     path('login/', LoginView.as_view(template_name="app_user/login.html"), name="login"),
     path('logout/', LogoutView.as_view(template_name="app_user/logout.html"), name="logout"),
+    path('index/', user_views.viewindex, name='index'),
 
     path('profile_update_host/', user_views.profile_update_host, name='profile_update_host'),
     path('profile_update_host2/', user_views.profile_update_host2, name='profile_update_host2'),
@@ -44,8 +45,8 @@ urlpatterns = [
     path('program_delete/<int:pk>/', user_views.program_delete, name='program_delete'),
     path('program_detail/<int:pk>/', user_views.program_detail, name='program_detail'),
 
-    path('profiletraveler/<int:pk>/', user_views.TravelerDetailView.as_view(), name='profiletraveler-detail'),
-    path('profilehost/<int:pk>/', user_views.HostDetailView.as_view(), name='profilehost-detail'),
+    path('profile_traveler/<int:userid>', user_views.profile_traveler, name='profile_traveler'),
+    path('profile_host/<int:userid>/', user_views.profile_host, name='profile_host'),
 
     path('address_update/', user_views.address_update, name='address_update'),
 

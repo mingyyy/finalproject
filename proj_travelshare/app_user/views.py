@@ -21,10 +21,14 @@ def viewregister(request):
                                               password=request.POST['password1'])
             login(request, authenticated_user)
             messages.success(request, f"{username}! Thanks for signing up with us! You are now logged in.")
-            return redirect('app_main:home')
+            return redirect('index')
     else:
         form = FormRegister()
     return render(request, 'app_user/register.html', {'form': form})
+
+@login_required()
+def viewindex(request):
+    return render(request, 'app_main/index.html')
 
 
 @login_required()
@@ -244,12 +248,21 @@ def space_delete(request, space_id):
     context = {'space': space, 'form': form}
     return render(request, 'space_delete.html', context)
 
-
-class TravelerDetailView(DetailView):
-    model = ProfileTraveler
-    # context_object_name = 'Preview Profile'
-    # queryset = ProfileTraveler.objects.all()
+@login_required
+def links(request):
+    return render(request, '')
 
 
-class HostDetailView(DetailView):
-    model = ProfileHost
+def profile_traveler(request, userid):
+    profile = ProfileTraveler.objects.get(id=userid)
+    print(profile)
+    context = {"profile": profile}
+
+    return render(request, 'app_user/preview_traveler.html', context)
+
+
+def profile_host(request,userid):
+    profile = ProfileHost.objects.get(id=userid)
+    context = {"profile": profile}
+
+    return render(request, 'app_user/preview_host.html', context)

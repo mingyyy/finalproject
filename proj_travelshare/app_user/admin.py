@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User,ProfileTraveler, ProfileHost, ProfileStatus, Program, Link, Language, Topic,Space
+from .models import User,ProfileTraveler, ProfileHost, Program, Link, Language, Topic, Space
 from .models import User
 # Register your models here.
 
@@ -8,7 +8,6 @@ from .models import User
 admin.site.register(User, UserAdmin)
 admin.site.register(ProfileTraveler)
 admin.site.register(ProfileHost)
-admin.site.register(ProfileStatus)
 admin.site.register(Program)
 admin.site.register(Space)
 admin.site.register(Topic)

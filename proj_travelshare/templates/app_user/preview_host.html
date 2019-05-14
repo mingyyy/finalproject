@@ -1,0 +1,27 @@
+{% extends 'app_main/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <h3>Local Host Profile</h3>
+    <br>
+    <div class="row">
+        <div class="col-sm-3">
+            {% if profile.photo %}
+                <img src="{{profile.photo.url}}" alt="profile picture" width="90%"><br>
+            {% endif %}
+        </div>
+        <div class="col-sm-9">
+            <p>Org Name: {{ profile.name }}</p>
+            <p>Org Type: {{ profile.type }}</p>
+            <p>Description: {{ profile.description }}</p>
+            <p>Phone: {{ profile.phone }}</p>
+            <p>Address: {{ profile.address }}</p>
+            <p>Geolocation: {{ profile.geolocation }}</p>
+            <p>Languages: {{ profile.languages.language }}</p>
+            <p>Interest: {{ profile.interests.topic }} </p>
+            <p>Interest Details: {{ profile.interest_details }} </p>
+        </div>
+    </div>
+
+{% endblock %}
