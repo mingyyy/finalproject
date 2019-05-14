@@ -43,9 +43,11 @@ class ProfileTraveler(models.Model):
     nationality = models.CharField(choices=CITIZENSHIP_CHOICE, max_length=50)
     birth_date = models.DateField(null=True, blank=True)
     photo = models.ImageField(default='default.jpg', upload_to='profile_traveler')
+    phone = PhoneNumberField(unique=True, null=True, blank=True)
     bio = models.TextField(null=True, blank=True)
     languages = models.ManyToManyField(Language)
-    phone = PhoneNumberField(unique=True, null=True, blank=True)
+    expertise = models.ManyToManyField(Topic)
+    experience = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.user.username
@@ -111,7 +113,7 @@ def save_user_profile(sender, instance, **kwargs):
 
 class Program(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None, null=False, blank=False)
-    subject = models.ForeignKey(Topic, on_delete=models.CASCADE)
+    subject = models.CharField(choices=SUBJECT_CHOICE, max_length=20)
 
     type = models.CharField(choices=EVENT_TYPE_CHOICE, max_length=10)
     frequency = models.CharField(choices=EVENT_FREQ_CHOICE, max_length=10)

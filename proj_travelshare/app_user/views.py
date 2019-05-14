@@ -78,15 +78,16 @@ def program_add(request):
     if request.method != 'POST':
         form = FormProgram()
     else:
-        form = FormProgram(request.POST)
-        form.clean()
+        form = FormProgram(request.POST, request.user)
         if form.is_valid():
             new_program = form.save(commit=False)
             new_program.owner = request.user
+            form.clean()
             new_program.save()
+            form.save_m2m()
             messages.success(request, "Program has been added!")
             if request.POST['save'] == "next":
-                return HttpResponseRedirect(reverse('program_detail', args=[new_program.id]))
+                return HttpResponseRedirect(reverse('program_detail'))
             elif request.POST['save'] == "save":
                 return redirect('profile_update_traveler2')
 
@@ -99,7 +100,6 @@ def program_update(request, program_id):
     program = Program.objects.get(id=program_id)
     if request.method == 'POST':
         form = FormProgram(request.POST, instance=program)
-        form.clean()
         if form.is_valid():
             form.save()
             messages.success(request, "Program has been updated!")
@@ -246,7 +246,6 @@ def links(request):
 
 def profile_traveler(request, userid):
     profile = ProfileTraveler.objects.get(user_id=userid)
-
     context = {"profile": profile}
 
     return render(request, 'app_user/preview_traveler.html', context)
