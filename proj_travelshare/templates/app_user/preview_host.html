@@ -1,27 +1,87 @@
 {% extends 'app_main/base.html' %}
 {% load static %}
-
 {% block content %}
 
     <h3>Local Host Profile</h3>
     <br>
     <div class="row">
+
         <div class="col-sm-3">
             {% if profile.photo %}
                 <img src="{{profile.photo.url}}" alt="profile picture" width="90%"><br>
             {% endif %}
         </div>
-        <div class="col-sm-9">
-            <p>Org Name: {{ profile.name }}</p>
-            <p>Org Type: {{ profile.type }}</p>
-            <p>Description: {{ profile.description }}</p>
-            <p>Phone: {{ profile.phone }}</p>
-            <p>Address: {{ profile.address }}</p>
-            <p>Geolocation: {{ profile.geolocation }}</p>
-            <p>Languages: {{ profile.languages.language }}</p>
-            <p>Interest: {{ profile.interests.topic }} </p>
-            <p>Interest Details: {{ profile.interest_details }} </p>
-        </div>
-    </div>
 
+        <div class="col-sm-9">
+            <div class="content-section">
+                <div class="article-metadata">
+                    <p><span class='text-muted'>Org Name: </span>{{ profile.name }}</p>
+                </div>
+
+                <div class="article-metadata">
+                    <p><span class='text-muted'>Org Type: </span>{{ profile.type }}</p>
+                </div>
+
+                <div class="article-metadata">
+                    <p><span class='text-muted'>Phone Number: </span>{{ profile.phone }}</p>
+                </div>
+
+                <div class="article-metadata">
+                    <p><span class='text-muted'>Languages: </span>
+                        <ul>
+                            {% for v in lan %}
+                                <li>{{v}}</li>
+                            {% endfor %}
+                        </ul>
+                    </p>
+                </div>
+
+                <div class="article-metadata">
+                    <p><span class='text-muted'>Description: </span></p>
+                    <p>{{ profile.description }}</p>
+                </div>
+
+                <div class="article-metadata">
+                    <p><span class='text-muted'>Interest: </span>
+                        <ul>
+                            {% for v in interest %}
+                                <li>{{v}}</li>
+                            {% endfor %}
+                        </ul>
+                    </p>
+                </div>
+
+                <div class="article-metadata">
+                    <p><span class='text-muted'>Interest Details: </span></p>
+                    <p>{{ profile.interest_details }}</p>
+                </div>
+
+            </div>
+
+            <div class="content-section">
+                <p><span class='text-muted'>Address: </span>{{profile.address}}</p>
+            </div>
+
+            <div id="map"></div>
+
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block script %}
+        <script>
+          var map;
+          var lat = {{ lat }};
+          var lng = {{ lon }};
+          function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+              center: {lat: lat, lng: lng},
+              zoom: 14
+            });
+          }
+        </script>
+
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAh_TYp43yl6qnntFSD-vJmHqCJVg_eVlA&callback=initMap"
+        async defer></script>
 {% endblock %}

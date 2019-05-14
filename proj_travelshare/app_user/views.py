@@ -6,7 +6,7 @@ from .forms import FormRegister, FormUserUpdate, FormProfileTravelerUpdate, Form
 from django.contrib.auth.decorators import login_required
 from .decorators import traveler_required, host_required
 from django.views.generic import DetailView
-from .models import ProfileTraveler, ProfileHost, Space, Program
+from .models import ProfileTraveler, ProfileHost, Space, Program, Language
 from django.contrib.auth import logout, login, authenticate
 
 
@@ -136,14 +136,17 @@ def program_delete(request, program_id):
 def program_detail(request, program_id):
     '''show a program'''
     program = Program.objects.filter(owner=request.user).get(id=program_id)
-    context = {"program": program}
+
+    lan = program.languages.all()
+    context = {"program": program, "lan": lan}
+
     return render(request, "app_user/program_detail.html", context)
 
 
 def program_list(request, userid):
     '''show a program'''
     program = Program.objects.filter(owner_id=userid)
-    print(program)
+
     context = {"program": program}
     return render(request, "app_user/program_list.html", context)
 
@@ -269,7 +272,11 @@ def profile_traveler(request, userid):
 
 def profile_host(request, userid):
     profile = ProfileHost.objects.get(id=userid)
-    context = {"profile": profile}
+    lan = profile.languages.all()
+    interest = profile.interests.all()
+    lat, lon = profile.geolocation.lat, profile.geolocation.lon
+
+    context = {"profile": profile, 'lan': lan, 'interest': interest, 'lat': lat, 'lon': lon}
 
     return render(request, 'app_user/preview_host.html', context)
 
