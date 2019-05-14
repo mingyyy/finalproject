@@ -26,6 +26,7 @@ def viewregister(request):
         form = FormRegister()
     return render(request, 'app_user/register.html', {'form': form})
 
+
 @login_required()
 def viewindex(request):
     return render(request, 'app_main/index.html')
@@ -87,7 +88,7 @@ def program_add(request):
             form.save_m2m()
             messages.success(request, "Program has been added!")
             if request.POST['save'] == "next":
-                return HttpResponseRedirect(reverse('program_detail'))
+                return HttpResponseRedirect(reverse('index'))
             elif request.POST['save'] == "save":
                 return redirect('profile_update_traveler2')
 
@@ -128,7 +129,7 @@ def program_delete(request, program_id):
             program_to_delete.delete()
             return HttpResponseRedirect(reverse('app_main:home'))
     context = {'program': program, 'form': form}
-    return render(request, 'program_delete.html', context)
+    return render(request, 'app_user/program_delete.html', context)
 
 
 @login_required
@@ -136,7 +137,15 @@ def program_detail(request, program_id):
     '''show a program'''
     program = Program.objects.filter(owner=request.user).get(id=program_id)
     context = {"program": program}
-    return render(request, "program_detail.html", context)
+    return render(request, "app_user/program_detail.html", context)
+
+
+def program_list(request, userid):
+    '''show a program'''
+    program = Program.objects.filter(owner_id=userid)
+    print(program)
+    context = {"program": program}
+    return render(request, "app_user/program_list.html", context)
 
 
 @login_required()
@@ -221,7 +230,14 @@ def space_detail(request, space_id):
     '''show a program'''
     space = Space.objects.filter(owner=request.user).get(id=space_id)
     context = {"space": space}
-    return render(request, "space_detail.html", context)
+    return render(request, "app_user/space_detail.html", context)
+
+
+def space_list(request, userid):
+    '''show a program'''
+    space = Space.objects.filter(owner_id=userid)
+    context = {"space": space}
+    return render(request, "app_user/space_list.html", context)
 
 
 @login_required
@@ -237,7 +253,7 @@ def space_delete(request, space_id):
             space_to_delete.delete()
             return HttpResponseRedirect(reverse('app_main:home'))
     context = {'space': space, 'form': form}
-    return render(request, 'space_delete.html', context)
+    return render(request, 'app_user/space_delete.html', context)
 
 @login_required
 def links(request):

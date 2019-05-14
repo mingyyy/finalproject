@@ -4,7 +4,7 @@
 
   <h2>Welcome {{user.username}}!</h2>
 
-  <p class="lead">Please choose the following options</p>
+  <p class="lead">Please choose from the following options</p>
 
     <ul>
         {% if user.is_authenticated %}
@@ -12,9 +12,15 @@
                 <li><a href="{% url 'profile_traveler' user.id %}" class="btn btn-info btn-lg" role="button">Review profile</a>
                 </li>
                 <br>
+
+                <li><a href="{% url 'program_list' user.id %}" class="btn btn-info btn-lg" role="button">Review list of program</a>
+                </li>
+                <br>
+
                 <li><a href="{% url 'profile_update_traveler' %}" class="btn btn-info btn-lg" role="button">Update profile</a>
                 </li>
                 <br>
+
                 <li><a href="{% url 'program_add' %}" class="btn btn-info btn-lg" role="button">Add Program</a>
                 </li>
 
@@ -22,9 +28,15 @@
                 <li><a href="{% url 'profile_host' user.id  %}" class="btn btn-info btn-lg" role="button">Review profile</a>
                 </li>
                 <br>
+
+                <li><a href="{% url 'space_list' user.id  %}" class="btn btn-info btn-lg" role="button">Review list of Space</a>
+                </li>
+                <br>
+
                 <li><a href="{% url 'profile_update_host' %}" class="btn btn-info btn-lg" role="button">Update profile</a>
                 </li>
                 <br>
+
                 <li><a href="{% url 'space_add' %}" class="btn btn-info btn-lg" role="button">Add Space</a>
                 </li>
 

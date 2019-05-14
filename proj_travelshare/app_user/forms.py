@@ -116,14 +116,13 @@ class FormSpace(forms.ModelForm):
 
 
 class FormProgram(forms.ModelForm):
-    # SUBJECT_LIST.sort(reverse=True)
-    # subject = TagField(label='Subject', delimiters=',', data_list=SUBJECT_LIST, initial='Education')
-    subject = forms.ModelMultipleChoiceField(queryset=Topic.objects.all())
 
     class Meta:
         model = Program
         fields = ['subject', 'type', 'frequency', 'duration', 'title', 'description', 'requirement']
-        labels = {'type': "What kind of event",
+        labels = {'type': 'What kind of event?',
+                  'frequency': 'Single or multiple events?',
+                  'duration': 'How long is the event (per section)?',
                   }
 
 
