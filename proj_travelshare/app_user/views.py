@@ -43,7 +43,7 @@ def profile_update_traveler(request):
             if request.POST['save'] == "next":
                 return redirect('profile_update_traveler2')
             elif request.POST['save'] == "save":
-                return redirect('app_main:home')
+                return redirect('app_main:index')
     else:
         u_form = FormUserUpdate(instance=request.user)
         t_form = FormProfileTravelerUpdate(instance=request.user.profiletraveler)
@@ -63,7 +63,7 @@ def profile_update_traveler2(request):
             form.save_m2m()
             messages.success(request, "Expertise section has been updated")
             if request.POST['save'] == "next":
-                return redirect('profile_update_traveler3')
+                return HttpResponseRedirect(reverse('program_add'))
             elif request.POST['save'] == "save":
                 return redirect('profile_update_traveler')
     else:
@@ -78,13 +78,18 @@ def program_add(request):
     if request.method != 'POST':
         form = FormProgram()
     else:
-        form = FormProgram(request.POST, request.user)
+        form = FormProgram(request.POST)
+        form.clean()
         if form.is_valid():
             new_program = form.save(commit=False)
             new_program.owner = request.user
             new_program.save()
             messages.success(request, "Program has been added!")
-            return HttpResponseRedirect(reverse('program_detail'))
+            if request.POST['save'] == "next":
+                return HttpResponseRedirect(reverse('program_detail', args=[new_program.id]))
+            elif request.POST['save'] == "save":
+                return redirect('profile_update_traveler2')
+
     context = {'form': form}
     return render(request, 'app_user/program_add.html', context)
 
@@ -135,20 +140,6 @@ def program_detail(request, program_id):
 
 
 @login_required()
-def address_update(request):
-    if request.method == 'POST':
-        form = FormAddress(request.POST)
-        if form.is_valid():
-            address = form.cleaned_data.get("address")
-            geolocation = form.cleaned_data.get('geolocation')
-            form.save()
-        return HttpResponseRedirect(reverse('profile_update_host'))
-    else:
-        form = FormAddress()
-    return render(request, "app_user/profile_address.html", {'form': form})
-
-
-@login_required()
 def profile_update_host(request):
     if request.method == 'POST':
         h_form = FormProfileHostUpdate(request.POST,
@@ -177,7 +168,7 @@ def profile_update_host2(request):
             form.save_m2m()
             messages.success(request, "Interest section has been updated!")
             if request.POST['save'] == "next":
-                return redirect('app_main:home')
+                return redirect('space_add')
             elif request.POST['save'] == "save":
                 return redirect('profile_update_host')
     else:
@@ -254,15 +245,29 @@ def links(request):
 
 
 def profile_traveler(request, userid):
-    profile = ProfileTraveler.objects.get(id=userid)
-    print(profile)
+    profile = ProfileTraveler.objects.get(user_id=userid)
+
     context = {"profile": profile}
 
     return render(request, 'app_user/preview_traveler.html', context)
 
 
-def profile_host(request,userid):
+def profile_host(request, userid):
     profile = ProfileHost.objects.get(id=userid)
     context = {"profile": profile}
 
     return render(request, 'app_user/preview_host.html', context)
+
+
+@login_required()
+def address_update(request):
+    if request.method == 'POST':
+        form = FormAddress(request.POST)
+        if form.is_valid():
+            address = form.cleaned_data.get("address")
+            geolocation = form.cleaned_data.get('geolocation')
+            form.save()
+        return HttpResponseRedirect(reverse('profile_update_host'))
+    else:
+        form = FormAddress()
+    return render(request, "app_user/profile_address.html", {'form': form})

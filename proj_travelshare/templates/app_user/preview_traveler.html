@@ -3,11 +3,23 @@
 
 {% block content %}
 
-<h1>Local Host Profile: {{ profile.name }}</h1>
-<p>Profile picture: {{ profile.photo }}</p>
-<p>Org Type: {{ profile.bio }}</p>
-<p>Description: {{ profile.birth_date }}</p>
-<p>Phone: {{ profile.phone }}</p>
-<p>Languages: {{ profile.languages }}</p>
+    <h3>Traveler Profile</h3>
+    <br>
+    <div class="row">
+        <div class="col-sm-3">
+            {% if profile.photo %}
+                <img src="{{profile.photo.url}}" alt="profile picture" width="90%"><br>
+            {% endif %}
+        </div>
+        <div class="col-sm-9">
+            <p>Traveler Name: {{ profile.user.first_name }} {{ profile.user.last_name }}</p>
+            <p>Gender: {{ profile.gender }}</p>
+            <p>Birth date: {{ profile.birth_date }} </p>
+            <p>From: {{ profile.nationality }} </p>
+            <p>Languages: {{ profile.languages.language }}</p>
+            <p>Phone: {{ profile.phone }}</p>
+            <p>Bio: {{ profile.bio }}</p>
+        </div>
+    </div>
 
 {% endblock %}
