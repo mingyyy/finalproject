@@ -33,7 +33,7 @@ urlpatterns = [
     path('profile_update_host2/', user_views.profile_update_host2, name='profile_update_host2'),
 
     path('space_add/', user_views.space_add, name='space_add'),
-    path('space_update/<int:id>/', user_views.space_update, name='space_update'),
+    path('space_update/<int:space_id>/', user_views.space_update, name='space_update'),
     path('space_delete/<int:space_id>/', user_views.space_delete, name='space_delete'),
     path('space_detail/<int:space_id>/', user_views.space_detail, name='space_detail'),
     path('space_list/<int:userid>/', user_views.space_list, name='space_list'),
@@ -42,7 +42,7 @@ urlpatterns = [
     path('profile_update_traveler2/', user_views.profile_update_traveler2, name='profile_update_traveler2'),
 
     path('program_add/', user_views.program_add, name='program_add'),
-    path('program_update/<int:id>/', user_views.program_update, name='program_update'),
+    path('program_update/<int:program_id>/', user_views.program_update, name='program_update'),
     path('program_delete/<int:program_id>/', user_views.program_delete, name='program_delete'),
     path('program_detail/<int:program_id>/', user_views.program_detail, name='program_detail'),
     path('program_list/<int:userid>/', user_views.program_list, name='program_list'),

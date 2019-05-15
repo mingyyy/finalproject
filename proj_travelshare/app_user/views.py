@@ -210,16 +210,16 @@ def space_add(request):
 
 @login_required()
 def space_update(request, space_id):
-    space = Space.objects.get(id=request.user.id)
+    space = Space.objects.filter(owner=request.user).get(id=space_id)
     if request.method == 'POST':
         form = FormSpace(request.POST, instance=space)
         if form.is_valid():
             space = form.save(commit=False)
             space.owner = request.user
             space.save()
-            messages.success(request, "Availability has been updated!")
+            messages.success(request, "Space Availability has been updated!")
             if request.POST['save'] == "next":
-                return redirect('app_main:home')
+                return redirect('index')
             elif request.POST['save'] == "save":
                 return redirect('profile_update_host2')
     else:
