@@ -9,13 +9,13 @@
     <ul class="list-group">
         {% if user.is_authenticated %}
             {% if user.type == '0' %}
-                <li class="list-group-item"><a href="{% url 'profile_traveler' user.id %}">Review profile</a></li>
+                <li class="list-group-item"><a href="{% url 'profile_traveler' user.id %}">Review Traveler Profile</a></li>
                 <br>
-                <li class="list-group-item"><a href="{% url 'program_list' user.id %}">Review list of program</a></li>
+                <li class="list-group-item"><a href="{% url 'profile_update_traveler' %}">Update Traveler Profile</a></li>
                 <br>
-                <li class="list-group-item"><a href="{% url 'profile_update_traveler' %}">Update profile</a></li>
+                <li class="list-group-item"><a href="{% url 'program_list' user.id %}">Review List of Program Offer</a></li>
                 <br>
-                <li class="list-group-item"><a href="{% url 'program_add' %}">Add Program</a></li>
+                <li class="list-group-item"><a href="{% url 'program_add' %}">Add Program Offer</a></li>
             {% elif user.type == '1' %}
                 <li class="list-group-item"><a href="{% url 'profile_host' user.id  %}">Review Local Host Profile</a></li>
                 <br>
