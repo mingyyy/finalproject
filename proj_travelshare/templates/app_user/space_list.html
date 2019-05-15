@@ -1,0 +1,27 @@
+{% extends 'app_main/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <h3>List of Available Space for <span class='badge badge-primary'>{{ user.profilehost.name }} </span> </h3>
+    <br>
+    <div class="row">
+        <div class="col-sm-9">
+            <div class="content-section">
+                <ol>
+                    {% for item in space %}
+                    <li>
+
+                        <div class="article-metadata">
+                            <a href="{% url 'space_detail' item.id %}">{{item}}</a>
+                        </div>
+
+                    </li>
+                    {% endfor %}
+                </ol>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
