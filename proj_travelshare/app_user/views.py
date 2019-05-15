@@ -199,7 +199,7 @@ def space_add(request):
             space.save()
             messages.success(request, "Availability has been added!")
             if request.POST['save'] == "next":
-                return redirect('app_main:home')
+                return HttpResponseRedirect(reverse("space_list", args=[request.user.id]))
             elif request.POST['save'] == "save":
                 return redirect('profile_update_host2')
     else:
