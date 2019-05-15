@@ -245,16 +245,16 @@ def space_list(request, userid):
 
 @login_required
 def space_delete(request, space_id):
-    '''delete an existng program.'''
+    '''delete an existng space instance.'''
     space = Space.objects.get(id=space_id)
-    space_to_delete = get_object_or_404(Program, id=space_id)
+    space_to_delete = get_object_or_404(Space, id=space_id)
     if request.method != 'POST':
         form = DeleteSpaceForm(instance=space)
     else:
         form = DeleteSpaceForm(instance=space, data=request.POST)
         if form.is_valid():
             space_to_delete.delete()
-            return HttpResponseRedirect(reverse('app_main:home'))
+            return HttpResponseRedirect(reverse('index'))
     context = {'space': space, 'form': form}
     return render(request, 'app_user/space_delete.html', context)
 

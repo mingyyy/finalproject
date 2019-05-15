@@ -1,10 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'app_main/base.html' %}
+{% load static %}
 
-</body>
-</html>
+{% block content %}
+
+    <h3>Details of Local Host's Offer</h3>
+    <br>
+    <div class="row">
+        <div class="col-sm-9">
+            <div class="content-section">
+                <div class="article-metadata">
+                    <p><span class='text-muted'>Summary: </span>{{ space.title }}</p>
+                </div>
+
+                <div class="article-metadata">
+                    <p><span class='text-muted'>Details: </span> {{ space.detail }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<a href="{% url 'space_delete' space.id %}">Delete Offer</a>
+
+{% endblock %}
