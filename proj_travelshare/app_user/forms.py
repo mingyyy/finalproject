@@ -37,29 +37,31 @@ class FormUserUpdate(forms.ModelForm):
 class FormProfileTravelerUpdate(forms.ModelForm):
     phone = PhoneNumberField(widget=forms.TextInput(attrs={}), label='Phone Number', required=False)
     birth_date = forms.DateField(input_formats=['%Y/%m/%d'])
+    languages = forms.ModelMultipleChoiceField(queryset=Language.objects.all())
 
     class Meta:
         model = ProfileTraveler
         fields = ['gender', 'birth_date', 'nationality', 'phone', 'languages',]
         labels = {'nationality': 'Where are you from'}
+        widgets = {
+                 'languages': forms.Textarea(attrs={'help_text': 'Only those languages you master professionally.'}),
+                    }
 
 
 class FormProfileTravelerUpdate2(forms.ModelForm):
-    languages = forms.ModelMultipleChoiceField(queryset=Language.objects.all())
 
     class Meta:
         model = ProfileTraveler
         fields = ['photo', 'bio', 'expertise', 'experience']
-        labels = {'language': 'Languages',
+        labels = {
                   'photo': 'Profile picture',
-                  'expertise': 'Area of Expertise',
+                  'expertise': 'Areas of expertise',
                   'experience': 'More of your experience',
                   }
         widgets = {
             'bio': forms.Textarea(attrs={'placeholder': 'Tell us more about yourself.'}, ),
             'experience': forms.Textarea(attrs={'placeholder': 'Tell us your professional experience.'},),
-            'language': forms.Textarea(attrs={'help_text': 'Only those languages you master professionally.'}),
-                    }
+                }
 
 
 class FormProfileHostUpdate(forms.ModelForm):

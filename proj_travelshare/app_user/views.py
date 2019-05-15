@@ -266,7 +266,8 @@ def links(request):
 def profile_traveler(request, userid):
     profile = ProfileTraveler.objects.get(user_id=userid)
     lan = profile.languages.all()
-    context = {"profile": profile, 'lan': lan, }
+    expertise = profile.expertise.all()
+    context = {"profile": profile, 'lan': lan, 'expertise': expertise}
 
     return render(request, 'app_user/preview_traveler.html', context)
 
