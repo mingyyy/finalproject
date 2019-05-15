@@ -7,8 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.css">
     {% load static %}
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
-          integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
     <link rel="shortcut icon" href="{% static 'pic/favicon.ico' %}">
 
@@ -38,25 +37,55 @@
               </button>
               <div class="collapse navbar-collapse" id="navbarToggle">
                 <div class="navbar-nav mr-auto">
-                  <a class="nav-item nav-link" href="#"><i class='fas fa-atlas' style='font-size:20px; color:lightgrey'></i> Coming Trips</a>
-                  <a class="nav-item nav-link" href="#"><i class='fas fa-street-view' style='font-size:20px; color:lightgrey'></i> Travelers</a>
-                  <a class="nav-item nav-link" href="#"><i class='fas fa-university' style='font-size:20px; color:lightgrey'></i> Local Hosts</a>
+
+                    <span class="navbar-nav text-center pt-1 pb-0 ">
+                    <a href="#" class="nav-item nav-link p-10"><small><i class="fa fa-map d-block"></i>Trips</small></a>
+                    </span>
+
+                    <span class="navbar-nav text-center pt-1 pb-0 ">
+                    <a href="#" class="nav-item nav-link p-10"><small><i class="fa fa-street-view d-block"></i>Travelers</small></a>
+                    </span>
+
+                    <span class="navbar-nav text-center pt-1 pb-0 ">
+                    <a href="#" class="nav-item nav-link p-10"><small><i class="fa fa-university d-block"></i>Hosts</small></a>
+                    </span>
                 </div>
                 <!-- Navbar Right Side -->
                 <div class="navbar-nav">
                     {% if user.is_authenticated %}
+                        <span class="navbar-nav text-center pt-1 pb-0 ">
+                        <a href="{% url 'index' %}" class="nav-item nav-link p-10"><small><i class="fa fa-id-card d-block"></i>{{user.username}}</small></a>
+                        </span>
+
                         {% if user.type == '0' %}
-                            <a class="nav-item nav-link" href="{% url 'index' %}">Hello {{user.username}}!</a>
-                            <a class="nav-item nav-link" href="{% url 'program_add' %}">Add Program</a>
-                            <a class="nav-item nav-link" href="#">Add Trip</a>
+                            <span class="navbar-nav text-center pt-1 pb-0 ">
+                            <a href="{% url 'program_add' %}" class="nav-item nav-link p-10"><small><i class="fa fa-plus-circle d-block"></i>Offer</small></a>
+                            </span>
+
+                            <span class="navbar-nav text-center pt-1 pb-0 ">
+                            <a href="#" class="nav-item nav-link p-10"><small><i class="fa fa-calendar-plus-o d-block"></i>Trip</small></a>
+                            </span>
+
                         {% elif user.type == '1' %}
-                            <a class="nav-item nav-link" href="{% url 'index' %}">Hello {{user.username}}!</a>
-                            <a class="nav-item nav-link" href="{% url 'space_add' %}">Add Space</a>
+                            <span class="navbar-nav text-center pt-1 pb-0 ">
+                            <a href="{% url 'space_add' %}" class="nav-item nav-link p-10"><small><i class="fa fa-plus-circle d-block"></i>Offer</small></a>
+                            </span>
+
                         {% endif %}
-                        <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+                        <span class="navbar-nav text-center pt-1 pb-0 ">
+                        <a href="{% url 'logout' %}" class="nav-item nav-link p-10"><small><i class="fa fa-sign-out d-block"></i>Logout</small></a>
+                        </span>
+
                     {% else %}
-                        <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
-                        <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+
+                        <span class="navbar-nav text-center pt-1 pb-0 ">
+                        <a href="{% url 'login' %}" class="nav-item nav-link p-10"><small><i class="fa fa-sign-in d-block"></i>Login</small></a>
+                        </span>
+
+                        <span class="navbar-nav text-center pt-1 pb-0 ">
+                        <a href="{% url 'register' %}" class="nav-item nav-link p-10"><small><i class="fa fa-user-plus d-block"></i>Register</small></a>
+                        </span>
+
                     {% endif %}
                 </div>
               </div>
