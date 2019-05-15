@@ -136,17 +136,13 @@ def program_delete(request, program_id):
 def program_detail(request, program_id):
     '''show a program'''
     program = Program.objects.filter(owner=request.user).get(id=program_id)
-
-    lan = program.languages.all()
-    context = {"program": program, "lan": lan}
-
+    context = {"program": program}
     return render(request, "app_user/program_detail.html", context)
 
 
 def program_list(request, userid):
     '''show a program'''
     program = Program.objects.filter(owner_id=userid)
-
     context = {"program": program}
     return render(request, "app_user/program_list.html", context)
 
@@ -273,7 +269,7 @@ def profile_traveler(request, userid):
 
 
 def profile_host(request, userid):
-    profile = ProfileHost.objects.get(id=userid)
+    profile = ProfileHost.objects.get(user_id=userid)
     lan = profile.languages.all()
     interest = profile.interests.all()
     lat, lon = profile.geolocation.lat, profile.geolocation.lon

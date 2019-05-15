@@ -15,11 +15,12 @@ Including another URLconf
 """
 
 from django.urls import path
-from .views import home
+from .views import home, travelers, hosts
 
 app_name = "app_main"
 
 urlpatterns = [
     path('', home, name='home'),
-
+    path('travelers/', travelers, name='travelers'),
+    path('hosts/', hosts, name='hosts'),
 ]

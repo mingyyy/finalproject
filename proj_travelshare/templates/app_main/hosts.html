@@ -1,16 +1,26 @@
 {% extends 'app_main/base.html' %}
-
+{% load static %}
 {% block content %}
-    <h1>Welcome to the traveler's list!</h1>
-    <article class="media content-section">
-        <img class="rounded-circle article-img" src="{{ user.profilehost.photo.url }}" alt="profile photo">
-      <div class="media-body">
-        <div class="article-metadata">
-          <a class="mr-2" href="{% #">{{ user.first_name }}</a>
-          <small class="text-muted">{{ user.profilehost.language }}</small>
+
+<h3>Local Hosts</h3>
+<br>
+<div class="card-columns">
+    {% for item in profile %}
+    <div class="card" style="width:180px;">
+        <div class="card-header text-center">
+            {% if item.name %}
+                {{item.name.title}}
+            {% else %}
+                {{item.user.username.title}}
+            {% endif %}
         </div>
-        <h2><a class="article-title" href="#">{{ user.profilehost.expertise }}</a></h2>
-        <p class="article-content">{{ user.profilehost.bio }}</p>
-      </div>
-    </article>
+
+        <img class="card-img-top rounded-circle" src="{{item.photo.url}}" alt="Card image">
+        <div class="card-body">
+            <p class="card-text"><small>Some example text.<a href="#"> Read more</a></small></p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
 {% endblock %}

@@ -4,7 +4,11 @@ from django.views.generic import TemplateView, ListView,UpdateView
 
 
 def home(request):
-    return render(request,'app_main/home.html')
+    profile_t = ProfileTraveler.objects.all()
+    profile_h = ProfileHost.objects.all()
+
+    context = {'profile_t': profile_t, 'profile_h': profile_h}
+    return render(request,'app_main/home.html', context)
 
 
 class ViewListPerson(ListView):
@@ -13,3 +17,17 @@ class ViewListPerson(ListView):
     context_object_name = 'users'
     ordering = ['-user.username']
     paginate_by = 5
+
+
+def travelers(request):
+    profile = ProfileTraveler.objects.all()
+
+    context = {'profile': profile}
+    return render(request,'app_main/travelers.html', context)
+
+
+def hosts(request):
+    profile = ProfileHost.objects.all()
+
+    context = {'profile': profile}
+    return render(request,'app_main/hosts.html', context)

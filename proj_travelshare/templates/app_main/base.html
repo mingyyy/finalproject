@@ -42,11 +42,11 @@
                     </span>
 
                     <span class="navbar-nav text-center pt-1 pb-0 ">
-                    <a href="#" class="nav-item nav-link p-10"><small><i class="fa fa-street-view d-block"></i>Travelers</small></a>
+                    <a href="{% url 'app_main:travelers' %}" class="nav-item nav-link p-10"><small><i class="fa fa-street-view d-block"></i>Travelers</small></a>
                     </span>
 
                     <span class="navbar-nav text-center pt-1 pb-0 ">
-                    <a href="#" class="nav-item nav-link p-10"><small><i class="fa fa-university d-block"></i>Hosts</small></a>
+                    <a href="{% url 'app_main:hosts' %}" class="nav-item nav-link p-10"><small><i class="fa fa-university d-block"></i>Hosts</small></a>
                     </span>
                 </div>
                 <!-- Navbar Right Side -->
@@ -94,7 +94,7 @@
 
     <main role="main" class="container">
       <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <br>
             {% if messages %}
                 {% for message in messages%}
@@ -110,19 +110,21 @@
             {% block script %}
             {% endblock %}
         </div>
-        <div class="col-md-4">
-            <br><br>
-          <div class="content-section">
-            <h3>Search bar</h3>
-            <p class='text-muted'>Please check back later, still under construction.
-              <ul class="list-group">
-                <li class="list-group-item list-group-item-light">Look for travelers</li>
-                <li class="list-group-item list-group-item-light">Look for organizations</li>
-                <li class="list-group-item list-group-item-light">Upcoming trips</li>
-              </ul>
-            </p>
-          </div>
-        </div>
+
+        <!--<div class="col-md-4">-->
+            <!--<br><br>-->
+          <!--<div class="content-section">-->
+            <!--<h3>Search bar</h3>-->
+            <!--<p class='text-muted'>Please check back later, still under construction.-->
+              <!--<ul class="list-group">-->
+                <!--<li class="list-group-item list-group-item-light">Look for travelers</li>-->
+                <!--<li class="list-group-item list-group-item-light">Look for organizations</li>-->
+                <!--<li class="list-group-item list-group-item-light">Upcoming trips</li>-->
+              <!--</ul>-->
+            <!--</p>-->
+          <!--</div>-->
+        <!--</div>-->
+
       </div>
     </main>
 
