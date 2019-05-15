@@ -42,9 +42,11 @@
                     <p><span class='text-muted'>Requirement: </span></p>
                     <p>{{item.requirement}}</p>
                 </div>
+                  <br>
 
-                <button class="badge badge-secondary float-left"><a href="{% url 'program_update' item.id %}" style="color:white">Modify</a></button>
-                <button class="badge badge-secondary float-right"><a href="{% url 'program_delete' item.id %}" style="color:white">Delete</a></button>
+                <button class="badge badge-secondary float-left"><a href="{% url 'program_update' item.id %}" style="color:white"><i class="fa fa-pencil"></i> Edit</a></button>
+                <button class="badge badge-secondary float-right"><a href="{% url 'program_delete' item.id %}" style="color:white"><i class="fa fa-trash"></i> Delete</a></button>
+                  <br>
               </div>
             </div>
           </div>

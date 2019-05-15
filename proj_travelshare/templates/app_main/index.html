@@ -9,21 +9,21 @@
     <ul class="list-group">
         {% if user.is_authenticated %}
             {% if user.type == '0' %}
-                <li class="list-group-item"><a href="{% url 'profile_traveler' user.id %}">Review Traveler Profile</a></li>
+                <li class="list-group-item"><a href="{% url 'profile_traveler' user.id %}"><i class="fa fa-book"></i> Review Traveler Profile</a></li>
                 <br>
-                <li class="list-group-item"><a href="{% url 'profile_update_traveler' %}">Update Traveler Profile</a></li>
+                <li class="list-group-item"><a href="{% url 'profile_update_traveler' %}"><i class="fa fa-pencil"></i> Update Traveler Profile</a></li>
                 <br>
-                <li class="list-group-item"><a href="{% url 'program_list' user.id %}">Review List of Program Offer</a></li>
+                <li class="list-group-item"><a href="{% url 'program_list' user.id %}"><i class="fa fa-list"></i> Review List of Program Offer</a></li>
                 <br>
-                <li class="list-group-item"><a href="{% url 'program_add' %}">Add Program Offer</a></li>
+                <li class="list-group-item"><a href="{% url 'program_add' %}"><i class="fa fa-plus-circle"></i> Add Program Offer</a></li>
             {% elif user.type == '1' %}
-                <li class="list-group-item"><a href="{% url 'profile_host' user.id  %}">Review Local Host Profile</a></li>
+                <li class="list-group-item"><a href="{% url 'profile_host' user.id  %}"><i class="fa fa-book"></i> Review Local Host Profile</a></li>
                 <br>
-                <li class="list-group-item"><a href="{% url 'profile_update_host' %}">Update Local Host Profile</a></li>
+                <li class="list-group-item"><a href="{% url 'profile_update_host' %}"><i class="fa fa-pencil"></i> Update Local Host Profile</a></li>
                 <br>
-                <li class="list-group-item"><a href="{% url 'space_list' user.id  %}">Review List of Space Availability</a></li>
+                <li class="list-group-item"><a href="{% url 'space_list' user.id  %}"><i class="fa fa-list"></i> Review List of Space Availability</a></li>
                 <br>
-                <li class="list-group-item"><a href="{% url 'space_add' %}" >Add Available Space</a></li>
+                <li class="list-group-item"><a href="{% url 'space_add' %}" ><i class="fa fa-plus-circle"></i> Available Space</a></li>
             {% endif %}
         {% endif %}
     </ul>
