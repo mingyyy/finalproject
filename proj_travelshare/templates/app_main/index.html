@@ -6,40 +6,24 @@
 
   <p class="lead">Please choose from the following options</p>
 
-    <ul>
+    <ul class="list-group">
         {% if user.is_authenticated %}
             {% if user.type == '0' %}
-                <li><a href="{% url 'profile_traveler' user.id %}" class="btn btn-info btn-lg" role="button">Review profile</a>
-                </li>
+                <li class="list-group-item"><a href="{% url 'profile_traveler' user.id %}">Review profile</a></li>
                 <br>
-
-                <li><a href="{% url 'program_list' user.id %}" class="btn btn-info btn-lg" role="button">Review list of program</a>
-                </li>
+                <li class="list-group-item"><a href="{% url 'program_list' user.id %}">Review list of program</a></li>
                 <br>
-
-                <li><a href="{% url 'profile_update_traveler' %}" class="btn btn-info btn-lg" role="button">Update profile</a>
-                </li>
+                <li class="list-group-item"><a href="{% url 'profile_update_traveler' %}">Update profile</a></li>
                 <br>
-
-                <li><a href="{% url 'program_add' %}" class="btn btn-info btn-lg" role="button">Add Program</a>
-                </li>
-
+                <li class="list-group-item"><a href="{% url 'program_add' %}">Add Program</a></li>
             {% elif user.type == '1' %}
-                <li><a href="{% url 'profile_host' user.id  %}" class="btn btn-info btn-lg" role="button">Review profile</a>
-                </li>
+                <li class="list-group-item"><a href="{% url 'profile_host' user.id  %}">Review Local Host Profile</a></li>
                 <br>
-
-                <li><a href="{% url 'space_list' user.id  %}" class="btn btn-info btn-lg" role="button">Review list of Space</a>
-                </li>
+                <li class="list-group-item"><a href="{% url 'profile_update_host' %}">Update Local Host Profile</a></li>
                 <br>
-
-                <li><a href="{% url 'profile_update_host' %}" class="btn btn-info btn-lg" role="button">Update profile</a>
-                </li>
+                <li class="list-group-item"><a href="{% url 'space_list' user.id  %}">Review List of Space Availability</a></li>
                 <br>
-
-                <li><a href="{% url 'space_add' %}" class="btn btn-info btn-lg" role="button">Add Space</a>
-                </li>
-
+                <li class="list-group-item"><a href="{% url 'space_add' %}" >Add Available Space</a></li>
             {% endif %}
         {% endif %}
     </ul>
