@@ -46,11 +46,11 @@
                 <div class="navbar-nav">
                     {% if user.is_authenticated %}
                         {% if user.type == '0' %}
-                            <a class="nav-item nav-link" href="{% url 'profile_update_traveler' %}">Hello {{user.username}}!</a>
+                            <a class="nav-item nav-link" href="{% url 'index' %}">Hello {{user.username}}!</a>
                             <a class="nav-item nav-link" href="{% url 'program_add' %}">Add Program</a>
                             <a class="nav-item nav-link" href="#">Add Trip</a>
                         {% elif user.type == '1' %}
-                            <a class="nav-item nav-link" href="{% url 'profile_update_host' %}">Hello {{user.username}}!</a>
+                            <a class="nav-item nav-link" href="{% url 'index' %}">Hello {{user.username}}!</a>
                             <a class="nav-item nav-link" href="{% url 'space_add' %}">Add Space</a>
                         {% endif %}
                         <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
