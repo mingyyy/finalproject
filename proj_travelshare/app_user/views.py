@@ -2,12 +2,14 @@ from django.shortcuts import render,redirect,HttpResponseRedirect, reverse, get_
 from django.contrib import messages
 from .forms import FormRegister, FormUserUpdate, FormProfileTravelerUpdate, FormProfileHostUpdate, \
     FormProfileHostUpdate2, FormProfileTravelerUpdate2, FormAddress, FormProgram, FormSpace, \
-    DeleteProgramForm, DeleteSpaceForm
+    DeleteProgramForm, DeleteSpaceForm, LinkForm
 from django.contrib.auth.decorators import login_required
 from .decorators import traveler_required, host_required
 from django.views.generic import DetailView
-from .models import ProfileTraveler, ProfileHost, Space, Program, Language
+from .models import ProfileTraveler, ProfileHost, Space, Program, Language, Link
 from django.contrib.auth import logout, login, authenticate
+from .constants import BRAND_LIST
+from .forms import LinkFormset
 
 
 def viewregister(request):
@@ -44,7 +46,7 @@ def profile_update_traveler(request):
             if request.POST['save'] == "next":
                 return redirect('profile_update_traveler2')
             elif request.POST['save'] == "save":
-                return redirect('app_main:index')
+                return redirect('index')
     else:
         u_form = FormUserUpdate(instance=request.user)
         t_form = FormProfileTravelerUpdate(instance=request.user.profiletraveler)
@@ -153,6 +155,7 @@ def profile_update_host(request):
         h_form = FormProfileHostUpdate(request.POST,
                            request.FILES, instance=request.user.profilehost)
         if h_form.is_valid():
+
             h_form.save()
             messages.success(request, "Basic section has been updated!")
             if request.POST['save'] == "next":
@@ -291,3 +294,34 @@ def address_update(request):
     else:
         form = FormAddress()
     return render(request, "app_user/profile_address.html", {'form': form})
+
+
+@login_required()
+def create_link_normal(request):
+    template_name = 'app_user/links.html'
+    heading_message = 'Formset Link Name Demo'
+    if request.method == 'GET':
+        formset = LinkFormset(request.GET or None)
+    elif request.method == 'POST':
+        formset = LinkFormset(request.POST)
+        if formset.is_valid():
+            for form in formset:
+                # extract name from each form and save
+                name = form.cleaned_data.get('name')
+                # save book instance
+                if name:
+                    Link(name=name, user=request.user).save()
+
+            # once all books are saved, redirect to book list view
+            return redirect('link_list')
+    return render(request, template_name, {
+        'formset': formset,
+        'heading': heading_message,
+        'brands': BRAND_LIST,
+    })
+
+
+def viewlinks(request):
+    links = Link.objects.filter(user=request.user)
+
+    return render(request, "app_user/link_list.html", {'links': links, 'brands': BRAND_LIST})

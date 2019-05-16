@@ -8,6 +8,8 @@ from ktag.fields import TagField
 from .constants import SUBJECT_LIST, LANGUAGE_LIST, SUBJECT_CHOICE
 from django_google_maps.widgets import GoogleMapsAddressWidget
 
+from django.forms import formset_factory
+
 
 class FormRegister(UserCreationForm):
     email = forms.EmailField()
@@ -35,8 +37,9 @@ class FormUserUpdate(forms.ModelForm):
 
 
 class FormProfileTravelerUpdate(forms.ModelForm):
+    '''input_formats=['%Y/%m/%d']'''
     phone = PhoneNumberField(widget=forms.TextInput(attrs={}), label='Phone Number', required=False)
-    birth_date = forms.DateField(input_formats=['%Y/%m/%d'])
+    birth_date = forms.DateField()
     languages = forms.ModelMultipleChoiceField(queryset=Language.objects.all())
 
     class Meta:
@@ -166,3 +169,16 @@ class FormLanguage(forms.ModelForm):
         fields = ['language',]
         widgets = {'language': forms.Textarea(attrs={'help_text': 'Only languages you master professionally.'})}
         labels = {'language': 'Languages'}
+
+
+# testing dynamic form - link
+class LinkForm(forms.Form):
+    name = forms.CharField(
+        label='Social link',
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter name of the link here, e.g. facebook'
+        })
+    )
+
+LinkFormset = formset_factory(LinkForm, extra=1)

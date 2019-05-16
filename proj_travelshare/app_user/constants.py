@@ -3,6 +3,12 @@ GENDER_CHOICES = (
     ('Male', 'Male'),
     ('Other', 'Other'),
 )
+
+BRAND_LIST = [
+    'facebook','instagram', 'github','twitter', 'linkedin', 'medium', 'google', 'pinterest', 'qq', 'spotify', 'slack',
+    'reddit', 'quora', 'skype', 'weibo', 'yelp', 'tripadvisor', 'whatsapp', 'wechat', 'wordpress', 'youtube',
+    'stack-overflow', 'snapchat', 'share-alt', 'meetup', 'flickr', 'dropbox', 'bitcoin']
+
 CITIZENSHIP_CHOICE = (('AF', 'Afghanistan'), ('AL', 'Albania'), ('DZ', 'Algeria'), ('AS', 'American Samoa'),
                       ('AD', 'Andorra'), ('AO', 'Angola'), ('AI', 'Anguilla'), ('AG', 'Antigua and Barbuda'),
                       ('AR', 'Argentina'), ('AM', 'Armenia'), ('AW', 'Aruba'), ('AU', 'Australia'),

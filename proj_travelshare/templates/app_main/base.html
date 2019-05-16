@@ -5,31 +5,29 @@
     <meta charset="UTF-8">
     <title>Travel to Share</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.css">
     {% load static %}
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
     <link rel="shortcut icon" href="{% static 'pic/favicon.ico' %}">
 
-        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.js" ></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.js" ></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.js" ></script>
-    <!-- Fengyuan Chen's Datepicker -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.js"></script> <!--this must be declared first-->
-    <link rel="stylesheet" rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.css"
-          integrity="sha256-b88RdwbRJEzRx95nCuuva+hO5ExvXXnpX+78h8DjyOE=" crossorigin="anonymous">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.css"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.js"></script>
+        <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+      <!-- Fengyuan Chen's Datepicker -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.css" integrity="sha256-b88RdwbRJEzRx95nCuuva+hO5ExvXXnpX+78h8DjyOE=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.js" integrity="sha256-/7FLTdzP6CfC1VBAj/rsp3Rinuuu9leMRGd354hvk0k=" crossorigin="anonymous"></script>
 
     <title>Share Away</title>
 
 </head>
 <body>
         <header class="site-header">
-          <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+
+          <nav class="navbar navbar-expand-sm navbar-dark bg-steel fixed-top">
             <div class="container">
-                <a href="{% url 'app_main:home' %}"><img src="{% static 'pic/tts_logo.png' %}" alt="logo" width="81" height="81" style="background:white"></a>
+                <!--<a href="{% url 'app_main:home' %}"><img src="{% static 'pic/tts_logo.png' %}" alt="logo" width="81" height="81" style="background:white"></a>-->
               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle"
                       aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
@@ -92,6 +90,8 @@
           </nav>
         </header>
 
+        <br><br>
+
     <main role="main" class="container">
       <div class="row">
         <div class="col-md-12">
@@ -107,8 +107,7 @@
             {% block content %}
             {% endblock %}
 
-            {% block script %}
-            {% endblock %}
+
         </div>
 
         <!--<div class="col-md-4">-->
@@ -127,9 +126,23 @@
 
       </div>
     </main>
-        <br>
-<footer>
-    Copyright Mingy@2019
-</footer>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+    {% block script %}
+    {% endblock %}
+
+    <br>
+    <footer>
+        <div class="navbar navbar-expand-sm bg-secondary navbar-dark fixed-bottom">
+            <a href="{% url 'app_main:home' %}"><img src="{% static 'pic/tts_logo.png' %}" alt="logo" style="width:31px; height=31px; background: white"></a>
+
+            <span class="badge badge-pill badge-light ml-auto">Copyright Mingy@2019</span>
+        </div>
+    </footer>
+
 </body>
 </html>

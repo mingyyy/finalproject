@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     # third party
     'phonenumber_field',
     'crispy_forms',
-    'datetimepicker',
     'bootstrap_datepicker_plus',
     'ktag',
     'django_google_maps',
@@ -127,9 +126,6 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.2/howto/static-files/
-
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
   os.path.join(BASE_DIR, 'static'),
@@ -145,5 +141,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media') #profile_pics will be located
 MEDIA_URL = '/media/' # how to access in the browser
 
 PHONENUMBER_DB_FORMAT = 'INTERNATIONAL'
-PHONENUMBER_DEFAULT_REGION='US'
+PHONENUMBER_DEFAULT_REGION ='US'
 

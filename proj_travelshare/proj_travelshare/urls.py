@@ -51,5 +51,6 @@ urlpatterns = [
     path('profile_host/<int:userid>/', user_views.profile_host, name='profile_host'),
 
     path('address_update/', user_views.address_update, name='address_update'),
-
+    path('links/', user_views.create_link_normal, name='links'),
+    path('link_list/', user_views.viewlinks, name='link_list'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
