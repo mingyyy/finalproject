@@ -40,6 +40,7 @@ urlpatterns = [
 
     path('profile_update_traveler/', user_views.profile_update_traveler, name='profile_update_traveler'),
     path('profile_update_traveler2/', user_views.profile_update_traveler2, name='profile_update_traveler2'),
+    path('profile_update_traveler3/', user_views.profile_update_traveler3, name='profile_update_traveler3'),
 
     path('program_add/', user_views.program_add, name='program_add'),
     path('program_update/<int:program_id>/', user_views.program_update, name='program_update'),
@@ -51,6 +52,11 @@ urlpatterns = [
     path('profile_host/<int:userid>/', user_views.profile_host, name='profile_host'),
 
     path('address_update/', user_views.address_update, name='address_update'),
-    path('links/', user_views.create_link_normal, name='links'),
-    path('link_list/', user_views.viewlinks, name='link_list'),
+
+    path('link_add/', user_views.link_add, name='link_add'),
+    path('link_update/<int:link_id>/', user_views.link_update, name='link_update'),
+    path('link_delete/<int:link_id>/', user_views.link_delete, name='link_delete'),
+    path('link_detail/<int:link_id>/', user_views.link_detail, name='link_detail'),
+    path('link_list/<int:userid>/', user_views.link_list, name='link_list'),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

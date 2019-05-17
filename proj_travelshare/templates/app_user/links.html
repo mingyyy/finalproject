@@ -1,30 +1,39 @@
 {% extends 'app_main/base.html' %}
-{% load crispy_forms_tags%}
 {% load static %}
-<link rel="stylesheet" href="{ % static 'js/app.js' % }">
 
 {% block content %}
+<h2>Please add your social links</h2>
 
-<h2>
+<h3>
     {% for brand in brands %}
         <i class="fa fa-{{brand}}"> </i>
     {% endfor %}
-</h2>
+</h3>
 
 <br>
 
-<form class="form-horizontal" method="POST" action="">
+
+<form method="POST" action="">
     {% csrf_token %}
     {{ formset.management_form }}
 
     {% for form in formset %}
     <div class="row form-row spacer">
-        <div class="col-1 mb-2">
-            <label>{{form.name.label}}</label>
+        <div class="col-1 mb-2 " >
+            <label class="mr-sm-2 mb-0 sr-only">{{form.name.label}}</label>
         </div>
-        <div class="col-4">
+                <div class="col-2 mr-sm-2">
             <div class="input-group">
                 {{form.name}}
+            </div>
+            <br>
+        </div>
+
+        <div class="col-6 mr-sm-2">
+            <div class="input-group">
+
+                {{form.url}}
+
                 <div class="input-group-append">
                     <button class="btn btn-success add-form-row">+</button>
                 </div>
@@ -36,15 +45,19 @@
 
     <br>
     <div class="row spacer">
-        <div class="col-4 offset-1">
-            <button type="submit" class="btn btn-block btn-primary">Create Links</button>
+        <div class="col-2 offset-1">
+            <button type="submit" class="btn btn-block btn-primary"><i class="fa fa-plus-circle"></i> Add Links</button>
         </div>
     </div>
 </form>
+
+<!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
+
 {% endblock %}
 
+
 {% block script %}
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
 <script type="text/javascript">
 function updateElementIndex(el, prefix, ndx) {
     var id_regex = new RegExp('(' + prefix + '-\\d+)');
@@ -106,5 +119,4 @@ $(document).on('click', '.remove-form-row', function(e){
     return false;
 });
 </script>
-{% endblock %}
-
+{% endblock%}

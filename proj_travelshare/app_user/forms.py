@@ -1,5 +1,5 @@
 from django import forms
-from .models import User, Language, ProfileTraveler, ProfileHost, Space, Program, Topic
+from .models import User, Language, ProfileTraveler, ProfileHost, Space, Program, Topic, Link
 from django.contrib.auth.forms import UserCreationForm
 from phonenumber_field.formfields import PhoneNumberField
 
@@ -84,21 +84,6 @@ class FormProfileHostUpdate(forms.ModelForm):
                    }
 
 
-# class FormProfileHostUpdate2(forms.ModelForm):
-#     LANGUAGE_LIST.sort(reverse=True)
-#     SUBJECT_LIST.sort(reverse=True)
-#     languages = TagField(label='Language', delimiters=',', data_list=LANGUAGE_LIST, initial='English')
-#     interests = TagField(label="Topics of your interest", delimiters=',', data_list=SUBJECT_LIST, initial='Education')
-#
-#     class Meta:
-#         model = ProfileHost
-#         fields = ['interests', 'interest_details',  'languages']
-#         labels = {'interest_details': "Detail of your interests",
-#                   }
-#         widgets = {'languages': forms.Textarea(attrs={'help_text': 'Languages you need for the event.'})
-#                    }
-
-
 class FormProfileHostUpdate2(forms.ModelForm):
     languages = forms.ModelMultipleChoiceField(queryset=Language.objects.all())
     interests = forms.ModelMultipleChoiceField(queryset=Topic.objects.all())
@@ -147,6 +132,11 @@ class DeleteSpaceForm(forms.ModelForm):
         fields = []
 
 
+class DeleteLinkForm(forms.ModelForm):
+    class Meta:
+        model = Link
+        fields = []
+
 # testing address
 class FormAddress(forms.ModelForm):
     class Meta:
@@ -174,10 +164,19 @@ class FormLanguage(forms.ModelForm):
 # testing dynamic form - link
 class LinkForm(forms.Form):
     name = forms.CharField(
-        label='Social link',
+        widget=forms.TextInput(attrs={
+            'label': 'Link name',
+            'class': 'form-control',
+            'placeholder': 'e.g. facebook'
+        })
+    )
+
+    url = forms.URLField(
         widget=forms.TextInput(attrs={
             'class': 'form-control',
-            'placeholder': 'Enter name of the link here, e.g. facebook'
+            'placeholder': 'e.g. www.facebook.com/your account/',
+            'rows': 1,
+            'cols': 20,
         })
     )
 

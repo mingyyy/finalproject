@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect,HttpResponseRedirect, reverse, get_
 from django.contrib import messages
 from .forms import FormRegister, FormUserUpdate, FormProfileTravelerUpdate, FormProfileHostUpdate, \
     FormProfileHostUpdate2, FormProfileTravelerUpdate2, FormAddress, FormProgram, FormSpace, \
-    DeleteProgramForm, DeleteSpaceForm, LinkForm
+    DeleteProgramForm, DeleteSpaceForm, LinkForm, DeleteLinkForm
 from django.contrib.auth.decorators import login_required
 from .decorators import traveler_required, host_required
 from django.views.generic import DetailView
@@ -42,7 +42,7 @@ def profile_update_traveler(request):
         if u_form.is_valid() and t_form.is_valid():
             u_form.save()
             t_form.save()
-            messages.success(request, "Personal section has been updated")
+            messages.success(request, "Personal section has been updated!")
             if request.POST['save'] == "next":
                 return redirect('profile_update_traveler2')
             elif request.POST['save'] == "save":
@@ -64,9 +64,9 @@ def profile_update_traveler2(request):
             profile.user = request.user
             profile.save()
             form.save_m2m()
-            messages.success(request, "Expertise section has been updated")
+            messages.success(request, "Professional section has been updated!")
             if request.POST['save'] == "next":
-                return HttpResponseRedirect(reverse('program_add'))
+                return HttpResponseRedirect(reverse('profile_update_traveler3'))
             elif request.POST['save'] == "save":
                 return redirect('profile_update_traveler')
     else:
@@ -77,7 +77,42 @@ def profile_update_traveler2(request):
 
 
 @login_required()
+def profile_update_traveler3(request):
+    '''Add social links'''
+    heading_message = 'Social links'
+    links = Link.objects.filter(user=request.user)
+
+    if request.method == 'GET':
+        formset = LinkFormset(request.GET or None)
+    elif request.method == 'POST':
+        formset = LinkFormset(request.POST)
+        if formset.is_valid():
+            for form in formset:
+                # extract name, url from each form and save
+                name = form.cleaned_data.get('name')
+                url = form.cleaned_data.get('url')
+                # save link instance
+                if name:
+                    Link(name=name, url=url, user=request.user).save()
+            messages.success(request, "Social section has been updated!")
+            if request.POST['save'] == "next":
+                return redirect('program_add')
+            elif request.POST['save'] == "save":
+                return redirect('profile_update_traveler2')
+
+    context = {
+        'formset': formset,
+        'heading': heading_message,
+        'brands': BRAND_LIST,
+        'links': links
+    }
+    return render(request, 'app_user/profile_traveler3.html', context)
+
+@login_required()
 def program_add(request):
+
+    program = Program.objects.filter(owner_id=request.user.id)
+
     if request.method != 'POST':
         form = FormProgram()
     else:
@@ -88,13 +123,13 @@ def program_add(request):
             form.clean()
             new_program.save()
             form.save_m2m()
-            messages.success(request, "Program has been added!")
+            messages.success(request, "New program offer has been added!")
             if request.POST['save'] == "next":
                 return HttpResponseRedirect(reverse('index'))
             elif request.POST['save'] == "save":
-                return redirect('profile_update_traveler2')
+                return redirect('profile_update_traveler3')
 
-    context = {'form': form}
+    context = {'form': form, 'program': program}
     return render(request, 'app_user/program_add.html', context)
 
 
@@ -257,10 +292,6 @@ def space_delete(request, space_id):
     context = {'space': space, 'form': form}
     return render(request, 'app_user/space_delete.html', context)
 
-@login_required
-def links(request):
-    return render(request, '')
-
 
 def profile_traveler(request, userid):
     profile = ProfileTraveler.objects.get(user_id=userid)
@@ -297,7 +328,7 @@ def address_update(request):
 
 
 @login_required()
-def create_link_normal(request):
+def link_add(request):
     template_name = 'app_user/links.html'
     heading_message = 'Formset Link Name Demo'
     if request.method == 'GET':
@@ -314,14 +345,71 @@ def create_link_normal(request):
 
             # once all books are saved, redirect to book list view
             return redirect('link_list')
-    return render(request, template_name, {
-        'formset': formset,
-        'heading': heading_message,
-        'brands': BRAND_LIST,
-    })
+    context = {
+                'formset': formset,
+                'heading': heading_message,
+                'brands': BRAND_LIST,
+                }
+    return render(request, template_name, context)
 
 
-def viewlinks(request):
-    links = Link.objects.filter(user=request.user)
+def link_list(request, userid):
+    links = Link.objects.filter(user=request.user, user_id=userid)
+    BRAND_LIST.sort(reverse=True)
 
     return render(request, "app_user/link_list.html", {'links': links, 'brands': BRAND_LIST})
+
+
+
+@login_required
+def link_delete(request, link_id):
+    '''delete an existng space instance.'''
+    link = Link.objects.get(id=link_id)
+    link_to_delete = get_object_or_404(Link, id=link_id)
+    if request.method != 'POST':
+        form = DeleteLinkForm(instance=link)
+    else:
+        form = DeleteLinkForm(instance=link, data=request.POST)
+        if form.is_valid():
+            link_to_delete.delete()
+            return HttpResponseRedirect(reverse("link_list", args=[request.user.id]))
+    context = {'link': link, 'form': form}
+    return render(request, 'app_user/link_delete.html', context)
+
+
+@login_required
+def link_detail(request, link_id):
+    '''show a program'''
+    link = Link.objects.filter(owner=request.user).get(id=link_id)
+    context = {"link": link}
+    return render(request, "app_user/link_detail.html", context)
+
+
+def link_update(request): # link_add
+    template_name = 'app_user/link_update.html'
+    heading_message = 'Social links'
+    links = Link.objects.filter(user=request.user)
+
+    if request.method == 'GET':
+        formset = LinkFormset(request.GET or None)
+    elif request.method == 'POST':
+        formset = LinkFormset(request.POST)
+        if formset.is_valid():
+            for form in formset:
+                # extract name, url from each form and save
+                name = form.cleaned_data.get('name')
+                url=form.cleaned_data.get('url')
+                # save book instance
+                if name:
+                    Link(name=name, url=url, user=request.user).save()
+
+            # once all books are saved, redirect to book list view
+            return redirect('link_list')
+    context = {
+                'formset': formset,
+                'heading': heading_message,
+                'brands': BRAND_LIST,
+                'links': links
+                }
+    return render(request, template_name, context)
+
