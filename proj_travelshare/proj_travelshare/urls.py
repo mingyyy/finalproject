@@ -31,6 +31,7 @@ urlpatterns = [
 
     path('profile_update_host/', user_views.profile_update_host, name='profile_update_host'),
     path('profile_update_host2/', user_views.profile_update_host2, name='profile_update_host2'),
+    path('profile_update_host3/', user_views.profile_update_host3, name='profile_update_host3'),
 
     path('space_add/', user_views.space_add, name='space_add'),
     path('space_update/<int:space_id>/', user_views.space_update, name='space_update'),

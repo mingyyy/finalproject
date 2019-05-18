@@ -45,7 +45,7 @@ def profile_update_traveler(request):
             messages.success(request, "Personal section has been updated!")
             if request.POST['save'] == "next":
                 return redirect('profile_update_traveler2')
-            elif request.POST['save'] == "save":
+            elif request.POST['save'] == "prev":
                 return redirect('index')
     else:
         u_form = FormUserUpdate(instance=request.user)
@@ -67,7 +67,7 @@ def profile_update_traveler2(request):
             messages.success(request, "Professional section has been updated!")
             if request.POST['save'] == "next":
                 return HttpResponseRedirect(reverse('profile_update_traveler3'))
-            elif request.POST['save'] == "save":
+            elif request.POST['save'] == "prev":
                 return redirect('profile_update_traveler')
     else:
         form = FormProfileTravelerUpdate2(instance=request.user.profiletraveler)
@@ -97,8 +97,10 @@ def profile_update_traveler3(request):
             messages.success(request, "Social section has been updated!")
             if request.POST['save'] == "next":
                 return redirect('program_add')
-            elif request.POST['save'] == "save":
+            elif request.POST['save'] == "prev":
                 return redirect('profile_update_traveler2')
+            elif request.POST['save'] == 'add':
+                return HttpResponseRedirect(reverse('link_list',args=[request.user.id]))
 
     context = {
         'formset': formset,
@@ -126,7 +128,7 @@ def program_add(request):
             messages.success(request, "New program offer has been added!")
             if request.POST['save'] == "next":
                 return HttpResponseRedirect(reverse('index'))
-            elif request.POST['save'] == "save":
+            elif request.POST['save'] == "prev":
                 return redirect('profile_update_traveler3')
 
     context = {'form': form, 'program': program}
@@ -143,7 +145,7 @@ def program_update(request, program_id):
             messages.success(request, "Program has been updated!")
             if request.POST['save'] == "next":
                 return HttpResponseRedirect(reverse("program_detail", args=[program.id]))
-            elif request.POST['save'] == "save":
+            elif request.POST['save'] == "prev":
                 return redirect('program_update')
         else:
             messages.warning(request, "Form is not valid!")
@@ -195,8 +197,8 @@ def profile_update_host(request):
             messages.success(request, "Basic section has been updated!")
             if request.POST['save'] == "next":
                 return redirect('profile_update_host2')
-            elif request.POST['save'] == "save":
-                return redirect('app_main:home')
+            elif request.POST['save'] == "prev":
+                return HttpResponseRedirect(reverse('profile_host', args=[request.user.id]))
     else:
         h_form = FormProfileHostUpdate(instance=request.user.profilehost)
     context = {'h_form': h_form}
@@ -214,13 +216,46 @@ def profile_update_host2(request):
             form.save_m2m()
             messages.success(request, "Interest section has been updated!")
             if request.POST['save'] == "next":
-                return redirect('space_add')
-            elif request.POST['save'] == "save":
+                return redirect('profile_update_host3')
+            elif request.POST['save'] == "prev":
                 return redirect('profile_update_host')
     else:
         form = FormProfileHostUpdate2(instance=request.user.profilehost)
     context = {'form': form}
     return render(request, "app_user/profile_host2.html", context)
+
+@login_required()
+def profile_update_host3(request):
+    heading_message = 'Social links'
+    links = Link.objects.filter(user=request.user)
+
+    if request.method == 'GET':
+        formset = LinkFormset(request.GET or None)
+    elif request.method == 'POST':
+        formset = LinkFormset(request.POST)
+        if formset.is_valid():
+            for form in formset:
+                # extract name, url from each form and save
+                name = form.cleaned_data.get('name')
+                url = form.cleaned_data.get('url')
+                # save link instance
+                if name:
+                    Link(name=name, url=url, user=request.user).save()
+            messages.success(request, "Social section has been updated!")
+            if request.POST['save'] == "next":
+                return redirect('space_add')
+            elif request.POST['save'] == "prev":
+                return redirect('profile_update_host2')
+            elif request.POST['save'] == 'add':
+                return HttpResponseRedirect(reverse('link_list', args=[request.user.id]))
+
+    context = {
+        'formset': formset,
+        'heading': heading_message,
+        'brands': BRAND_LIST,
+        'links': links
+    }
+    return render(request, 'app_user/profile_host3.html', context)
 
 
 @login_required()
@@ -297,7 +332,8 @@ def profile_traveler(request, userid):
     profile = ProfileTraveler.objects.get(user_id=userid)
     lan = profile.languages.all()
     expertise = profile.expertise.all()
-    context = {"profile": profile, 'lan': lan, 'expertise': expertise}
+    link = Link.objects.filter(user_id=userid)
+    context = {"profile": profile, 'lan': lan, 'expertise': expertise, "link": link}
 
     return render(request, 'app_user/preview_traveler.html', context)
 

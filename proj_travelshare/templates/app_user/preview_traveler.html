@@ -35,11 +35,25 @@
 
                 <div class="article-metadata">
                     <p><span class='text-muted'>Languages: </span>
+                    {% if lan %}
                         <ul>
                             {% for v in lan %}
                                 <li>{{v}}</li>
                             {% endfor %}
                         </ul>
+                    {% endif %}
+                    </p>
+                </div>
+
+                <div class="article-metadata">
+                    <p><span class='text-muted'>Links: </span>
+                    {% if link %}
+                        <ul>
+                            {% for v in link %}
+                                <li>{{v}}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
                     </p>
                 </div>
 
