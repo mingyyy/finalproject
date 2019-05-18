@@ -66,7 +66,7 @@ def profile_update_traveler2(request):
             form.save_m2m()
             messages.success(request, "Professional section has been updated!")
             if request.POST['save'] == "next":
-                return HttpResponseRedirect(reverse('profile_update_traveler3'))
+                return redirect('profile_update_traveler3')
             elif request.POST['save'] == "prev":
                 return redirect('profile_update_traveler')
     else:
@@ -100,7 +100,7 @@ def profile_update_traveler3(request):
             elif request.POST['save'] == "prev":
                 return redirect('profile_update_traveler2')
             elif request.POST['save'] == 'add':
-                return HttpResponseRedirect(reverse('link_list',args=[request.user.id]))
+                return redirect('profile_update_traveler3')
 
     context = {
         'formset': formset,
@@ -113,7 +113,7 @@ def profile_update_traveler3(request):
 @login_required()
 def program_add(request):
 
-    program = Program.objects.filter(owner_id=request.user.id)
+    program = Program.objects.filter(owner=request.user)
 
     if request.method != 'POST':
         form = FormProgram()

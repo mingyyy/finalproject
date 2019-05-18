@@ -138,15 +138,14 @@ class Space(models.Model):
 
 class Link(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None, null=False, blank=False)
-    category = models.CharField(max_length=50) # social
-    name = models.CharField(max_length=100) # instagram
-    url = models.URLField() # www.instagram.com/xxxx/
+    name = models.CharField(max_length=100, null=False, blank=False) # instagram
+    url = models.URLField(null=False, blank=False) # www.instagram.com/xxxx/
 
     def __str__(self):
-        return self.name
+        return f'{self.name} - {self.url}'
 
     class Meta:
-        ordering = ('category', 'name',)
+        ordering = ('name',)
 
 
 class Trip(models.Model):

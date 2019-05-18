@@ -10,6 +10,10 @@
             {% if profile.photo %}
                 <img src="{{profile.photo.url}}" alt="profile picture" width="100%"><br>
             {% endif %}
+            <br>
+            <div class="media-body">
+              <p class="text-secondary">{{ user.email }}</p>
+            </div>
         </div>
 
         <div class="col-sm-9">

@@ -9,7 +9,7 @@
         Personal
       </div><div class="progress-bar bg-light" style="width:.2%"></div>
       <div class="progress-bar bg-secondary" style="width:25%">
-        Expertise
+        Professional
       </div><div class="progress-bar bg-light" style="width:.2%"></div>
       <div class="progress-bar bg-primary" style="width:25%">
         Social
@@ -37,7 +37,7 @@
             <ul class="list-group">
         {% if user.is_authenticated %}
             {% for item in links %}
-                <li class="list-group-item"><i class="fa fa-link"></i> {{item.name}} - {{item.url}}</li>
+                <li class="list-group-item"><i class="fa fa-link"></i> {{item}}</li>
 
                 <button class="badge badge-secondary float-right"><a href="{% url 'link_delete' item.id %}" style="color:white"><i class="fa fa-trash"></i>Delete</a></button>
                 <br>
@@ -64,7 +64,6 @@
 
                     <div class="col-6 mr-sm-2">
                         <div class="input-group">
-
                             {{form.url}}
                             <div class="input-group-append">
                                 <button class="btn btn-success add-form-row">+</button>

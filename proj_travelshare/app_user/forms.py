@@ -44,20 +44,19 @@ class FormProfileTravelerUpdate(forms.ModelForm):
 
     class Meta:
         model = ProfileTraveler
-        fields = ['gender', 'birth_date', 'nationality', 'phone', 'languages',]
-        labels = {'nationality': 'Where are you from'}
+        fields = ['gender', 'birth_date', 'nationality', 'phone', 'languages', 'photo']
+        labels = {'nationality': 'Where are you from',  'photo': 'Profile picture'}
         widgets = {
                  'languages': forms.Textarea(attrs={'help_text': 'Only those languages you master professionally.'}),
-                    }
+                }
 
 
 class FormProfileTravelerUpdate2(forms.ModelForm):
 
     class Meta:
         model = ProfileTraveler
-        fields = ['photo', 'bio', 'expertise', 'experience']
+        fields = ['bio', 'expertise', 'experience']
         labels = {
-                  'photo': 'Profile picture',
                   'expertise': 'Areas of expertise',
                   'experience': 'More of your experience',
                   }

@@ -69,7 +69,7 @@ EVENT_FREQ_CHOICE = (('Once', 'Once'), ('Multiple', 'Multiple'),('Fexible', 'Fex
 EVENT_DURATION_CHOICE = (('Less than 2 hours', 'Less than 2 hours'), ('2 to 4 hours', '2 to 4 hours'), ('4 to 8 hours', '4 to 8 hours'), ('More than 8 hours', 'More than 8 hours'))
 
 ORG_TYPE_CHOICE = (('Association', 'Association'), ('Center', 'Center'), ('Club', 'Club'), ('Community', 'Community'), ('Company', 'Company'),
-                   ('Cooperative/Collective', 'Cooperative/Collective'), ('Government/Town Council/Village', 'Government/Town Council/Village'), ('Institute', 'Institute'),
+                   ('Cooperative/Collective', 'Cooperative/Collective'), ('Farm/Finca','Farm/Finca'), ('Government/Town Council/Village', 'Government/Town Council/Village'), ('Institute', 'Institute'),
                    ('Museum', 'Museum'), ('NGO/Foundation', 'NGO/Foundation'), ('Park', 'Park'), ('Political Party', 'Political Party'),
                    ('School/Nursery/Kindergarten', 'School/Nursery/Kindergarten'), ('Social Enterprise', 'Social Enterprise'), ('Society', 'Society'),
                    ('Station & Network', 'Station & Network'), ('Support Group', 'Support Group'), ('Union', 'Union'), ('University', 'University'), ('Others', 'Others'))
