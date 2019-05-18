@@ -37,6 +37,18 @@
                 </div>
 
                 <div class="article-metadata">
+                    <p><span class='text-muted'>Links: </span>
+                    {% if link %}
+                        <ul>
+                            {% for v in link %}
+                                <li>{{v}}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    </p>
+                </div>
+
+                <div class="article-metadata">
                     <p><span class='text-muted'>Description: </span></p>
                     <p>{{ profile.description }}</p>
                 </div>

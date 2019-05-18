@@ -344,8 +344,8 @@ def profile_host(request, userid):
     lan = profile.languages.all()
     interest = profile.interests.all()
     lat, lon = profile.geolocation.lat, profile.geolocation.lon
-
-    context = {"profile": profile, 'lan': lan, 'interest': interest, 'lat': lat, 'lon': lon}
+    link = Link.objects.filter(user_id=userid)
+    context = {"profile": profile, 'lan': lan, 'interest': interest, 'lat': lat, 'lon': lon, 'link': link}
 
     return render(request, 'app_user/preview_host.html', context)
 
@@ -391,7 +391,7 @@ def link_add(request):
 
 
 def link_list(request, userid):
-    links = Link.objects.filter(user=request.user, user_id=userid)
+    links = Link.objects.filter(user_id=userid)
     BRAND_LIST.sort(reverse=True)
 
     return render(request, "app_user/link_list.html", {'links': links, 'brands': BRAND_LIST})
@@ -401,8 +401,8 @@ def link_list(request, userid):
 @login_required
 def link_delete(request, link_id):
     '''delete an existng space instance.'''
-    link = Link.objects.get(id=link_id)
-    link_to_delete = get_object_or_404(Link, id=link_id)
+    link = Link.objects.get(id=link_id, user=request.user)
+    link_to_delete = get_object_or_404(Link, id=link_id, user=request.user)
     if request.method != 'POST':
         form = DeleteLinkForm(instance=link)
     else:
@@ -417,7 +417,7 @@ def link_delete(request, link_id):
 @login_required
 def link_detail(request, link_id):
     '''show a program'''
-    link = Link.objects.filter(owner=request.user).get(id=link_id)
+    link = Link.objects.filter(user=request.user).get(id=link_id)
     context = {"link": link}
     return render(request, "app_user/link_detail.html", context)
 
