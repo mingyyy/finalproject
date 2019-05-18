@@ -260,6 +260,7 @@ def profile_update_host3(request):
 
 @login_required()
 def space_add(request):
+    space = Space.objects.filter(owner=request.user)
     if request.method == 'POST':
         form = FormSpace(request.POST)
         if form.is_valid():
@@ -273,7 +274,7 @@ def space_add(request):
                 return redirect('profile_update_host2')
     else:
         form = FormSpace()
-    context = {'form': form}
+    context = {'form': form, 'space': space}
     return render(request, "app_user/space_add.html", context)
 
 
