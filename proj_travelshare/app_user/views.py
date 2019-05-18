@@ -247,7 +247,8 @@ def profile_update_host3(request):
             elif request.POST['save'] == "prev":
                 return redirect('profile_update_host2')
             elif request.POST['save'] == 'add':
-                return HttpResponseRedirect(reverse('link_list', args=[request.user.id]))
+                return redirect('profile_update_host3')
+                # return HttpResponseRedirect(reverse('link_list', args=[request.user.id]))
 
     context = {
         'formset': formset,
@@ -409,7 +410,7 @@ def link_delete(request, link_id):
         form = DeleteLinkForm(instance=link, data=request.POST)
         if form.is_valid():
             link_to_delete.delete()
-            return HttpResponseRedirect(reverse("link_list", args=[request.user.id]))
+            return redirect('profile_update_host3')
     context = {'link': link, 'form': form}
     return render(request, 'app_user/link_delete.html', context)
 
@@ -428,7 +429,7 @@ def link_update(request): # link_add
     links = Link.objects.filter(user=request.user)
 
     if request.method == 'GET':
-        formset = LinkFormset(request.GET or None)
+        formset = LinkFormset(request.GET or None, instance=links)
     elif request.method == 'POST':
         formset = LinkFormset(request.POST)
         if formset.is_valid():

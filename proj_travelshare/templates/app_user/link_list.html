@@ -19,7 +19,7 @@
             <div id="collapse-{{forloop.counter}}" class="collapse" data-parent="#accordion" aria-labelledby="heading-{{forloop.counter}}">
               <div class="card-body">
                 <p>{{item.url}}</p>
-                <button class="badge badge-secondary float-left"><a href="#" style="color:white"><i class="fa fa-pencil"></i>Edit</a></button>
+                <button class="badge badge-secondary float-left"><a href="{% url 'link_update' item.id %}" style="color:white"><i class="fa fa-pencil"></i>Edit</a></button>
                 <button class="badge badge-secondary float-right"><a href="{% url 'link_delete' item.id %}" style="color:white"><i class="fa fa-trash"></i>Delete</a></button>
               </div>
             </div>
