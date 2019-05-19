@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from app_user.models import ProfileTraveler,ProfileHost
+from app_user.models import ProfileTraveler,ProfileHost, Topic, User
 from django.views.generic import TemplateView, ListView,UpdateView
 
 
@@ -22,7 +22,13 @@ class ViewListPerson(ListView):
 def travelers(request):
     profile = ProfileTraveler.objects.all()
 
-    context = {'profile': profile}
+    for p in profile:
+        if p.user.type == '0':
+            expertise=p.expertise.all()
+        else:
+            print(p.user.type)
+
+    context = {'profile': profile, 'expertise': expertise}
     return render(request,'app_main/travelers.html', context)
 
 

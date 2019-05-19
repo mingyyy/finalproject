@@ -113,10 +113,10 @@ def save_user_profile(sender, instance, **kwargs):
 
 class Program(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None, null=False, blank=False)
-    subject = models.CharField(choices=SUBJECT_CHOICE, max_length=20)
+    subject = models.CharField(choices=SUBJECT_CHOICE, max_length=50)
 
-    type = models.CharField(choices=EVENT_TYPE_CHOICE, max_length=10)
-    frequency = models.CharField(choices=EVENT_FREQ_CHOICE, max_length=10)
+    type = models.CharField(choices=EVENT_TYPE_CHOICE, max_length=20)
+    frequency = models.CharField(choices=EVENT_FREQ_CHOICE, max_length=20)
     duration = models.CharField(choices=EVENT_DURATION_CHOICE, max_length=20)
 
     title = models.CharField(max_length=120, null=False)
