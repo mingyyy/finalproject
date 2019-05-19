@@ -4,11 +4,11 @@
 
 {% block content %}
 
-    {% if user.type == '0' %}
-        <span class="badge badge-primary">Traveler</span>
-    {% elif user.type == '1' %}
-        <span class="badge badge-success">Local Host</span>
-    {% endif %}
+    <!--{% if user.type == '0' %}-->
+        <!--<span class="badge badge-primary">Traveler</span>-->
+    <!--{% elif user.type == '1' %}-->
+        <!--<span class="badge badge-success">Local Host</span>-->
+    <!--{% endif %}-->
     <br>
 
     <div class="progress">
@@ -39,7 +39,8 @@
             {% csrf_token %}
             <script src="{% static 'ktag/js/tagify.min.js' %}"> </script>
             <fieldset class="form-group" >
-                <legend class="border-bottom mb-4">
+
+                    <span class="badge badge-primary">
                     {% if user.type == '0' %}
                         {% if program.count == 0 %}
                             You have no offer at the moment
@@ -57,10 +58,11 @@
                             You have {{space.count}} entries now
                         {% endif %}
                     {% endif %}
-                </legend>
+                    </span>
+
                 <ul>
                     {% for item in program %}
-                        <li style="list-style-type: circle;">{{ item.title }}</li>
+                        <li style="list-style-type: circle; "><a href="{% url 'program_detail' item.id %}">{{ item.title }}</a></li>
                     {% endfor %}
                 </ul>
 

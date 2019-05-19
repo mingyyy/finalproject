@@ -62,7 +62,7 @@
                             </span>
 
                             <span class="navbar-nav text-center pt-1 pb-0 ">
-                            <a href="#" class="nav-item nav-link p-10"><small><i class="fa fa-calendar-plus-o d-block"></i>Trip</small></a>
+                            <a href="{% url 'app_main:calendar' %}" class="nav-item nav-link p-10"><small><i class="fa fa-calendar-plus-o d-block"></i>Trip</small></a>
                             </span>
 
                         {% elif user.type == '1' %}

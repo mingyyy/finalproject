@@ -4,11 +4,11 @@
 
 {% block content %}
 
-    {% if user.type == '0' %}
-        <span class="badge badge-primary">Traveler</span>
-    {% elif user.type == '1' %}
-        <span class="badge badge-success">Local Host</span>
-    {% endif %}
+    <!--{% if user.type == '0' %}-->
+        <!--<span class="badge badge-primary">Traveler</span>-->
+    <!--{% elif user.type == '1' %}-->
+        <!--<span class="badge badge-success">Local Host</span>-->
+    <!--{% endif %}-->
     <br>
 
 
@@ -47,6 +47,7 @@
                 <fieldset class="form-group" >
 
                 <legend class="border-bottom mb-4">
+                    <span class="badge badge-primary">
                     {% if user.type == '0' %}
                         {% if program.count == 0 %}
                             You have no offer at the moment
@@ -64,6 +65,7 @@
                             You have {{space.count}} entries now
                         {% endif %}
                     {% endif %}
+                    </span>
                 </legend>
                 <ul>
                     {% for item in space %}

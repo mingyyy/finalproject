@@ -20,6 +20,9 @@
                 <li class="list-group-item"><a href="{% url 'program_list' user.id %}"><i class="fa fa-list"></i> Review List of Program Offer</a></li>
                 <br>
                 <li class="list-group-item"><a href="{% url 'program_add' %}"><i class="fa fa-plus-circle"></i> Add Program Offer</a></li>
+                <br>
+                <li class="list-group-item"><a href="{% url 'app_main:calendar' %}"><i class="fa fa-calendar"></i> View trips in Calendar</a></li>
+
             {% elif user.type == '1' %}
                 <li class="list-group-item"><a href="{% url 'profile_host' user.id  %}"><i class="fa fa-book"></i> Review Local Host Profile</a></li>
                 <br>
