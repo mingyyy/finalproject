@@ -39,7 +39,7 @@ class FormUserUpdate(forms.ModelForm):
 class FormProfileTravelerUpdate(forms.ModelForm):
     '''input_formats=['%Y/%m/%d']'''
     phone = PhoneNumberField(widget=forms.TextInput(attrs={}), label='Phone Number', required=False)
-    birth_date = forms.DateField()
+    birth_date = forms.DateField(input_formats=['%Y-%m-%d'])
     languages = forms.ModelMultipleChoiceField(queryset=Language.objects.all())
 
     class Meta:
