@@ -25,6 +25,6 @@ urlpatterns = [
     path('hosts/', hosts, name='hosts'),
 
     path('calendar/', CalendarView.as_view(), name='calendar'),
-    path('trip/edit/<int:id>/', trip, name='trip_edit'),
+    path('trip/edit/<int:trip_id>/', trip, name='trip_edit'),
     path('trip/new/', trip, name='trip_new'),
 ]

@@ -81,12 +81,11 @@ def get_date(req_day):
 
 @login_required
 def trip(request, trip_id=None):
-    instance = Trip()
-
+    instance = Trip(user=request.user)
     if trip_id:
         instance = get_object_or_404(Trip, id=trip_id)
     else:
-        instance = Trip()
+        instance = Trip(user=request.user)
 
     form = TripForm(request.POST or None, instance=instance)
     form_confirm = TripDeleteForm(request.POST or None)
