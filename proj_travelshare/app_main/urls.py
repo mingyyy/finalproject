@@ -15,7 +15,7 @@ Including another URLconf
 """
 
 from django.urls import path
-from .views import home, travelers, hosts
+from .views import home, travelers, hosts, trip, CalendarView
 
 app_name = "app_main"
 
@@ -23,4 +23,8 @@ urlpatterns = [
     path('', home, name='home'),
     path('travelers/', travelers, name='travelers'),
     path('hosts/', hosts, name='hosts'),
+
+    path('calendar/', CalendarView.as_view(), name='calendar'),
+    path('trip/edit/<int:id>/', trip, name='trip_edit'),
+    path('trip/new/', trip, name='trip_new'),
 ]
