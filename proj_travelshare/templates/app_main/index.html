@@ -11,29 +11,33 @@
             {% if user.type == '0' %}
                 <li class="list-group-item"><a href="{% url 'profile_traveler' user.id %}"><i class="fa fa-book"></i> Review Traveler Profile</a></li>
                 <br>
-                <li class="list-group-item"><a href="{% url 'profile_update_traveler' %}"><i class="fa fa-pencil"></i> Update Traveler Profile - Personal</a></li>
-                <br>
-                <li class="list-group-item"><a href="{% url 'profile_update_traveler2' %}"><i class="fa fa-pencil"></i> Update Traveler Profile - Professional</a></li>
-                <br>
-                <li class="list-group-item"><a href="{% url 'profile_update_traveler3' %}"><i class="fa fa-pencil"></i> Update Traveler Profile - Social Links</a></li>
-                <br>
                 <li class="list-group-item"><a href="{% url 'program_list' user.id %}"><i class="fa fa-list"></i> Review List of Program Offer</a></li>
                 <br>
-                <li class="list-group-item"><a href="{% url 'program_add' %}"><i class="fa fa-plus-circle"></i> Add Program Offer</a></li>
+                <li class="list-group-item"><a href="{% url 'app_main:calendar_trip' user.id %}"><i class="fa fa-calendar"></i> View trips in Calendar</a></li>
                 <br>
-                <li class="list-group-item"><a href="{% url 'app_main:calendar' %}"><i class="fa fa-calendar"></i> View trips in Calendar</a></li>
+                <li class="list-group-item text-center d-inline-block"><a href="{% url 'profile_update_traveler' %}"><i class="fa fa-pencil"></i> Update Traveler Profile - Personal</a></li>
+                <br>
+                <li class="list-group-item text-center d-inline-block"><a href="{% url 'profile_update_traveler2' %}"><i class="fa fa-pencil"></i> Update Traveler Profile - Professional</a></li>
+                <br>
+                <li class="list-group-item text-center d-inline-block"><a href="{% url 'profile_update_traveler3' %}"><i class="fa fa-pencil"></i> Update Traveler Profile - Social Links</a></li>
+
+                <br>
+                <li class="list-group-item text-right d-inline-block"><a href="{% url 'program_add' %}"><i class="fa fa-plus-circle"></i> Add Program Offer</a></li>
 
             {% elif user.type == '1' %}
                 <li class="list-group-item"><a href="{% url 'profile_host' user.id  %}"><i class="fa fa-book"></i> Review Local Host Profile</a></li>
                 <br>
-                <li class="list-group-item"><a href="{% url 'profile_update_host' %}"><i class="fa fa-pencil"></i> Update Local Host Profile - Basic</a></li>
-                <br>
-                <li class="list-group-item"><a href="{% url 'profile_update_host2' %}"><i class="fa fa-pencil"></i> Update Local Host Profile - Interest</a></li>
-                <br>
-                <li class="list-group-item"><a href="{% url 'profile_update_host3' %}"><i class="fa fa-pencil"></i> Update Local Host Profile - Social Links</a></li>
-                <br>
                 <li class="list-group-item"><a href="{% url 'space_list' user.id  %}"><i class="fa fa-list"></i> Review List of Space Availability</a></li>
                 <br>
+                <li class="list-group-item"><a href="{% url 'app_main:calendar_available' user.id %}"><i class="fa fa-calendar"></i> View Availability in Calendar</a></li>
+                <br>
+                <li class="list-group-item text-center d-inline-block"><a href="{% url 'profile_update_host' %}"><i class="fa fa-pencil"></i> Update Local Host Profile - Basic</a></li>
+                <br>
+                <li class="list-group-item text-center d-inline-block"><a href="{% url 'profile_update_host2' %}"><i class="fa fa-pencil"></i> Update Local Host Profile - Interest</a></li>
+                <br>
+                <li class="list-group-item text-center d-inline-block"><a href="{% url 'profile_update_host3' %}"><i class="fa fa-pencil"></i> Update Local Host Profile - Social Links</a></li>
+                <br>
+
                 <li class="list-group-item"><a href="{% url 'space_add' %}" ><i class="fa fa-plus-circle"></i> Available Space</a></li>
             {% endif %}
         {% endif %}

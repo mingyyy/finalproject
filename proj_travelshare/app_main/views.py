@@ -1,14 +1,15 @@
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponseRedirect, reverse
 from app_user.models import ProfileTraveler,ProfileHost, Topic, User
-from .models import Trip
-from django.views.generic import TemplateView, ListView,UpdateView
+from .models import Trip, Available
+from django.views.generic import ListView
 from .utils import Calendar
 from django.utils.safestring import mark_safe
 import calendar
+from django.conf import settings
 from datetime import datetime, date, timedelta
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .forms import TripForm, TripDeleteForm
+from .forms import TripForm, TripDeleteForm, AvailableForm, AvailableDeleteForm
 
 
 def home(request):
@@ -17,7 +18,6 @@ def home(request):
 
     context = {'profile_t': profile_t, 'profile_h': profile_h}
     return render(request,'app_main/home.html', context)
-
 
 
 def travelers(request):
@@ -41,9 +41,32 @@ def hosts(request):
     return render(request,'app_main/hosts.html', context)
 
 
-class CalendarView(ListView):
+
+class CalendarViewTrip(ListView):
     model = Trip
-    template_name = 'app_main/calendar.html'
+    template_name = 'app_main/calendar_trip.html'
+
+    def get_queryset(self):
+        return Trip.objects.filter(user_id=self.kwargs['userid'])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # d = get_date(self.request.GET.get('day', None))
+        d = get_date(self.request.GET.get('month', None))
+        cal = Calendar(d.year, d.month)
+        html_cal = cal.formatmonth(withyear=True)
+        context['calendar'] = mark_safe(html_cal)
+        context['prev_month'] = prev_month(d)
+        context['next_month'] = next_month(d)
+        return context
+
+
+class CalendarViewAvailable(ListView):
+    model = Available
+    template_name = 'app_main/calendar_available.html'
+
+    def get_queryset(self):
+        return Available.objects.filter(user_id=self.kwargs['userid'])
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -94,7 +117,7 @@ def trip(request, trip_id=None):
         trip = form.save(commit=False)
         if trip.trip_duration() is False:
             messages.warning(request, "Your start and end dates are not valid!")
-            return redirect('app_main:calendar')
+            return HttpResponseRedirect(reverse('app_main:calendar_trip',args=[request.user.id]))
         trip.user = request.user
         trip.save()
         try:
@@ -103,8 +126,35 @@ def trip(request, trip_id=None):
                 messages.warning(request, "This trip has been deleted!")
         except KeyError:
             pass
-        return HttpResponseRedirect(reverse('app_main:calendar'))
+        return HttpResponseRedirect(reverse('app_main:calendar_trip',args=[request.user.id]))
     context = {'form': form, "id": trip_id, 'form_confirm': form_confirm}
     return render(request, 'app_main/trip.html',context)
 
 
+@login_required
+def available(request, available_id=None):
+    instance = Available(user=request.user)
+    if available_id:
+        instance = get_object_or_404(Trip, id=available_id)
+    else:
+        instance = Available(user=request.user)
+
+    form = AvailableForm(request.POST or None, instance=instance)
+    form_confirm = AvailableDeleteForm(request.POST or None)
+
+    if request.POST and form.is_valid():
+        available = form.save(commit=False)
+        if available.available_duration() is False:
+            messages.warning(request, "Your start and end dates are not valid!")
+            return HttpResponseRedirect(reverse('app_main:calendar_available',args=[request.user.id]))
+        available.user = request.user
+        available.save()
+        try:
+            if request.POST['confirm'] == 'confirm':
+                available.delete()
+                messages.warning(request, "This entry has been deleted!")
+        except KeyError:
+            pass
+        return HttpResponseRedirect(reverse('app_main:calendar_available',args=[request.user.id]))
+    context = {'form': form, "id": available_id, 'form_confirm': form_confirm}
+    return render(request, 'app_main/available.html',context)
