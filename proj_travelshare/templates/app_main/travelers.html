@@ -5,35 +5,39 @@
 
 <h3>Travelers</h3>
 <br>
-<p>In total {{profile.count}} travelers published their profiles at the moment</p>
+<p>In total, {{profile.count}} travelers published their profiles at the moment</p>
 <br>
 
-<div class="card-columns">
-    {% for item in profile %}
-    <div class="card stretched-link" style="width:180px;">
-        <div class="card-header text-center" style="padding: 0px">
-            <img class="card-img-top rounded-circle" src="{{item.photo.url}}" alt="Card image" style="width:40px; height:40px">
-            <a href="{% url 'profile_traveler' item.user.id %}">
+{% for item in profile %}
+
+<div class="media border p-3">
+  <img src="{{item.photo.url}}" alt="John Doe" class="mr-3 mt-3 rounded-circle" style="width:81px;">
+  <div class="media-body">
+    <h4>
+        <a href="{% url 'profile_traveler' item.user_id %}" >
+
                 {% if item.user.first_name %}
-                    {{item.user.first_name.title}}
+                    {{item.user.first_name.title}} {{item.user.last_name.title}}
                 {% else %}
                     {{item.user.username.title}}
                 {% endif %}
-            </a>
-        </div>
+        </a>
+    </h4>
+    <small><i style="color: grey"> Joined on {{item.user.date_joined}}</i></small>
+    <p>{{item.bio}}</p>
+    <p>
+        {%if item.languages.all %}
+            {% for l in item.languages.all %}
+                <span class="badge badge-primary"><small>{{l.language}}</small></span>
+            {% endfor %}
+        {% else %}
+            <span class="badge badge-secondary"><small>No yet provided</small></span>
+        {% endif %}
+    </p>
 
-      <div class="card-body" style="padding: 2px">
-            <p class="card-text">
-                {%if item.expertise.all %}
-                    {% for e in item.expertise.all %}
-                        <p><button type="button" class="btn btn-primary btn-sm"><small>{{ e.topic }}</small></button></p>
-                    {% endfor %}
-                {% else %}
-                    <p><button type="button" class="btn btn-secondary btn-sm"><small>Not Yet Provided</small></button></p>
-                {% endif %}
-        </div>
-    </div>
-    {% endfor %}
+  </div>
 </div>
+
+{% endfor %}
 
 {% endblock %}

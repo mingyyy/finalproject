@@ -22,13 +22,14 @@ class ViewListPerson(ListView):
 def travelers(request):
     profile = ProfileTraveler.objects.all()
 
-    for p in profile:
-        if p.user.type == '0':
-            expertise=p.expertise.all()
-        else:
-            print(p.user.type)
-
-    context = {'profile': profile, 'expertise': expertise}
+    # for p in profile:
+    #     if p.user.type == '0':
+    #         expertise = p.expertise.all()
+    #         lan = p.languages.all()
+    #     else:
+    #         expertise = []
+    #         lan = []
+    context = {'profile': profile}
     return render(request,'app_main/travelers.html', context)
 
 
