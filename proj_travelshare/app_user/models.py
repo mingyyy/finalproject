@@ -148,18 +148,7 @@ class Link(models.Model):
         ordering = ('name',)
 
 
-class Trip(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None, null=False, blank=False)
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
-    destination = models.CharField(choices=CITIZENSHIP_CHOICE, max_length=30)
-    details = models.TextField()
 
-    def __str__(self):
-        return self.destination
-
-    class Meta:
-        ordering = ('start_date',)
 
 
 class Publish(models.Model):

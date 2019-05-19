@@ -3,11 +3,31 @@
 {% block content %}
 
 <div class="jumbotron">
-  <h1>Travel to Share</h1>
+  <img src="{% static 'pic/tts_logo.png' %}" alt="logo" class="mx-auto d-block">
+  <br>
   <p>A FREE webapp that allow travelers to share a few words with the locals,
 in the form of a talk, a lecture, a speech, a workshop. Local organizations like
 NGOs, schools, communities, or co-ops could help to make this happen. </p>
 </div>
 
+<div class="card-columns">
+  <div class="card" style="background:#baf8fc">
+    <div class="card-body text-center">
+      <p class="card-text"><strong>Travelers</strong></p>
+    </div>
+  </div>
 
+  <div class="card bg-light">
+    <div class="card-body text-center">
+      <p class="card-text"><strong>Coming Trips</strong></p>
+    </div>
+  </div>
+
+  <div class="card" style="background:#baf8fc">
+    <div class="card-body text-center">
+      <p class="card-text"><strong>Localhosts</strong></p>
+    </div>
+  </div>
+
+</div>
 {% endblock %}
