@@ -198,17 +198,27 @@ def available(request, available_id):
 
 
 def trip_list(request, sort_choice=None):
-    if sort_choice == 1:
-        trips = Trip.objects.all().order_by("start_date")
-    elif sort_choice == 2:
-        trips = Trip.objects.all().order_by("end_date")
-    elif sort_choice == 3:
-        trips = Trip.objects.all().order_by("destination")
+    '''
+    1. sorting by start_date
+    2. sorting by end_date
+    3. sorting by destination
+    4. sorting by traveler
+    '''
+    print(request.POST)
+    if request.method == "POST":
+        sort_choice = request.POST['select']
+        if sort_choice == '1' or None:
+            trips = Trip.objects.all().order_by("start_date")
+        elif sort_choice == '2':
+            trips = Trip.objects.all().order_by("end_date")
+        elif sort_choice == '3':
+            trips = Trip.objects.all().order_by("destination")
+        else:
+            trips = Trip.objects.all().order_by("user")
     else:
-        trips = Trip.objects.all().order_by("user")
-    # trips = Trip.objects.all()
-    context = {'trips': trips}
+        trips = Trip.objects.all().order_by('start_date')
 
+    context = {'trips': trips, 'selected': sort_choice}
     return render(request, 'app_main/trip_list.html', context)
 
 
@@ -218,19 +228,21 @@ def available_list(request, sort_choice=None):
     2. sorting by end_date
     3. sorting by host_id
     4. sorting by country
-
     '''
-    if sort_choice == 1:
-        available = Available.objects.all().order_by("start_date")
-    elif sort_choice == 2:
-        available = Available.objects.all().order_by("end_date")
-    elif sort_choice == 3:
-        available = Available.objects.all().order_by("user")
+    if request.method == "POST":
+        sort_choice = request.POST['select']
+        if sort_choice == '1' or None:
+            available = Available.objects.all().order_by("start_date")
+        elif sort_choice == '2':
+            available = Available.objects.all().order_by("end_date")
+        elif sort_choice == '3':
+            available = Available.objects.all().order_by("user")
+        else:
+            available = Available.objects.all().order_by("summary")
     else:
-        available = Available.objects.all().order_by("start_date")
+        available = Available.objects.all().order_by('start_date')
 
-    context = {'available': available}
-
+    context = {'available': available, 'selected': sort_choice}
     return render(request, 'app_main/available_list.html', context)
 
 

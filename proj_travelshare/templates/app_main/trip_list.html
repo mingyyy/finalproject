@@ -7,28 +7,27 @@
 <p>In total, {{trips.count}} trips are found. </p>
 <div class="container">
   <label for="sel1">Sort by (select one):</label>
-  <div class="input-group mb-3">
-      <select class="form-control" id="sel1">
-        <option>1. start date</option>
-        <option>2. end date</option>
-        <option>3. destination</option>
-        <option>4. traveler</option>
-      </select>
-        <div class="input-group-append">
+    <form action="" method="post">
+        {% csrf_token %}
+      <div class="input-group mb-3">
+          <select class="form-control" id="sel1" name="select">
+            <option value="1">Start date</option>
+            <option value="2">End date</option>
+            <option value="3">Destination</option>
+            <option value="4">Traveler</option>
+          </select>
+          <div class="input-group-append">
             <button class="btn btn-success" type="submit">Yes, order this way!</button>
-        </div>
-  </div>
-
+          </div>
+      </div>
+    </form>
 </div>
 {% for item in trips %}
-
-    <div class="media border p-3">
-        <p><img src="{{item.user.profiletraveler.photo.url}}" alt="Profile Pictrue" class="mr-3 mt-3" style="width:108px;"></p>
-
-  <div class="media-body">
-       <h5 style="">
+<div class="media border p-3">
+    <p><img src="{{item.user.profiletraveler.photo.url}}" alt="Profile Pictrue" class="mr-3 mt-3" style="width:108px;"></p>
+    <div class="media-body">
+        <h5 style="">
            {{item.start_date|date:"Y M d, D" }} - {{item.end_date|date:"Y M d, D" }}
-
         </h5>
         <p><i style="color: grey; display: inline">
             <a href="{% url 'profile_traveler' item.user.id %}" >
@@ -40,16 +39,17 @@
             {% else %}
                 <span class="badge badge-secondary">???Mysterious Location</span>
             {% endif %}
-
-        </i> </p>
-
-    <p>{{item.details|slice:":100"}}...</p>
-
-
-  </div>
+        </i></p>
+        <p>{{item.details|slice:":100"}}...</p>
+    </div>
 </div>
-
 {% endfor %}
+{% endblock %}
 
-
+{% block script %}
+    <script>
+        $(function() {
+            $('.form-control').val( {{selected}} );
+        });
+    </script>
 {% endblock %}
