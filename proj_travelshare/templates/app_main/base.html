@@ -52,6 +52,10 @@
                     <span class="navbar-nav text-center pt-1 pb-0 ">
                     <a href="{% url 'app_main:available_list' %}" class="nav-item nav-link p-10"><small><i class="fa fa-table d-block"></i>Availables</small></a>
                     </span>
+
+                    <span class="navbar-nav text-center pt-1 pb-0 ">
+                    <a href="{% url 'app_main:info'  %}" class="nav-item nav-link p-10"><small><i class="fa fa-info d-block"></i>Useful</small></a>
+                    </span>
                 </div>
                 <!-- Navbar Right Side -->
                 <div class="navbar-nav">
@@ -79,6 +83,7 @@
                             </span>
 
                         {% endif %}
+
                         <span class="navbar-nav text-center pt-1 pb-0 ">
                         <a href="{% url 'logout' %}" class="nav-item nav-link p-10"><small><i class="fa fa-sign-out d-block"></i>Logout</small></a>
                         </span>
@@ -105,7 +110,7 @@
     <main role="main" class="container">
       <div class="row">
         <div class="col-md-12">
-            <br>
+            <br><br>
             {% if messages %}
                 {% for message in messages%}
                     <div class="alert alert-{{ message.tags }}">

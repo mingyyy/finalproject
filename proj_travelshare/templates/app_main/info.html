@@ -4,7 +4,7 @@
 {% load humanize %}
 
 {% block content %}
-<br>
+
 <div class="container">
     <div class="row">
         <div class="col-md-12">
@@ -48,14 +48,15 @@
         </div>
 
         <div class="col-md-5">
-            <div class="jumbotron jumbotron-fluid">
+            <div class="jumbotron jumbotron-fluid" style="padding: 4px">
               <div class="container">
+                  <br>
                 <p><strong>Visa requirement:</strong> {{ requirement }}</p>
                 <p><strong>Allowed stay:</strong> {{ allowedstay}} </p>
                 <p><strong>Port Restriction:</strong> {{ portrestriction }}</p>
-                <p class="border-bottom"><strong>Type:</strong> {{ type }}</p>
+                <p class="border-bottom "><strong>Type:</strong> {{ type }}</p>
                 <p><strong>Passport validity:</strong> {{ passport_validity }}</p>
-                <p class="border-bottom"><strong>Passport blank pages:</strong> {{ passport_blank_pages }}</p>
+                <p class="border-bottom "><strong>Passport blank pages:</strong> {{ passport_blank_pages }}</p>
                 <p><strong>Currency at Arrival:</strong> {{ currency_arrival }}</p>
                 <p><strong>Currency at Exit:</strong> {{ currency_exit }}</p>
               </div>
@@ -63,8 +64,9 @@
         </div>
 
         <div class="col-md-4">
-            <div class="jumbotron jumbotron-fluid">
+            <div class="jumbotron jumbotron-fluid" style="padding: 4px">
               <div class="container">
+                  <br>
                 <h4 style="text-center" class="border-bottom mb-2">{{ country_name }}</h4>
                     <p><strong>Capital:</strong> {{ country_capital }} </p>
                     {% if country_population >= 1000000 %}

@@ -325,8 +325,8 @@ def info(request):
             elif k == "timezones":
                 country_timezone = v[0]
     except:
-        messages.warning(request, "Sorry, there is no info for this country.")
-    weather_desc=[]
+        messages.warning(request, f"Sorry, there is no country info for {d}.")
+    weather_desc = []
 
     try:
         path = f"https://api.openweathermap.org/data/2.5/weather?q={country_capital}&units=metric&appid={mimi.OPEN_WEATHER_API}"
