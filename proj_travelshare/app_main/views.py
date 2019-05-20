@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect, HttpResponseRe
 from app_user.models import ProfileTraveler,ProfileHost, Topic, User
 from .models import Trip, Available
 from django.views.generic import ListView
-from .utils import Calendar
+from .utils import CalendarTrip,CalendarAvail
 from django.utils.safestring import mark_safe
 import calendar
 from django.conf import settings
@@ -41,19 +41,35 @@ def hosts(request):
     return render(request,'app_main/hosts.html', context)
 
 
+class CalendarView(ListView):
+    model = Trip
+    template_name = 'app_main/calendar.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        d = get_date(self.request.GET.get('month', None))
+        cal = CalendarAvail(d.year, d.month)
+        html_cal = cal.formatmonth(withyear=True)
+        context['calendar'] = mark_safe(html_cal)
+        context['prev_month'] = prev_month(d)
+        context['next_month'] = next_month(d)
+        return context
+    # def get_queryset(self):
+    #     return Trip.objects.filter(user_id=self.kwargs['userid'])
+
 
 class CalendarViewTrip(ListView):
     model = Trip
     template_name = 'app_main/calendar_trip.html'
 
-    def get_queryset(self):
-        return Trip.objects.filter(user_id=self.kwargs['userid'])
+    # def get_queryset(self):
+    #     return Trip.objects.filter(user_id=self.kwargs['userid'])
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # d = get_date(self.request.GET.get('day', None))
         d = get_date(self.request.GET.get('month', None))
-        cal = Calendar(d.year, d.month)
+        cal = CalendarTrip(d.year, d.month)
         html_cal = cal.formatmonth(withyear=True)
         context['calendar'] = mark_safe(html_cal)
         context['prev_month'] = prev_month(d)
@@ -66,13 +82,9 @@ class CalendarViewAvailable(ListView):
     template_name = 'app_main/calendar_available.html'
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(user_id=self.kwargs['userid'])
-        print(context)
-
-        # d = get_date(self.request.GET.get('day', None))
+        context = super().get_context_data(**kwargs)
         d = get_date(self.request.GET.get('month', None))
-
-        cal = Calendar(d.year, d.month)
+        cal = CalendarAvail(d.year, d.month)
 
         html_cal = cal.formatmonth(withyear=True)
         context['calendar'] = mark_safe(html_cal)

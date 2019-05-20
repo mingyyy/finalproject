@@ -1,12 +1,12 @@
 from datetime import datetime, timedelta
 from calendar import HTMLCalendar
-from .models import Trip
+from .models import Trip, Available
 from django.db.models import Q
 
 
-class Calendar(HTMLCalendar):
+class CalendarTrip(HTMLCalendar):
     def __init__(self, year=None, month=None):
-        super(Calendar, self).__init__()
+        super(CalendarTrip, self).__init__()
         self.year = year
         self.month = month
 
@@ -93,9 +93,9 @@ class Calendar(HTMLCalendar):
         return cal+'</table>'
 
 
-class CalendarSub(HTMLCalendar):
+class CalendarAvail(HTMLCalendar):
     def __init__(self, year=None, month=None):
-        super(CalendarSub, self).__init__()
+        super(CalendarAvail, self).__init__()
         self.year = year
         self.month = month
 
@@ -121,7 +121,7 @@ class CalendarSub(HTMLCalendar):
                                          start_date__month__lt=self.month) |
                                        Q(start_date__year=self.year, end_date__year__gt=self.year,
                                          start_date__month=self.month, start_date__day__lte=day)
-                                       ).filter(id=id)
+                                       )
         d = ''
         for event in events_per_day:
             d += f'<li>{event.get_html_url}</li>'
@@ -139,7 +139,7 @@ class CalendarSub(HTMLCalendar):
         """
 
         """
-        events = Trip.objects.filter(Q(start_date__year=self.year, end_date__year=self.year,
+        events = Available.objects.filter(Q(start_date__year=self.year, end_date__year=self.year,
                                        start_date__month__lte=self.month, end_date__month__gte=self.month) |
                                      Q(start_date__year__lt=self.year, end_date__year__gt=self.year) |
                                      Q(start_date__year__lt=self.year, end_date__year=self.year,
