@@ -1,5 +1,6 @@
 from .models import Trip, Available
 from django import forms
+from app_user.constants import CITIZENSHIP_CHOICE, DESTINATION_CHOICE
 
 
 class TripForm(forms.ModelForm):
@@ -45,3 +46,11 @@ class AvailableDeleteForm(forms.Form):
     confirm = forms.CharField(max_length=7,
                               widget=forms.Textarea(attrs={'placeholder': 'confirm', 'rows': 1, 'cols': 4}),
                               required=False, label='')
+
+
+class EntryRequirementForm(forms.Form):
+    citizenship = forms.ChoiceField(label='Passport issued by which country?',
+                              choices=CITIZENSHIP_CHOICE, initial="US")
+
+    destination = forms.ChoiceField(label='Which country are you visiting as a tourist?',
+                              choices=DESTINATION_CHOICE, initial="VN")
