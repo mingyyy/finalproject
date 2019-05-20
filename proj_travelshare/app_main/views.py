@@ -197,8 +197,16 @@ def available(request, available_id):
     return render(request, 'app_main/available.html', context)
 
 
-def trip_list(request):
-    trips = Trip.objects.all()
+def trip_list(request, sort_choice=None):
+    if sort_choice == 1:
+        trips = Trip.objects.all().order_by("start_date")
+    elif sort_choice == 2:
+        trips = Trip.objects.all().order_by("end_date")
+    elif sort_choice == 3:
+        trips = Trip.objects.all().order_by("destination")
+    else:
+        trips = Trip.objects.all().order_by("user")
+    # trips = Trip.objects.all()
     context = {'trips': trips}
 
     return render(request, 'app_main/trip_list.html', context)
@@ -224,3 +232,8 @@ def available_list(request, sort_choice=None):
     context = {'available': available}
 
     return render(request, 'app_main/available_list.html', context)
+
+
+def info(request, country):
+    ''' Based on country name, get visa, weather, ccy info'''
+    return render(request, 'app_main/info.html')

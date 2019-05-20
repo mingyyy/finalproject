@@ -6,7 +6,7 @@
 
 <p>In total, {{available.count}} localhost availabilities are found. </p>
 <div class="container">
-  <label for="sel1">Sorting by (select one):</label>
+  <label for="sel1">Sort by (select one):</label>
   <div class="input-group mb-3">
       <select class="form-control" id="sel1">
         <option>1. start date</option>
@@ -24,26 +24,27 @@
 <br>
 
 {% for item in available %}
-
 <div class="media border p-3">
 
-  <div class="media-body">
-       <h4 style="">
-           {{item.start_date|date:"D d M Y" }} - {{item.end_date|date:"D d M Y" }}
+        <p><img src="{{item.user.profilehost.photo.url}}" alt="Profile Pictrue" class="mr-3 mt-3" style="width:108px;"></p>
 
-        </h4>
-        <small><i style="color: grey; display: inline">
+  <div class="media-body">
+       <h5 style="">
+           {{item.start_date|date:"Y M d, D" }} - {{item.end_date|date:"Y M d, D" }}
+
+        </h5>
+        <i style="color: grey; display: inline">
             <a href="{% url 'profile_host' item.user.id %}" >
                 {{item.user.username.title}}
             </a>
-        </i></small>
+        </i>
 
         <p>{{item.extra_info|slice:":100"}}...</p>
         <p>
             {%if item.summary %}
-                <span class="badge badge-primary"><small>{{item.summary}}</small></span>
+                <span class="badge badge-primary">{{item.summary}}</span>
             {% else %}
-                <span class="badge badge-secondary"><small>???Mysterious Location</small></span>
+                <span class="badge badge-secondary">???Mysterious Location</span>
             {% endif %}
         </p>
 

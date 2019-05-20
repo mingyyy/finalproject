@@ -16,12 +16,13 @@ Including another URLconf
 
 from django.urls import path
 from .views import home, travelers, hosts, trip, CalendarViewTrip, CalendarViewAvailable, \
-    available, available_new, trip_list, available_list
+    available, available_new, trip_list, available_list, info
 
 app_name = "app_main"
 
 urlpatterns = [
     path('', home, name='home'),
+    path('info', info, name='info'),
     path('travelers/', travelers, name='travelers'),
     path('hosts/', hosts, name='hosts'),
     path('trip_list/', trip_list, name='trip_list'),
