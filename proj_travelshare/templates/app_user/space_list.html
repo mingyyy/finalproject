@@ -2,8 +2,17 @@
 {% load static %}
 
 {% block content %}
+<br>
 <link rel="stylesheet" type="text/css" href="{% static 'css/acco.css' %}">
-    <h3>List of Available Space for <span class='badge badge-primary'>{{ user.profilehost.name }} </span> </h3>
+    <h3>List of Available Space for
+        <span class='badge badge-primary'>
+            {% if user.profilehost.name %}
+                {{ user.profilehost.name }}
+            {% else %}
+                {{ user.username}}
+            {% endif %}
+        </span>
+    </h3>
     <br>
 
     <div id="accordion">

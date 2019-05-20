@@ -65,18 +65,20 @@ class CalendarViewAvailable(ListView):
     model = Available
     template_name = 'app_main/calendar_available.html'
 
-    def get_queryset(self):
-        return Available.objects.filter(user_id=self.kwargs['userid'])
-
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+        context = super().get_context_data(user_id=self.kwargs['userid'])
+        print(context)
+
         # d = get_date(self.request.GET.get('day', None))
         d = get_date(self.request.GET.get('month', None))
+
         cal = Calendar(d.year, d.month)
+
         html_cal = cal.formatmonth(withyear=True)
         context['calendar'] = mark_safe(html_cal)
         context['prev_month'] = prev_month(d)
         context['next_month'] = next_month(d)
+
         return context
 
 
@@ -132,13 +134,8 @@ def trip(request, trip_id=None):
 
 
 @login_required
-def available(request, available_id=None):
+def available_new(request, available_id=None):
     instance = Available(user=request.user)
-    if available_id:
-        instance = get_object_or_404(Trip, id=available_id)
-    else:
-        instance = Available(user=request.user)
-
     form = AvailableForm(request.POST or None, instance=instance)
     form_confirm = AvailableDeleteForm(request.POST or None)
 
@@ -146,7 +143,7 @@ def available(request, available_id=None):
         available = form.save(commit=False)
         if available.available_duration() is False:
             messages.warning(request, "Your start and end dates are not valid!")
-            return HttpResponseRedirect(reverse('app_main:calendar_available',args=[request.user.id]))
+            return HttpResponseRedirect(reverse('app_main:calendar_available', args=[request.user.id]))
         available.user = request.user
         available.save()
         try:
@@ -158,3 +155,60 @@ def available(request, available_id=None):
         return HttpResponseRedirect(reverse('app_main:calendar_available',args=[request.user.id]))
     context = {'form': form, "id": available_id, 'form_confirm': form_confirm}
     return render(request, 'app_main/available.html',context)
+
+
+@login_required
+def available(request, available_id):
+    instance = Available(user=request.user, id=available_id)
+    # if available_id:
+    #     instance = get_object_or_404(Trip, id=available_id)
+    # else:
+    #     instance = Available(user=request.user)
+    form = AvailableForm(request.POST or None, instance=instance)
+    form_confirm = AvailableDeleteForm(request.POST or None)
+
+    if request.POST and form.is_valid():
+        available = form.save(commit=False)
+        if available.available_duration() is False:
+            messages.warning(request, "Your start and end dates are not valid!")
+            return HttpResponseRedirect(reverse('app_main:calendar_available', args=[request.user.id]))
+        available.user = request.user
+        available.save()
+        try:
+            if request.POST['confirm'] == 'confirm':
+                available.delete()
+                messages.warning(request, "This entry has been deleted!")
+        except KeyError:
+            pass
+        return HttpResponseRedirect(reverse('app_main:calendar_available', args=[request.user.id]))
+    context = {'form': form, "id": available_id, 'form_confirm': form_confirm}
+    return render(request, 'app_main/available.html', context)
+
+
+def trip_list(request):
+    trips = Trip.objects.all()
+    context = {'trips': trips}
+
+    return render(request, 'app_main/trip_list.html', context)
+
+
+def available_list(request, sort_choice=None):
+    '''
+    1. sorting by start_date
+    2. sorting by end_date
+    3. sorting by host_id
+    4. sorting by country
+
+    '''
+    if sort_choice == 1:
+        available = Available.objects.all().order_by("start_date")
+    elif sort_choice == 2:
+        available = Available.objects.all().order_by("end_date")
+    elif sort_choice == 3:
+        available = Available.objects.all().order_by("user")
+    else:
+        available = Available.objects.all().order_by("start_date")
+
+    context = {'available': available}
+
+    return render(request, 'app_main/available_list.html', context)

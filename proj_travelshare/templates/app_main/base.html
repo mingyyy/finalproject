@@ -29,7 +29,7 @@
 
           <nav class="navbar navbar-expand-sm navbar-dark bg-steel fixed-top">
             <div class="container">
-                <a href="{% url 'app_main:home' %}"><img src="{% static 'pic/tts_logo.png' %}" alt="logo" width="81" height="81" style="background:white"></a>
+                <a href="{% url 'app_main:home' %}"><img src="{% static 'pic/tts_logo.png' %}" alt="logo" width="81" height="81" style=""></a>
               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle"
                       aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
@@ -38,7 +38,7 @@
                 <div class="navbar-nav mr-auto">
 
                     <span class="navbar-nav text-center pt-1 pb-0 ">
-                    <a href="#" class="nav-item nav-link p-10"><small><i class="fa fa-map d-block"></i>Trips</small></a>
+                    <a href="{% url 'app_main:trip_list' %}" class="nav-item nav-link p-10"><small><i class="fa fa-map d-block"></i>Trips</small></a>
                     </span>
 
                     <span class="navbar-nav text-center pt-1 pb-0 ">
@@ -47,6 +47,10 @@
 
                     <span class="navbar-nav text-center pt-1 pb-0 ">
                     <a href="{% url 'app_main:hosts' %}" class="nav-item nav-link p-10"><small><i class="fa fa-university d-block"></i>Hosts</small></a>
+                    </span>
+
+                    <span class="navbar-nav text-center pt-1 pb-0 ">
+                    <a href="{% url 'app_main:available_list' %}" class="nav-item nav-link p-10"><small><i class="fa fa-table d-block"></i>Availables</small></a>
                     </span>
                 </div>
                 <!-- Navbar Right Side -->

@@ -1,0 +1,40 @@
+{% extends 'app_main/base.html' %}
+{% load static %}
+{% block content %}
+
+<h2>Upcoming Trips</h2>
+
+<p>In total, {{trips.count}} trips are found. </p>
+
+{% for item in trips %}
+
+    <div class="media border p-3">
+        <p><img src="{{item.user.profiletraveler.photo.url}}" alt="Profile Pictrue" class="mr-3 mt-3" style="width:108px;"></p>
+
+  <div class="media-body">
+       <h4 style="">
+           {{item.start_date|date:"D d M Y" }} - {{item.end_date|date:"D d M Y" }}
+
+        </h4>
+        <small><i style="color: grey; display: inline">
+            <a href="{% url 'profile_traveler' item.user.id %}" >
+                {{item.user.username.title}}
+            </a>
+        </i></small>
+
+    <p>{{item.details|slice:":100"}}...</p>
+    <p>
+        {%if item.destination %}
+            <span class="badge badge-primary"><small>{{item.destination}}</small></span>
+        {% else %}
+            <span class="badge badge-secondary"><small>???Mysterious Location</small></span>
+        {% endif %}
+    </p>
+
+  </div>
+</div>
+
+{% endfor %}
+
+
+{% endblock %}

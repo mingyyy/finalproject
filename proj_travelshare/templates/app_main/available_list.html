@@ -1,0 +1,56 @@
+{% extends 'app_main/base.html' %}
+{% load static %}
+{% block content %}
+
+<h2>Localhost Availability</h2>
+
+<p>In total, {{available.count}} localhost availabilities are found. </p>
+<div class="container">
+  <label for="sel1">Sorting by (select one):</label>
+  <div class="input-group mb-3">
+      <select class="form-control" id="sel1">
+        <option>1. start date</option>
+        <option>2. end date</option>
+        <option>3. localhost</option>
+        <option>4. country</option>
+      </select>
+        <div class="input-group-append">
+            <button class="btn btn-success" type="submit">Yes, order this way!</button>
+        </div>
+  </div>
+
+</div>
+
+<br>
+
+{% for item in available %}
+
+<div class="media border p-3">
+
+  <div class="media-body">
+       <h4 style="">
+           {{item.start_date|date:"D d M Y" }} - {{item.end_date|date:"D d M Y" }}
+
+        </h4>
+        <small><i style="color: grey; display: inline">
+            <a href="{% url 'profile_host' item.user.id %}" >
+                {{item.user.username.title}}
+            </a>
+        </i></small>
+
+        <p>{{item.extra_info|slice:":100"}}...</p>
+        <p>
+            {%if item.summary %}
+                <span class="badge badge-primary"><small>{{item.summary}}</small></span>
+            {% else %}
+                <span class="badge badge-secondary"><small>???Mysterious Location</small></span>
+            {% endif %}
+        </p>
+
+  </div>
+</div>
+
+{% endfor %}
+
+
+{% endblock %}

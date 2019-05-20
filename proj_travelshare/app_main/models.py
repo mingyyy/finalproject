@@ -42,3 +42,15 @@ class Available(models.Model):
 
     class Meta:
         ordering = ('start_date',)
+
+    @property
+    def get_html_url(self):
+        url = reverse('app_main:available_edit', args=(self.id,))
+        return f'<a href="{url}">{self.summary}</a>'
+
+    def available_duration(self):
+        delta = self.end_date - self.start_date
+        if delta.days >= 0:
+            return delta.days
+        else:
+            return False
