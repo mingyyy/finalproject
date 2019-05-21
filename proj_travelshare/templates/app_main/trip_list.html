@@ -28,6 +28,8 @@
     <div class="media-body">
         <h5 style="">
            {{item.start_date|date:"Y M d, D" }} - {{item.end_date|date:"Y M d, D" }}
+            <a href="{% url 'app_main:calendar_trip' item.user.id %}"> <i class="fa fa-calendar" href=""></i></a>
+
         </h5>
         <p><i style="color: grey; display: inline">
             <a href="{% url 'profile_traveler' item.user.id %}" >
