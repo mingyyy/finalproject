@@ -70,7 +70,7 @@
                             </span>
 
                             <span class="navbar-nav text-center pt-1 pb-0 ">
-                            <a href="{% url 'app_main:calendar_trip' user.id %}" class="nav-item nav-link p-10"><small><i class="fa fa-calendar-plus-o d-block"></i>Trip</small></a>
+                            <a href="{% url 'app_main:calendar_trip_private' user.id %}" class="nav-item nav-link p-10"><small><i class="fa fa-calendar-plus-o d-block"></i>Trip</small></a>
                             </span>
 
                         {% elif user.type == '1' %}
@@ -79,7 +79,7 @@
                             </span>
 
                             <span class="navbar-nav text-center pt-1 pb-0 ">
-                            <a href="{% url 'app_main:calendar_available' user.id %}" class="nav-item nav-link p-10"><small><i class="fa fa-calendar-plus-o d-block"></i>Available</small></a>
+                            <a href="{% url 'app_main:calendar_available_private' user.id %}" class="nav-item nav-link p-10"><small><i class="fa fa-calendar-plus-o d-block"></i>Available</small></a>
                             </span>
 
                         {% endif %}

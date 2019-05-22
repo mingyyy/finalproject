@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect, HttpResponseRe
 from app_user.models import ProfileTraveler,ProfileHost, Topic, User
 from .models import Trip, Available
 from django.views.generic import ListView
-from .utils import CalendarTrip,CalendarAvail
+from .utils import CalendarTrip,CalendarAvail, CalendarAvailPriv, CalendarTripPriv
 from django.utils.safestring import mark_safe
 import calendar
 from django.conf import settings
@@ -12,6 +12,7 @@ from django.contrib import messages
 from .forms import TripForm, TripDeleteForm, AvailableForm, AvailableDeleteForm, EntryRequirementForm
 import requests
 import mimi
+
 
 def home(request):
     profile_t = ProfileTraveler.objects.all()
@@ -59,6 +60,38 @@ class CalendarView(ListView):
     #     return Trip.objects.filter(user_id=self.kwargs['userid'])
 
 
+class CalendarViewTripPrivate(ListView):
+    model = Trip
+    template_name = 'app_main/calendar_trip_private.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        d = get_date(self.request.GET.get('month', None))
+
+        cal = CalendarTripPriv(d.year, d.month)
+        html_cal = cal.formatmonth(withyear=True, user_id=self.kwargs['user_id'])
+        context['calendar'] = mark_safe(html_cal)
+        context['prev_month'] = prev_month(d)
+        context['next_month'] = next_month(d)
+        return context
+
+
+class CalendarViewAvailablePrivate(ListView):
+    model = Available
+    template_name = 'app_main/calendar_available_private.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        d = get_date(self.request.GET.get('month', None))
+        cal = CalendarAvailPriv(d.year, d.month)
+
+        html_cal = cal.formatmonth(withyear=True, user_id=self.kwargs['user_id'])
+        context['calendar'] = mark_safe(html_cal)
+        context['prev_month'] = prev_month(d)
+        context['next_month'] = next_month(d)
+
+        return context
+
 class CalendarViewTrip(ListView):
     model = Trip
     template_name = 'app_main/calendar_trip.html'
@@ -86,6 +119,7 @@ class CalendarViewAvailable(ListView):
         context = super().get_context_data(**kwargs)
         d = get_date(self.request.GET.get('month', None))
         cal = CalendarAvail(d.year, d.month)
+
 
         html_cal = cal.formatmonth(withyear=True)
         context['calendar'] = mark_safe(html_cal)
@@ -132,7 +166,7 @@ def trip(request, trip_id=None):
         trip = form.save(commit=False)
         if trip.trip_duration() is False:
             messages.warning(request, "Your start and end dates are not valid!")
-            return HttpResponseRedirect(reverse('app_main:calendar_trip',args=[request.user.id]))
+            return HttpResponseRedirect(reverse('app_main:calendar_trip_private',args=[request.user.id]))
         trip.user = request.user
         trip.save()
         try:
@@ -141,7 +175,7 @@ def trip(request, trip_id=None):
                 messages.warning(request, "This trip has been deleted!")
         except KeyError:
             pass
-        return HttpResponseRedirect(reverse('app_main:calendar_trip',args=[request.user.id]))
+        return HttpResponseRedirect(reverse('app_main:calendar_trip_private',args=[request.user.id]))
     context = {'form': form, "id": trip_id, 'form_confirm': form_confirm}
     return render(request, 'app_main/trip.html',context)
 
@@ -156,7 +190,7 @@ def available_new(request, available_id=None):
         available = form.save(commit=False)
         if available.available_duration() is False:
             messages.warning(request, "Your start and end dates are not valid!")
-            return HttpResponseRedirect(reverse('app_main:calendar_available', args=[request.user.id]))
+            return HttpResponseRedirect(reverse('app_main:calendar_available_private', args=[request.user.id]))
         available.user = request.user
         available.save()
         try:
@@ -165,18 +199,19 @@ def available_new(request, available_id=None):
                 messages.warning(request, "This entry has been deleted!")
         except KeyError:
             pass
-        return HttpResponseRedirect(reverse('app_main:calendar_available',args=[request.user.id]))
+        return HttpResponseRedirect(reverse('app_main:calendar_available_private',args=[request.user.id]))
     context = {'form': form, "id": available_id, 'form_confirm': form_confirm}
     return render(request, 'app_main/available.html',context)
 
 
 @login_required
-def available(request, available_id):
-    instance = Available(user=request.user, id=available_id)
-    # if available_id:
-    #     instance = get_object_or_404(Trip, id=available_id)
-    # else:
-    #     instance = Available(user=request.user)
+def available(request, available_id=None):
+    instance = Available(user=request.user)
+    if available_id:
+        instance = get_object_or_404(Available, id=available_id)
+    else:
+        instance = Available(user=request.user)
+
     form = AvailableForm(request.POST or None, instance=instance)
     form_confirm = AvailableDeleteForm(request.POST or None)
 
@@ -184,18 +219,18 @@ def available(request, available_id):
         available = form.save(commit=False)
         if available.available_duration() is False:
             messages.warning(request, "Your start and end dates are not valid!")
-            return HttpResponseRedirect(reverse('app_main:calendar_available', args=[request.user.id]))
+            return HttpResponseRedirect(reverse('app_main:calendar_available_private',args=[request.user.id]))
         available.user = request.user
         available.save()
         try:
             if request.POST['confirm'] == 'confirm':
                 available.delete()
-                messages.warning(request, "This entry has been deleted!")
+                messages.warning(request, "This trip has been deleted!")
         except KeyError:
             pass
-        return HttpResponseRedirect(reverse('app_main:calendar_available', args=[request.user.id]))
+        return HttpResponseRedirect(reverse('app_main:calendar_available_private',args=[request.user.id]))
     context = {'form': form, "id": available_id, 'form_confirm': form_confirm}
-    return render(request, 'app_main/available.html', context)
+    return render(request, 'app_main/available.html',context)
 
 
 def trip_list(request, sort_choice=None):
@@ -205,7 +240,6 @@ def trip_list(request, sort_choice=None):
     3. sorting by destination
     4. sorting by traveler
     '''
-    print(request.POST)
     if request.method == "POST":
         sort_choice = request.POST['select']
         if sort_choice == '1' or None:
@@ -247,12 +281,9 @@ def available_list(request, sort_choice=None):
     return render(request, 'app_main/available_list.html', context)
 
 
-# def info(request, country):
-#     ''' Based on country name, get visa, weather, ccy info'''
-#     return render(request, 'app_main/info.html')
-
-
 def info(request):
+    # TODO: only if request.GET['get_visa_info']==['Submit']
+
     form = EntryRequirementForm(request.GET or None)
     # default requirement = Unkown, citizenship is US, destination is Vietnam
     lan = "en"
@@ -271,6 +302,7 @@ def info(request):
         # messages.success(request, f"You are from {cs} and going to visit {d}.")
     else:
         form=EntryRequirementForm()
+
     if cs == d:
         requirement = "NOT_REQUIRED"
         portrestriction = "None"
@@ -331,7 +363,6 @@ def info(request):
     try:
         path = f"https://api.openweathermap.org/data/2.5/weather?q={country_capital}&units=metric&appid={mimi.OPEN_WEATHER_API}"
         weather_info = requests.get(path).json()
-        # print(path)
         for k, v in weather_info.items():
             if k == "weather":
                 for x in v:

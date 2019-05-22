@@ -1,7 +1,8 @@
 from datetime import datetime, timedelta
 from calendar import HTMLCalendar
 from .models import Trip, Available
-from django.db.models import Q
+from django.db.models import Q, F
+from django.conf import settings
 
 
 class CalendarTrip(HTMLCalendar):
@@ -58,8 +59,7 @@ class CalendarTrip(HTMLCalendar):
                         Q(start_date__year=self.year, end_date__year__gt=self.year,
                           start_date__month__lt=self.month)|
                         Q(start_date__year=self.year, end_date__year__gt=self.year,
-                          start_date__month=self.month, start_date__day__lte=day)
-                                       )
+                          start_date__month=self.month, start_date__day__lte=day))
         d = ''
         for event in events_per_day:
             d += f'<li>{event.get_html_url}</li>'
@@ -74,17 +74,14 @@ class CalendarTrip(HTMLCalendar):
         return f'<tr>{week}</tr>'
 
     def formatmonth(self, withyear=True):
-        """
 
-        """
         events = Trip.objects.filter(Q(start_date__year=self.year, end_date__year=self.year,
                                        start_date__month__lte=self.month, end_date__month__gte=self.month) |
                                      Q(start_date__year__lt=self.year, end_date__year__gt=self.year) |
                                      Q(start_date__year__lt=self.year, end_date__year=self.year,
                                         end_date__month__gte=self.month) |
                                      Q(start_date__year=self.year, end_date__year__gt=self.year,
-                                        start_date__month__lte=self.month)
-                                     )
+                                        start_date__month__lte=self.month))
         cal = f'<table border="0" cellpadding="0" cellspacing="0" class="calendar">\n'
         cal += f'{self.formatmonthname(self.year, self.month, withyear=withyear)}\n'
         cal += f'{self.formatweekheader()}\n'
@@ -120,8 +117,7 @@ class CalendarAvail(HTMLCalendar):
                                        Q(start_date__year=self.year, end_date__year__gt=self.year,
                                          start_date__month__lt=self.month) |
                                        Q(start_date__year=self.year, end_date__year__gt=self.year,
-                                         start_date__month=self.month, start_date__day__lte=day)
-                                       )
+                                         start_date__month=self.month, start_date__day__lte=day))
         d = ''
         for event in events_per_day:
             d += f'<li>{event.get_html_url}</li>'
@@ -136,20 +132,134 @@ class CalendarAvail(HTMLCalendar):
         return f'<tr>{week}</tr>'
 
     def formatmonth(self, withyear=True):
-        """
 
-        """
         events = Available.objects.filter(Q(start_date__year=self.year, end_date__year=self.year,
                                        start_date__month__lte=self.month, end_date__month__gte=self.month) |
                                      Q(start_date__year__lt=self.year, end_date__year__gt=self.year) |
                                      Q(start_date__year__lt=self.year, end_date__year=self.year,
                                        end_date__month__gte=self.month) |
                                      Q(start_date__year=self.year, end_date__year__gt=self.year,
-                                       start_date__month__lte=self.month)
-                                     )
+                                       start_date__month__lte=self.month))
         cal = f'<table border="0" cellpadding="0" cellspacing="0" class="calendar">\n'
         cal += f'{self.formatmonthname(self.year, self.month, withyear=withyear)}\n'
         cal += f'{self.formatweekheader()}\n'
         for week in self.monthdays2calendar(self.year, self.month):
             cal += f'{self.formatweek(week, events)}\n'
         return cal + '</table>'
+
+
+class CalendarAvailPriv(HTMLCalendar):
+    def __init__(self, year=None, month=None, **kwargs):
+        super(CalendarAvailPriv, self).__init__(**kwargs)
+        self.year = year
+        self.month = month
+
+    def formatday(self, day, events):
+        events_per_day = events.filter(Q(start_date__year=self.year, end_date__year=self.year,
+                                         start_date__month=self.month, end_date__month=self.month,
+                                         start_date__day__lte=day, end_date__day__gte=day) |
+                                       Q(start_date__year=self.year, end_date__year=self.year,
+                                         start_date__month__lt=self.month, end_date__month__gt=self.month) |
+                                       Q(start_date__year=self.year, end_date__year=self.year,
+                                         start_date__month__lt=self.month, end_date__month=self.month,
+                                         end_date__day__gte=day) |
+                                       Q(start_date__year=self.year, end_date__year=self.year,
+                                         start_date__month=self.month, end_date__month__gt=self.month,
+                                         start_date__day__lte=day) |
+                                       Q(start_date__year__lt=self.year, end_date__year__gt=self.year) |
+                                       Q(start_date__year__lt=self.year, end_date__year=self.year,
+                                         end_date__month__gt=self.month) |
+                                       Q(start_date__year__lt=self.year, end_date__year=self.year,
+                                         end_date__month=self.month, end_date__day__gte=day) |
+                                       Q(start_date__year=self.year, end_date__year__gt=self.year,
+                                         start_date__month__lt=self.month) |
+                                       Q(start_date__year=self.year, end_date__year__gt=self.year,
+                                         start_date__month=self.month, start_date__day__lte=day))
+        d = ''
+        for event in events_per_day:
+            d += f'<li>{event.get_html_url}</li>'
+        if day != 0:
+            return f"<td><span class='date'>{day}</span><ul>{d}</ul></td>"
+        return '<td></td>'
+
+    def formatweek(self, theweek, events):
+        week = ''
+        for d, weekday in theweek:
+            week += self.formatday(d, events)
+        return f'<tr>{week}</tr>'
+
+    def formatmonth(self, withyear=True,**kwargs):
+        # User = settings.settings.AUTH_USER_MODEL
+
+        events = Available.objects.filter(Q(start_date__year=self.year, end_date__year=self.year,
+                                       start_date__month__lte=self.month, end_date__month__gte=self.month) |
+                                     Q(start_date__year__lt=self.year, end_date__year__gt=self.year) |
+                                     Q(start_date__year__lt=self.year, end_date__year=self.year,
+                                       end_date__month__gte=self.month) |
+                                     Q(start_date__year=self.year, end_date__year__gt=self.year,
+                                       start_date__month__lte=self.month)).filter(user_id=kwargs['user_id'])
+        cal = f'<table border="0" cellpadding="0" cellspacing="0" class="calendar">\n'
+        cal += f'{self.formatmonthname(self.year, self.month, withyear=withyear)}\n'
+        cal += f'{self.formatweekheader()}\n'
+        for week in self.monthdays2calendar(self.year, self.month):
+            cal += f'{self.formatweek(week, events)}\n'
+        return cal + '</table>'
+
+
+class CalendarTripPriv(HTMLCalendar):
+    def __init__(self, year=None, month=None):
+        super(CalendarTripPriv, self).__init__()
+        self.year = year
+        self.month = month
+
+
+    def formatday(self, day, events):
+        events_per_day = events.filter(Q(start_date__year=self.year, end_date__year=self.year,
+                          start_date__month=self.month, end_date__month=self.month,
+                          start_date__day__lte=day, end_date__day__gte=day)|
+                        Q(start_date__year=self.year, end_date__year=self.year,
+                          start_date__month__lt=self.month, end_date__month__gt=self.month)|
+                        Q(start_date__year=self.year, end_date__year=self.year,
+                          start_date__month__lt=self.month, end_date__month=self.month,
+                          end_date__day__gte=day)|
+                        Q(start_date__year=self.year, end_date__year=self.year,
+                          start_date__month=self.month, end_date__month__gt=self.month,
+                          start_date__day__lte=day)|
+                        Q(start_date__year__lt=self.year, end_date__year__gt=self.year)|
+                        Q(start_date__year__lt=self.year, end_date__year=self.year,
+                          end_date__month__gt=self.month)|
+                        Q(start_date__year__lt=self.year, end_date__year=self.year,
+                          end_date__month=self.month, end_date__day__gte=day)|
+                        Q(start_date__year=self.year, end_date__year__gt=self.year,
+                          start_date__month__lt=self.month)|
+                        Q(start_date__year=self.year, end_date__year__gt=self.year,
+                          start_date__month=self.month, start_date__day__lte=day))
+        d = ''
+        for event in events_per_day:
+            d += f'<li>{event.get_html_url}</li>'
+        if day != 0:
+            return f"<td><span class='date'>{day}</span><ul>{d}</ul></td>"
+        return '<td></td>'
+
+    def formatweek(self, theweek, events):
+        week = ''
+        for d, weekday in theweek:
+            week += self.formatday(d, events)
+        return f'<tr>{week}</tr>'
+
+    def formatmonth(self, withyear=True, **kwargs):
+
+        events = Trip.objects.filter(Q(start_date__year=self.year, end_date__year=self.year,
+                                       start_date__month__lte=self.month, end_date__month__gte=self.month) |
+                                     Q(start_date__year__lt=self.year, end_date__year__gt=self.year) |
+                                     Q(start_date__year__lt=self.year, end_date__year=self.year,
+                                        end_date__month__gte=self.month) |
+                                     Q(start_date__year=self.year, end_date__year__gt=self.year,
+                                        start_date__month__lte=self.month)).filter(user_id=kwargs['user_id'])
+
+        cal = f'<table border="0" cellpadding="0" cellspacing="0" class="calendar">\n'
+        cal += f'{self.formatmonthname(self.year, self.month, withyear=withyear)}\n'
+        cal += f'{self.formatweekheader()}\n'
+        for week in self.monthdays2calendar(self.year, self.month):
+            cal += f'{self.formatweek(week, events)}\n'
+        return cal+'</table>'

@@ -13,7 +13,7 @@
                 <br>
                 <li class="list-group-item"><a href="{% url 'program_list' user.id %}"><i class="fa fa-list"></i> Review List of Program Offer</a></li>
                 <br>
-                <li class="list-group-item"><a href="{% url 'app_main:calendar_trip' user.id %}"><i class="fa fa-calendar"></i> View trips in Calendar</a></li>
+                <li class="list-group-item"><a href="{% url 'app_main:calendar_trip_private' user.id %}"><i class="fa fa-calendar"></i> View My Trips in Calendar</a></li>
                 <br>
                 <li class="list-group-item text-center d-inline-block"><a href="{% url 'profile_update_traveler' %}"><i class="fa fa-pencil"></i> Update Traveler Profile - Personal</a></li>
                 <br>
@@ -29,7 +29,7 @@
                 <br>
                 <li class="list-group-item"><a href="{% url 'space_list' user.id  %}"><i class="fa fa-list"></i> Review List of Space Availability</a></li>
                 <br>
-                <li class="list-group-item"><a href="{% url 'app_main:calendar_available' user.id %}"><i class="fa fa-calendar"></i> View Availability in Calendar</a></li>
+                <li class="list-group-item"><a href="{% url 'app_main:calendar_available_private' user.id %}"><i class="fa fa-calendar"></i> View My Availability in Calendar</a></li>
                 <br>
                 <li class="list-group-item text-center d-inline-block"><a href="{% url 'profile_update_host' %}"><i class="fa fa-pencil"></i> Update Local Host Profile - Basic</a></li>
                 <br>
