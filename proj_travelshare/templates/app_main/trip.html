@@ -4,12 +4,12 @@
 {% block content %}
 <br>
 {% if id != None %}
-    <h3 class="left">Update Trip</h3>
+    <h3 class="left">Update Trip - {{ user.username }}</h3>
 {% else %}
-    <h3 class="left">Add New Trip</h3>
+    <h3 class="left">Add New Trip - {{ user.username }}</h3>
 {% endif %}
 
-    <a class="btn btn-info right" href="{% url 'app_main:calendar_trip' user.id %}?{{prev_month}}">Calendar</a>
+    <a class="btn btn-info right" href="{% url 'app_main:calendar_trip_private' user.id %}?{{prev_month}}">My Calendar</a>
     <br><br>
 
     <form method="post">
