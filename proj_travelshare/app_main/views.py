@@ -67,7 +67,6 @@ class CalendarViewTripPrivate(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         d = get_date(self.request.GET.get('month', None))
-
         cal = CalendarTripPriv(d.year, d.month)
         html_cal = cal.formatmonth(withyear=True, user_id=self.kwargs['user_id'])
         context['calendar'] = mark_safe(html_cal)
@@ -84,18 +83,16 @@ class CalendarViewAvailablePrivate(ListView):
         context = super().get_context_data(**kwargs)
         d = get_date(self.request.GET.get('month', None))
         cal = CalendarAvailPriv(d.year, d.month)
-
         html_cal = cal.formatmonth(withyear=True, user_id=self.kwargs['user_id'])
         context['calendar'] = mark_safe(html_cal)
         context['prev_month'] = prev_month(d)
         context['next_month'] = next_month(d)
-
         return context
+
 
 class CalendarViewTrip(ListView):
     model = Trip
     template_name = 'app_main/calendar_trip.html'
-
     # def get_queryset(self):
     #     return Trip.objects.filter(user_id=self.kwargs['userid'])
 
@@ -283,6 +280,7 @@ def available_list(request, sort_choice=None):
 
 def info(request):
     # TODO: only if request.GET['get_visa_info']==['Submit']
+    # print(request.GET)
 
     form = EntryRequirementForm(request.GET or None)
     # default requirement = Unkown, citizenship is US, destination is Vietnam
@@ -301,7 +299,7 @@ def info(request):
         d = request.GET["destination"]
         # messages.success(request, f"You are from {cs} and going to visit {d}.")
     else:
-        form=EntryRequirementForm()
+        form = EntryRequirementForm()
 
     if cs == d:
         requirement = "NOT_REQUIRED"
@@ -312,6 +310,8 @@ def info(request):
         ccy_arrival, ccy_exit = "Unlimited", "Unlimited"
         textual = ["Probably you don't need a visa to visit your country."]
     else:
+        # try:
+        #     if request.GET['get_visa_info'] == ['Submit']:
         url = "https://requirements-api.sandbox.joinsherpa.com/v2/entry-requirements"
         querystring = {"citizenship": cs, "destination": d, "language": lan,
                        "key": mimi.SHERPA_API_KEY}
@@ -343,6 +343,9 @@ def info(request):
                 # if k == "vaccination":
         except:
             messages.warning(request, "Sorry, visa requirement to this country is not available at the moment.")
+        # except:
+        #     pass
+    # if request.GET['get_country_info'] == ['Submit']:
     try:
         country_info = requests.get(f"https://restcountries.eu/rest/v2/alpha/{d}").json()
         for k, v in country_info.items():
@@ -385,3 +388,48 @@ def info(request):
                "weather_temp_min": weather_temp_min, "weather_temp_max": weather_temp_max,
                "weather_humidity": weather_humidity}
     return render(request, "app_main/info.html", context)
+
+
+def get_country_info(request, d):
+    try:
+        country_info = requests.get(f"https://restcountries.eu/rest/v2/alpha/{d}").json()
+        for k, v in country_info.items():
+            if k == "name":
+                country_name = v
+            elif k == "callingCodes":
+                country_call_code = v[0]
+            elif k == "capital":
+                country_capital = v
+            elif k == "population":
+                country_population = v
+            elif k == "timezones":
+                country_timezone = v[0]
+    except:
+        messages.warning(request, f"Sorry, there is no country info for {d}.")
+    context_country = { "country_name": country_name, "country_call_code": country_call_code,
+               "country_capital": country_capital, "country_population": country_population,
+               "country_timezone": country_timezone,}
+    return context_country
+
+
+def get_weather_info(request, country_capital):
+    weather_desc = []
+    try:
+        path = f"https://api.openweathermap.org/data/2.5/weather?q={country_capital}&units=metric&appid={mimi.OPEN_WEATHER_API}"
+        weather_info = requests.get(path).json()
+        for k, v in weather_info.items():
+            if k == "weather":
+                for x in v:
+                    weather_desc.append(x["main"])
+            if k == "main":
+                weather_temp = v["temp"]
+                weather_temp_min = v["temp_min"]
+                weather_temp_max = v["temp_max"]
+                weather_humidity = v["humidity"]
+    except:
+        messages.warning(request, "Sorry, there is no weather info for this city.")
+
+    context_weather = { "weather_desc": weather_desc, "weather_temp": weather_temp,
+               "weather_temp_min": weather_temp_min, "weather_temp_max": weather_temp_max,
+               "weather_humidity": weather_humidity}
+    return context_weather

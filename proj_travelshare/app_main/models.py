@@ -12,7 +12,7 @@ class Trip(models.Model):
     details = models.TextField()
 
     def __str__(self):
-        return self.destination
+        return self.user + " in " + self.destination
 
     class Meta:
         ordering = ('start_date',)
@@ -20,7 +20,7 @@ class Trip(models.Model):
     @property
     def get_html_url(self):
         url = reverse('app_main:trip_edit', args=(self.id,))
-        return f'<a href="{url}">{self.destination}</a>'
+        return f'<a href="{url}">{self.user} in {self.destination}</a>'
 
     def trip_duration(self):
         delta = self.end_date - self.start_date
