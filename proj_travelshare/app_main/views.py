@@ -115,11 +115,11 @@ class CalendarViewAvailableHost(ListView):
         context = super().get_context_data(**kwargs)
         d = get_date(self.request.GET.get('month', None))
         cal = CalendarAvailPriv(d.year, d.month)
-        html_cal = cal.formatmonth(withyear=True, user_id=self.kwargs['userid'])
+        html_cal = cal.formatmonth(withyear=True, userid=self.kwargs['userid'])
         context['calendar'] = mark_safe(html_cal)
         context['prev_month'] = prev_month(d)
         context['next_month'] = next_month(d)
-        context['host'] = User.objects.filter(id='userid')
+        context['host'] = ProfileHost.objects.get(user_id=self.kwargs['userid'])
         return context
 
 

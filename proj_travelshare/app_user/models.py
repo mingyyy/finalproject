@@ -150,7 +150,6 @@ class Link(models.Model):
 
 
 
-
 class Publish(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None, null=False, blank=False)
     on_profile = models.BooleanField()

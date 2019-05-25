@@ -38,7 +38,7 @@ class Available(models.Model):
     extra_info = models.TextField()
 
     def __str__(self):
-        return self.summary
+        return self.user + " has " + self.summary
 
     class Meta:
         ordering = ('start_date',)
