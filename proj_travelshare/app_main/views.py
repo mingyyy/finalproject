@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect, HttpResponseRe
 from app_user.models import ProfileTraveler,ProfileHost, Topic, User
 from .models import Trip, Available
 from django.views.generic import ListView
-from .utils import CalendarTrip,CalendarAvail, CalendarAvailPriv, CalendarTripPriv
+from .utils import CalendarTrip,CalendarAvail, CalendarAvailPriv, CalendarTripPriv, CalendarTripTraveler
 from django.utils.safestring import mark_safe
 import calendar
 from django.conf import settings
@@ -68,6 +68,7 @@ class CalendarViewTripPrivate(ListView):
         context = super().get_context_data(**kwargs)
         d = get_date(self.request.GET.get('month', None))
         cal = CalendarTripPriv(d.year, d.month)
+
         html_cal = cal.formatmonth(withyear=True, user_id=self.kwargs['user_id'])
         context['calendar'] = mark_safe(html_cal)
         context['prev_month'] = prev_month(d)
@@ -88,6 +89,39 @@ class CalendarViewAvailablePrivate(ListView):
         context['prev_month'] = prev_month(d)
         context['next_month'] = next_month(d)
         return context
+
+
+class CalendarViewTripTraveler(ListView):
+    model = Trip
+    template_name = 'app_main/calendar_trip_traveler.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        d = get_date(self.request.GET.get('month', None))
+        cal = CalendarTripTraveler(d.year, d.month)
+        html_cal = cal.formatmonth(withyear=True, userid=self.kwargs['userid'])
+        context['calendar'] = mark_safe(html_cal)
+        context['prev_month'] = prev_month(d)
+        context['next_month'] = next_month(d)
+        context['traveler'] = ProfileTraveler.objects.get(user_id=self.kwargs['userid'])
+        return context
+
+
+class CalendarViewAvailableHost(ListView):
+    model = Available
+    template_name = 'app_main/calendar_available_host.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        d = get_date(self.request.GET.get('month', None))
+        cal = CalendarAvailPriv(d.year, d.month)
+        html_cal = cal.formatmonth(withyear=True, user_id=self.kwargs['userid'])
+        context['calendar'] = mark_safe(html_cal)
+        context['prev_month'] = prev_month(d)
+        context['next_month'] = next_month(d)
+        context['host'] = User.objects.filter(id='userid')
+        return context
+
 
 
 class CalendarViewTrip(ListView):

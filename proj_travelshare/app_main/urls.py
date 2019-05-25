@@ -16,7 +16,8 @@ Including another URLconf
 
 from django.urls import path
 from .views import home, travelers, hosts, trip, CalendarViewTrip, CalendarViewAvailable, \
-    available, available_new, trip_list, available_list, info, CalendarViewTripPrivate, CalendarViewAvailablePrivate
+    available, available_new, trip_list, available_list, info, CalendarViewTripPrivate, CalendarViewAvailablePrivate, \
+    CalendarViewAvailableHost, CalendarViewTripTraveler
 
 app_name = "app_main"
 
@@ -30,6 +31,9 @@ urlpatterns = [
 
     path('calendar/trip/<int:userid>/', CalendarViewTrip.as_view(), name='calendar_trip'),
     path('calendar/available/<int:userid>/', CalendarViewAvailable.as_view(), name='calendar_available'),
+
+    path('calendar/trip/traveler/<int:userid>/', CalendarViewTripTraveler.as_view(), name='calendar_trip_traveler'),
+    path('calendar/available/host/<int:userid>/', CalendarViewAvailableHost.as_view(), name='calendar_available_host'),
 
     path('calendar/trip/private/<int:user_id>/', CalendarViewTripPrivate.as_view(), name='calendar_trip_private'),
     path('calendar/available/private/<int:user_id>/', CalendarViewAvailablePrivate.as_view(), name='calendar_available_private'),
