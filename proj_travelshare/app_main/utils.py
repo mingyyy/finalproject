@@ -295,7 +295,7 @@ class CalendarTripTraveler(HTMLCalendar):
                           start_date__month=self.month, start_date__day__lte=day))
         d = ''
         for event in events_per_day:
-            d += f'<li>{event.get_html_url}</li>'
+            d += f'<li>{event.get_detail_url}</li>'
         if day != 0:
             return f"<td><span class='date'>{day}</span><ul>{d}</ul></td>"
         return '<td></td>'

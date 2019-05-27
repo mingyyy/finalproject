@@ -467,3 +467,15 @@ def get_weather_info(request, country_capital):
                "weather_temp_min": weather_temp_min, "weather_temp_max": weather_temp_max,
                "weather_humidity": weather_humidity}
     return context_weather
+
+
+def trip_view(request, trip_id=None):
+    # TODO to be continued
+
+    trip = Trip.objects.get(id=trip_id)
+    print(trip)
+
+    profile = ProfileTraveler.objects.get(user_id=trip.user_id)
+
+    context = {'trip': trip, "profile": profile}
+    return render(request, 'app_main/trip_view.html',context)

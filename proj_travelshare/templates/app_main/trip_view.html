@@ -1,0 +1,35 @@
+{% extends "app_main/base.html" %}
+{% load static %}
+{% block content %}
+<br>
+{% if profile.first_name %}
+    <h3 class="left">View Trip - {{ profile.first_name }}</h3>
+{% else %}
+    <h3 class="left">View Trip - {{ profile.user.username }}</h3>
+{% endif %}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+
+            <p>{{trip.start_date}}</p>
+            <p>{{trip.end_date}}</p>
+        </div>
+        <div class="col-md-8">
+            {{trip.destination}}
+        </div>
+    </div>
+
+    <div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <p>{{trip.details}}</p>
+        </div>
+    </div>
+
+    </div>
+</div>
+
+    <br><br>
+{% endblock %}
