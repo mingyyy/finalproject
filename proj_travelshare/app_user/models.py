@@ -68,7 +68,7 @@ class ProfileTraveler(models.Model):
 class ProfileHost(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, blank=False, null=False)
-    type = models.CharField(choices=ORG_TYPE_CHOICE, max_length=20, null=True, blank=True)
+    type = models.CharField(choices=ORG_TYPE_CHOICE, max_length=30, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     phone = PhoneNumberField(unique=True, null=True, blank=True)
     address = AddressField(max_length=200)
@@ -115,8 +115,8 @@ class Program(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None, null=False, blank=False)
     subject = models.CharField(choices=SUBJECT_CHOICE, max_length=50)
 
-    type = models.CharField(choices=EVENT_TYPE_CHOICE, max_length=20)
-    frequency = models.CharField(choices=EVENT_FREQ_CHOICE, max_length=20)
+    type = models.CharField(choices=EVENT_TYPE_CHOICE, max_length=30)
+    frequency = models.CharField(choices=EVENT_FREQ_CHOICE, max_length=30)
     duration = models.CharField(choices=EVENT_DURATION_CHOICE, max_length=20)
 
     title = models.CharField(max_length=120, null=False)
@@ -147,6 +147,7 @@ class Space(models.Model):
                 img.save(self.photo.name)
         except FileNotFoundError as e:
                 pass
+
 
 class Link(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None, null=False, blank=False)

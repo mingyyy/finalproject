@@ -192,7 +192,6 @@ def profile_update_host(request):
         h_form = FormProfileHostUpdate(request.POST,
                            request.FILES, instance=request.user.profilehost)
         if h_form.is_valid():
-
             h_form.save()
             messages.success(request, "Basic section has been updated!")
             if request.POST['save'] == "next":
@@ -263,7 +262,7 @@ def profile_update_host3(request):
 def space_add(request):
     space = Space.objects.filter(owner=request.user)
     if request.method == 'POST':
-        form = FormSpace(request.POST)
+        form = FormSpace(request.POST, request.FILES)
         if form.is_valid():
             space = form.save(commit=False)
             space.owner = request.user
@@ -283,7 +282,7 @@ def space_add(request):
 def space_update(request, space_id):
     space = Space.objects.filter(owner=request.user).get(id=space_id)
     if request.method == 'POST':
-        form = FormSpace(request.POST, instance=space)
+        form = FormSpace(request.POST, request.FILES, instance=space)
         if form.is_valid():
             space = form.save(commit=False)
             space.owner = request.user
