@@ -346,7 +346,8 @@ def profile_host(request, userid):
     interest = profile.interests.all()
     lat, lon = profile.geolocation.lat, profile.geolocation.lon
     link = Link.objects.filter(user_id=userid)
-    context = {"profile": profile, 'lan': lan, 'interest': interest, 'lat': lat, 'lon': lon, 'link': link}
+    offer = Space.objects.filter(owner_id=userid)
+    context = {"profile": profile, 'lan': lan, 'interest': interest, 'link': link, 'offer': offer, 'lat': lat, 'lon': lon}
 
     return render(request, 'app_user/preview_host.html', context)
 
