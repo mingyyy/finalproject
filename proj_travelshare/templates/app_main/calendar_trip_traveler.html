@@ -1,11 +1,11 @@
 {% extends "app_main/base.html" %}
 {% block content %}
 
-<h2>Calender for
+<h2>Calender of
     {% if traveler.first_name %}
         {{traveler.first_name}}
     {% else %}
-        {{traveler.username}}
+        {{traveler.user.username}}
     {% endif %}
 </h2>
 
