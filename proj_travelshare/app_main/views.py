@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect, HttpResponseRe
 from app_user.models import ProfileTraveler,ProfileHost, Topic, User
 from .models import Trip, Available
 from django.views.generic import ListView
-from .utils import CalendarTrip,CalendarAvail, CalendarAvailPriv, CalendarTripPriv, CalendarTripTraveler
+from .utils import CalendarTrip,CalendarAvail, CalendarAvailPriv, CalendarTripPriv, CalendarTripTraveler, CalendarAvailHost
 from django.utils.safestring import mark_safe
 import calendar
 from django.conf import settings
@@ -114,7 +114,7 @@ class CalendarViewAvailableHost(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         d = get_date(self.request.GET.get('month', None))
-        cal = CalendarAvailPriv(d.year, d.month)
+        cal = CalendarAvailHost(d.year, d.month)
         html_cal = cal.formatmonth(withyear=True, userid=self.kwargs['userid'])
         context['calendar'] = mark_safe(html_cal)
         context['prev_month'] = prev_month(d)
@@ -150,7 +150,6 @@ class CalendarViewAvailable(ListView):
         context = super().get_context_data(**kwargs)
         d = get_date(self.request.GET.get('month', None))
         cal = CalendarAvail(d.year, d.month)
-
 
         html_cal = cal.formatmonth(withyear=True)
         context['calendar'] = mark_safe(html_cal)
@@ -470,12 +469,16 @@ def get_weather_info(request, country_capital):
 
 
 def trip_view(request, trip_id=None):
-    # TODO to be continued
-
     trip = Trip.objects.get(id=trip_id)
-    print(trip)
-
     profile = ProfileTraveler.objects.get(user_id=trip.user_id)
 
     context = {'trip': trip, "profile": profile}
     return render(request, 'app_main/trip_view.html',context)
+
+
+def available_view(request, available_id=None):
+    available = Available.objects.get(id=available_id)
+    profile = ProfileHost.objects.get(user_id=available.user_id)
+
+    context = {'available': available, "profile": profile}
+    return render(request, 'app_main/available_view.html',context)

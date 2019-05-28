@@ -53,6 +53,11 @@ class Available(models.Model):
         url = reverse('app_main:available_edit', args=(self.id,))
         return f'<a href="{url}">{self.summary}</a>'
 
+    @property
+    def get_detail_url(self):
+        url = reverse('app_main:available_detail', args=(self.id,))
+        return f'<a href="{url}">{self.summary}</a>'
+
     def available_duration(self):
         delta = self.end_date - self.start_date
         if delta.days >= 0:
