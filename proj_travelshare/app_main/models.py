@@ -2,7 +2,7 @@ from django.db import models
 from django.conf import settings
 from app_user.constants import CITIZENSHIP_CHOICE
 from django.shortcuts import reverse
-
+from PIL import Image
 
 class Trip(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None, null=False, blank=False)
@@ -41,6 +41,19 @@ class Available(models.Model):
     end_date = models.DateTimeField()
     summary = models.CharField(max_length=100)
     extra_info = models.TextField()
+    photo = models.ImageField(default='default.jpg', upload_to='space_host')
+
+    def save(self, *args, **kwargs):
+        '''resize fotos'''
+        super().save(*args, **kwargs)
+        try:
+            img = Image.open(self.photo.name)
+            if img.height > 300 or img.width > 300:
+                output_size = (300, 300)
+                img.thumbnail(output_size)
+                img.save(self.photo.name)
+        except FileNotFoundError as e:
+                pass
 
     def __str__(self):
         return self.user + " has " + self.summary
