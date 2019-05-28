@@ -4,6 +4,7 @@ from app_user.constants import CITIZENSHIP_CHOICE
 from django.shortcuts import reverse
 from PIL import Image
 
+
 class Trip(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None, null=False, blank=False)
     start_date = models.DateTimeField()
@@ -56,7 +57,7 @@ class Available(models.Model):
                 pass
 
     def __str__(self):
-        return self.user + " has " + self.summary
+        return self.summary
 
     class Meta:
         ordering = ('start_date',)

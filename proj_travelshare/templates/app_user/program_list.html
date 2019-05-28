@@ -3,7 +3,15 @@
 
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/acco.css' %}">
-    <h3>List of Traveler Offer from <span class='badge badge-primary'>{{ user.first_name }} {{ user.last_name }}</span></h3>
+    <h3>List
+        <em>
+            {% if user.first_name %}
+                {{ user.first_name }}
+            {% else %}
+                {{ user.username }}
+            {% endif %}
+        </em>'s Offer
+    </h3>
     <br>
 
     <div id="accordion">

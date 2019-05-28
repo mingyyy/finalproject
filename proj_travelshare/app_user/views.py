@@ -335,7 +335,8 @@ def profile_traveler(request, userid):
     lan = profile.languages.all()
     expertise = profile.expertise.all()
     link = Link.objects.filter(user_id=userid)
-    context = {"profile": profile, 'lan': lan, 'expertise': expertise, "link": link}
+    offer = Program.objects.filter(owner_id=userid)
+    context = {"profile": profile, 'lan': lan, 'expertise': expertise, "link": link,'offer':offer}
 
     return render(request, 'app_user/preview_traveler.html', context)
 

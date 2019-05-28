@@ -14,6 +14,66 @@
             <div class="media-body">
               <p class="text-secondary">{{ profile.user.email }}</p>
             </div>
+            <br>
+
+            <h5>Current Offers</h5>
+            <div>
+                <ul class="list-group">
+                    {% for item in offer %}
+                        <li class="list-group-item">
+                              <a href="#" data-toggle="modal" data-target="#myModal{{forloop.counter}}">
+                                {{ item.title }}
+                              </a>
+                              <div class="modal" id="myModal{{forloop.counter}}">
+                                <div class="modal-dialog">
+                                  <div class="modal-content">
+
+                                    <!-- Modal Header -->
+                                    <div class="modal-header">
+                                      <h4 class="modal-title">{{ item.title }}</h4>
+                                      <a type="button" class="close" data-dismiss="modal">&times;</a>
+                                    </div>
+
+                                    <!-- Modal body -->
+                                    <div class="modal-body">
+                                        <div class="content-section">
+                                            <div class="article-metadata">
+                                                <p><span class='text-muted'>Type of your offer: </span> {{ item.type }}</p>
+                                            </div>
+
+                                            <div class="article-metadata">
+                                                <p><span class='text-muted'>Frequency of your offer: </span> {{ item.frequency }} </p>
+                                            </div>
+
+                                            <div class="article-metadata">
+                                                <p><span class='text-muted'>Duration of your offer: </span> {{ item.duration }} </p>
+                                            </div>
+
+                                            <div class="article-metadata">
+                                                <p><span class='text-muted'>Description: </span> </p>
+                                                <p>{{ item.description }}</p>
+                                            </div>
+
+                                            <div class="article-metadata">
+                                                <p><span class='text-muted'>Requirement of the space: </span> </p>
+                                                <p>{{ item.requirement }}</p>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <!-- Modal footer -->
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                    </div>
+
+                                  </div>
+                                </div>
+                              </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
         <div class="col-sm-9">
             <div class="content-section">
