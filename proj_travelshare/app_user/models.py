@@ -131,10 +131,22 @@ class Space(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None, null=False, blank=False)
     title = models.CharField(max_length=120, null=False)
     detail = models.TextField()
+    photo = models.ImageField(default='default.jpg', upload_to='space_host')
 
     def __str__(self):
         return self.title
 
+    def save(self, *args, **kwargs):
+        '''resize fotos'''
+        super().save(*args, **kwargs)
+        try:
+            img = Image.open(self.photo.name)
+            if img.height > 300 or img.width > 300:
+                output_size = (300, 300)
+                img.thumbnail(output_size)
+                img.save(self.photo.name)
+        except FileNotFoundError as e:
+                pass
 
 class Link(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None, null=False, blank=False)

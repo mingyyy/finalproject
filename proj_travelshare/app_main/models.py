@@ -42,19 +42,6 @@ class Available(models.Model):
     end_date = models.DateTimeField()
     summary = models.CharField(max_length=100)
     extra_info = models.TextField()
-    photo = models.ImageField(default='default.jpg', upload_to='space_host')
-
-    def save(self, *args, **kwargs):
-        '''resize fotos'''
-        super().save(*args, **kwargs)
-        try:
-            img = Image.open(self.photo.name)
-            if img.height > 300 or img.width > 300:
-                output_size = (300, 300)
-                img.thumbnail(output_size)
-                img.save(self.photo.name)
-        except FileNotFoundError as e:
-                pass
 
     def __str__(self):
         return self.summary

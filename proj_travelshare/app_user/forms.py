@@ -100,8 +100,8 @@ class FormProfileHostUpdate2(forms.ModelForm):
 class FormSpace(forms.ModelForm):
     class Meta:
         model = Space
-        fields = ['title', 'detail']
-        label = {'title': "What you offer"}
+        fields = ['title', 'detail', 'photo']
+        label = {'title': "What you offer","photo":"Picture"}
         widgets = {
             'title': forms.TextInput(attrs={'placeholder': 'e.g. Meeting room for 50 people',}),
             'detail': forms.Textarea(attrs={'placeholder': 'Details of the space, equipments etc',}),

@@ -372,7 +372,7 @@ class CalendarAvailPriv(HTMLCalendar):
                                      Q(start_date__year__lt=self.year, end_date__year=self.year,
                                        end_date__month__gte=self.month) |
                                      Q(start_date__year=self.year, end_date__year__gt=self.year,
-                                       start_date__month__lte=self.month)).filter(user_id=kwargs['userid'])
+                                       start_date__month__lte=self.month)).filter(user_id=kwargs['user_id'])
         cal = f'<table border="0" cellpadding="0" cellspacing="0" class="calendar">\n'
         cal += f'{self.formatmonthname(self.year, self.month, withyear=withyear)}\n'
         cal += f'{self.formatweekheader()}\n'
