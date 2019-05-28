@@ -9,21 +9,28 @@
     <ul class="list-group">
         {% if user.is_authenticated %}
             {% if user.type == '0' %}
-                <li class="list-group-item"><a href="{% url 'profile_traveler' user.id %}"><i class="fa fa-book"></i> Review Traveler Profile</a></li>
-                <br>
-                <li class="list-group-item"><a href="{% url 'program_list' user.id %}"><i class="fa fa-list"></i> Review List of Program Offer</a></li>
-                <br>
-                <li class="list-group-item"><a href="{% url 'app_main:calendar_trip_private' user.id %}"><i class="fa fa-calendar"></i> View My Trips in Calendar</a></li>
-                <br>
-                <li class="list-group-item text-center d-inline-block"><a href="{% url 'profile_update_traveler' %}"><i class="fa fa-pencil"></i> Update Traveler Profile - Personal</a></li>
-                <br>
-                <li class="list-group-item text-center d-inline-block"><a href="{% url 'profile_update_traveler2' %}"><i class="fa fa-pencil"></i> Update Traveler Profile - Professional</a></li>
-                <br>
-                <li class="list-group-item text-center d-inline-block"><a href="{% url 'profile_update_traveler3' %}"><i class="fa fa-pencil"></i> Update Traveler Profile - Social Links</a></li>
+              <div class="container">
+                  <div class="row">
+                      <div class="col-md-6">
+                            <li class="list-group-item"><a href="{% url 'profile_traveler' user.id %}"><i class="fa fa-book"></i> View Traveler Profile</a></li>
+                            <br>
+                            <li class="list-group-item"><a href="{% url 'program_list' user.id %}"><i class="fa fa-list"></i> View List of Program Offer</a></li>
+                            <br>
+                            <li class="list-group-item"><a href="{% url 'app_main:calendar_trip_private' user.id %}"><i class="fa fa-calendar"></i> View My Trips in Calendar</a></li>
+                            <br>
+                      </div>
 
-                <br>
-                <li class="list-group-item text-right d-inline-block"><a href="{% url 'program_add' %}"><i class="fa fa-plus-circle"></i> Add Program Offer</a></li>
-
+                      <div class="col-md-6">
+                            <li class="list-group-item"><a href="{% url 'profile_update_traveler' %}"><i class="fa fa-pencil"></i> Update Traveler Profile - Personal</a></li>
+                            <br>
+                            <li class="list-group-item"><a href="{% url 'profile_update_traveler2' %}"><i class="fa fa-pencil"></i> Update Traveler Profile - Professional</a></li>
+                            <br>
+                            <li class="list-group-item"><a href="{% url 'profile_update_traveler3' %}"><i class="fa fa-pencil"></i> Update Traveler Profile - Social Links</a></li>
+                            <br>
+                            <li class="list-group-item"><a href="{% url 'program_add' %}"><i class="fa fa-plus-circle"></i> Add Program Offer</a></li>
+                      </div>
+                  </div>
+              </div>
             {% elif user.type == '1' %}
               <div class="container">
                   <div class="row">
