@@ -6,26 +6,35 @@
 
 <p>In total, {{trips.count}} trips are found. </p>
 <div class="container">
-  <label for="sel1">Sort by (select one):</label>
-    <form action="" method="post">
-        {% csrf_token %}
-      <div class="input-group mb-3">
-          <select class="form-control" id="sel1" name="select">
-            <option value="1">Start date</option>
-            <option value="2">End date</option>
-            <option value="3">Destination</option>
-            <option value="4">Traveler</option>
-          </select>
-          <div class="input-group-append">
-            <button class="btn btn-success" type="submit">Yes, order this way!</button>
+<div class="row">
+    <div class="col-sm-3">
+      <label for="sel1">Sort by (select one):</label>
+        <form action="" method="post">
+            {% csrf_token %}
+          <div class="input-group mb-3">
+              <select class="form-control" id="sel1" name="select">
+                <option value="1">Start date</option>
+                <option value="2">End date</option>
+                <option value="3">Destination</option>
+                <option value="4">Traveler</option>
+              </select>
+              <div class="input-group-append">
+                <button class="btn btn-success" type="submit">Submit</button>
+              </div>
           </div>
-      </div>
-    </form>
+        </form>
+    </div>
+    <div class="col-sm-9">
+        <p class="mb-2">Type key words to search for specific items(e.g. English):</p>
+        <input class="form-control" id="myInput" type="text" placeholder="Search.." >
+
+    </div>
+</div>
 </div>
 {% for item in trips %}
 <div class="media border p-3">
     <p><img src="{{item.user.profiletraveler.photo.url}}" alt="Profile Pictrue" class="mr-3 mt-3" style="width:108px;"></p>
-    <div class="media-body">
+    <div class="media-body" id="#myDIV">
         <h5 style="">
            {{item.start_date|date:"Y M d, D" }} - {{item.end_date|date:"Y M d, D" }}
             <a href="{% url 'app_main:calendar_trip_traveler' item.user.id %}"> <i class="fa fa-calendar" href=""></i></a>
@@ -50,8 +59,19 @@
 
 {% block script %}
     <script>
-        $(function() {
-            $('.form-control').val( {{selected}} );
+        <!--$(function() {-->
+            <!--$('.form-control').val( {{selected}} );-->
+        <!--});-->
+
+    $(document).ready(function(){
+      $("#myInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#myDIV *").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
+      });
+
+      $('#sel1').val( {{selected}} );
+    });
     </script>
 {% endblock %}

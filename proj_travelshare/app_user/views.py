@@ -10,6 +10,7 @@ from .models import ProfileTraveler, ProfileHost, Space, Program, Language, Link
 from django.contrib.auth import logout, login, authenticate
 from .constants import BRAND_LIST
 from .forms import LinkFormset
+from mimi import GOOGLE_MAPS_API_KEY
 
 
 def viewregister(request):
@@ -347,7 +348,9 @@ def profile_host(request, userid):
     lat, lon = profile.geolocation.lat, profile.geolocation.lon
     link = Link.objects.filter(user_id=userid)
     offer = Space.objects.filter(owner_id=userid)
-    context = {"profile": profile, 'lan': lan, 'interest': interest, 'link': link, 'offer': offer, 'lat': lat, 'lon': lon}
+    key = GOOGLE_MAPS_API_KEY
+    context = {"profile": profile, 'lan': lan, 'interest': interest, 'link': link,
+               'offer': offer, 'lat': lat, 'lon': lon, 'key':key}
 
     return render(request, 'app_user/preview_host.html', context)
 
