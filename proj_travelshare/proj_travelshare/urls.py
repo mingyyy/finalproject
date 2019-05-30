@@ -16,19 +16,32 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from app_user import views as user_views
-from django.contrib.auth.views import (LogoutView, LoginView,
-    PasswordResetView, PasswordResetDoneView,PasswordResetConfirmView, PasswordResetCompleteView)
+from django.contrib.auth.views import (LogoutView, LoginView, PasswordResetView,
+                                       PasswordResetDoneView,PasswordResetConfirmView, PasswordResetCompleteView)
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('app_main.urls')),
+
     path('register/', user_views.viewregister, name='register'),
     path('login/', LoginView.as_view(template_name="app_user/login.html"), name="login"),
     path('logout/', LogoutView.as_view(template_name="app_user/logout.html"), name="logout"),
-    path('index/', user_views.viewindex, name='index'),
+    path('password-reset/', PasswordResetView.as_view(template_name="app_user/password_reset.html"),
+       name="password_reset"),
+    path('password-reset/done/',
+       PasswordResetDoneView.as_view(template_name="app_user/password_reset_done.html"),
+       name="password_reset_done"),
+    path('password-reset-confirm/<uidb64>/<token>/',
+       PasswordResetConfirmView.as_view(template_name="app_user/password_reset_confirm.html"),
+       name="password_reset_confirm"),
+    path('password-reset-complete/',
+       PasswordResetCompleteView.as_view(template_name="app_user/password_reset_complete.html"),
+       name="password_reset_complete"),
 
+
+    path('index/', user_views.viewindex, name='index'),
     path('profile_update_host/', user_views.profile_update_host, name='profile_update_host'),
     path('profile_update_host2/', user_views.profile_update_host2, name='profile_update_host2'),
     path('profile_update_host3/', user_views.profile_update_host3, name='profile_update_host3'),

@@ -16,8 +16,9 @@ Including another URLconf
 
 from django.urls import path
 from .views import home, travelers, hosts, trip, CalendarViewTrip, CalendarViewAvailable, \
-    available, available_new, trip_list, available_list, info, CalendarViewTripPrivate, CalendarViewAvailablePrivate, \
-    CalendarViewAvailableHost, CalendarViewTripTraveler, trip_view, available_view
+    available, available_new, trip_list, available_list, info, CalendarViewTripPrivate, \
+    CalendarViewAvailablePrivate, CalendarViewAvailableHost, CalendarViewTripTraveler, \
+    trip_view, available_view
 
 app_name = "app_main"
 
