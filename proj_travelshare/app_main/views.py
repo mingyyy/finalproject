@@ -12,6 +12,7 @@ from django.contrib import messages
 from .forms import TripForm, TripDeleteForm, AvailableForm, AvailableDeleteForm, EntryRequirementForm
 import requests
 import mimi
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def home(request):
@@ -23,15 +24,15 @@ def home(request):
 
 
 def travelers(request):
-    profile = ProfileTraveler.objects.all()
-
-    # for p in profile:
-    #     if p.user.type == '0':
-    #         expertise = p.expertise.all()
-    #         lan = p.languages.all()
-    #     else:
-    #         expertise = []
-    #         lan = []
+    profile_list = ProfileTraveler.objects.all()
+    page = request.GET.get('page', 1)
+    paginator = Paginator(profile_list, 3)
+    try:
+        profile = paginator.page(page)
+    except PageNotAnInteger:
+        profile = paginator.page(1)
+    except EmptyPage:
+        profile = paginator.page(paginator.num_pages)
     context = {'profile': profile}
     return render(request,'app_main/travelers.html', context)
 
@@ -121,7 +122,6 @@ class CalendarViewAvailableHost(ListView):
         context['next_month'] = next_month(d)
         context['host'] = ProfileHost.objects.get(user_id=self.kwargs['userid'])
         return context
-
 
 
 class CalendarViewTrip(ListView):
