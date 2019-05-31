@@ -38,8 +38,15 @@ def travelers(request):
 
 
 def hosts(request):
-    profile = ProfileHost.objects.all()
-
+    profile_list = ProfileHost.objects.all()
+    page = request.GET.get('page', 1)
+    paginator = Paginator(profile_list, 1)
+    try:
+        profile = paginator.page(page)
+    except PageNotAnInteger:
+        profile = paginator.page(1)
+    except EmptyPage:
+        profile = paginator.page(paginator.num_pages)
     context = {'profile': profile}
     return render(request,'app_main/hosts.html', context)
 
