@@ -291,7 +291,7 @@ def trip_list(request, sort_choice=None):
         trips = Trip.objects.all().order_by('start_date')
 
     page = request.GET.get('page', 1)
-    paginator = Paginator(trips, 1)
+    paginator = Paginator(trips, 3)
     try:
         trips = paginator.page(page)
     except PageNotAnInteger:
@@ -324,7 +324,7 @@ def available_list(request, sort_choice=None):
         available = Available.objects.all().order_by('start_date')
 
     page = request.GET.get('page', 1)
-    paginator = Paginator(available, 1)
+    paginator = Paginator(available, 3)
     try:
         available = paginator.page(page)
     except PageNotAnInteger:
@@ -368,8 +368,7 @@ def info(request):
         ccy_arrival, ccy_exit = "Unlimited", "Unlimited"
         textual = ["Probably you don't need a visa to visit your country."]
     else:
-        # try:
-        #     if request.GET['get_visa_info'] == ['Submit']:
+
         url = "https://requirements-api.sandbox.joinsherpa.com/v2/entry-requirements"
         querystring = {"citizenship": cs, "destination": d, "language": lan,
                        "key": mimi.SHERPA_API_KEY}
@@ -401,9 +400,7 @@ def info(request):
                 # if k == "vaccination":
         except:
             messages.warning(request, "Sorry, visa requirement to this country is not available at the moment.")
-        # except:
-        #     pass
-    # if request.GET['get_country_info'] == ['Submit']:
+
     try:
         country_info = requests.get(f"https://restcountries.eu/rest/v2/alpha/{d}").json()
         for k, v in country_info.items():
@@ -446,6 +443,78 @@ def info(request):
                "weather_temp_min": weather_temp_min, "weather_temp_max": weather_temp_max,
                "weather_humidity": weather_humidity}
     return render(request, "app_main/info.html", context)
+
+
+def get_visa_info(request):
+
+    form = EntryRequirementForm(request.GET or None)
+    # default requirement = Unkown, citizenship is US, destination is Vietnam
+    lan = "en"
+    cs = "US"
+    d = "VN"
+    requirement, portrestriction, allowedstay, type = "Null", "Unknown", "Unknown", "Unknown"
+    passport_validity, password_blank_pages = "Unknown", "Unknown"
+    ccy_arrival, ccy_exit = "Unknown", "Unknown"
+    textual = []
+    if request.GET:
+        cs = request.GET["citizenship"]
+        d = request.GET["destination"]
+        # messages.success(request, f"You are from {cs} and going to visit {d}.")
+    else:
+        form = EntryRequirementForm()
+
+    if cs == d:
+        requirement = "NOT_REQUIRED"
+        portrestriction = "None"
+        allowedstay = "Unlimited"
+        type = "Citizenship"
+        passport_validity, password_blank_pages = "None", "None"
+        ccy_arrival, ccy_exit = "Unlimited", "Unlimited"
+        textual = ["Probably you don't need a visa to visit your country."]
+    else:
+        try:
+            if request.GET['get_visa_info'] == 'Submit':
+                url = "https://requirements-api.sandbox.joinsherpa.com/v2/entry-requirements"
+                querystring = {"citizenship": cs, "destination": d, "language": lan,
+                               "key": mimi.SHERPA_API_KEY}
+                headers = {'accept': '*/*'}
+                try:
+                    response = requests.request("GET", url, headers=headers, params=querystring)
+                    visa_info = response.json()
+                    for k, v in visa_info.items():
+                        if k == "visa":
+                            for key, value in v[0].items():
+                                print(key)
+                                if key == "requirement":
+                                    requirement = value
+                                elif key == "allowedStay":
+                                    allowedstay = value
+                                elif key == "portRestriction":
+                                    portrestriction = value
+                                elif key == "type":
+                                    type = value
+                                elif key == "textual":
+                                    for x in value["text"]:
+                                        textual.append(x)
+                        if k == "passport":
+                            passport_validity = v["passport_validity"]
+                            password_blank_pages = v["blank_pages"]
+                        if k == "currency":
+                            ccy_exit = v["exit"]
+                            ccy_arrival = v["arrival"]
+                        # if k == "vaccination":
+                except:
+                    messages.warning(request, "Sorry, visa requirement to this country is not available at the moment.")
+            else:
+                messages.warning(request, "Please select the countries from the list.")
+        except:
+            messages.warning(request, "Please enter the info.")
+
+    context = {"form": form, "requirement": requirement, "allowedstay": allowedstay,
+               "portrestriction": portrestriction,"type": type, "textual": textual,
+               "passport_blank_pages": password_blank_pages,"currency_exit": ccy_exit,
+               "currency_arrival": ccy_arrival, }
+    return render(request, "app_main/get_info.html", context)
 
 
 def get_country_info(request, d):
