@@ -323,6 +323,15 @@ def available_list(request, sort_choice=None):
     else:
         available = Available.objects.all().order_by('start_date')
 
+    page = request.GET.get('page', 1)
+    paginator = Paginator(available, 1)
+    try:
+        available = paginator.page(page)
+    except PageNotAnInteger:
+        available = paginator.page(1)
+    except EmptyPage:
+        available = paginator.page(paginator.num_pages)
+
     context = {'available': available, 'selected': sort_choice}
     return render(request, 'app_main/available_list.html', context)
 
