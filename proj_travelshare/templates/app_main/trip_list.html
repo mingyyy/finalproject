@@ -55,7 +55,43 @@
     </div>
 </div>
 {% endfor %}
+
+<br>
+
+{% if trips.has_other_pages %}
+    <ul class="pagination">
+        {% if trips.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{ trips.previous_page_number }}">Previous</a></li>
+        {% else %}
+            <li class="page-item disabled"><span class="page-link">Previous</span></li>
+        {% endif %}
+
+        {% if trips.number|add:'-3' > 1 %}
+            <li class="page-item"><a class="page-link" href="?page={{ trips.number|add:'-4' }}">&hellip;</a></li>
+        {% endif %}
+
+        {% for i in trips.paginator.page_range %}
+            {% if trips.number == i %}
+                <li class="page-item active"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
+            {% elif i > trips.number|add:'-4' and i < trips.number|add:'4' %}
+                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+        {% endfor %}
+
+        {% if trips.paginator.num_pages > trips.number|add:'3' %}
+            <li class="page-item"><a class="page-link" href="?page={{ trips.number|add:'4' }}">&hellip;</a></li>
+        {% endif %}
+
+        {% if trips.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ trips.next_page_number }}">Next</a></li>
+        {% else %}
+            <li class="page-item disabled"><span class="page-link">Next</span></li>
+        {% endif %}
+    </ul>
+{% endif %}
+
 {% endblock %}
+
 
 {% block script %}
     <script>

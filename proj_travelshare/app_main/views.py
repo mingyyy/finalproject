@@ -290,6 +290,15 @@ def trip_list(request, sort_choice=None):
     else:
         trips = Trip.objects.all().order_by('start_date')
 
+    page = request.GET.get('page', 1)
+    paginator = Paginator(trips, 1)
+    try:
+        trips = paginator.page(page)
+    except PageNotAnInteger:
+        trips = paginator.page(1)
+    except EmptyPage:
+        trips = paginator.page(paginator.num_pages)
+
     context = {'trips': trips, 'selected': sort_choice}
     return render(request, 'app_main/trip_list.html', context)
 
