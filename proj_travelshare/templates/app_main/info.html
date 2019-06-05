@@ -38,8 +38,17 @@
             <form action="" method="get">
                 {% csrf_token %}
                 {{ form|crispy }}
-                <input type="submit" value="Submit" name="get_visa_info">
+                <button class="btn btn-secondary" type="submit" value="Submit" name="get_visa_info" onclick="$('#loading').show();$('#before').hide();">
+                    <div id="before">Submit</div>
+                    <div id="loading" style="display:none;">
+                         <span class="spinner-border spinner-border-sm"></span>
+                        Loading..
+                    </div>
+                </button>
             </form>
+
+            <!--<div class="spinner-border"></div>-->
+
             <br><br>
             <div class="alert alert-danger"><small>
                 Disclaimer: This web app is NOT responsible for any decision made based on the information provided here.
@@ -61,8 +70,6 @@
                 <p><strong>Currency at Exit:</strong> {{ currency_exit }}</p>
               </div>
             </div>
-
-            <button type="submit" value='Submit' name="get_country_info">Tell me more about my destination</button>
         </div>
 
         <div class="col-md-4">

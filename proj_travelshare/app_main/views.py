@@ -13,6 +13,7 @@ from .forms import TripForm, TripDeleteForm, AvailableForm, AvailableDeleteForm,
 import requests
 import mimi
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from pprint import pprint
 
 
 def home(request):
@@ -368,7 +369,6 @@ def info(request):
         ccy_arrival, ccy_exit = "Unlimited", "Unlimited"
         textual = ["Probably you don't need a visa to visit your country."]
     else:
-
         url = "https://requirements-api.sandbox.joinsherpa.com/v2/entry-requirements"
         querystring = {"citizenship": cs, "destination": d, "language": lan,
                        "key": mimi.SHERPA_API_KEY}
@@ -403,6 +403,7 @@ def info(request):
 
     try:
         country_info = requests.get(f"https://restcountries.eu/rest/v2/alpha/{d}").json()
+
         for k, v in country_info.items():
             if k == "name":
                 country_name = v
@@ -514,12 +515,13 @@ def get_visa_info(request):
                "portrestriction": portrestriction,"type": type, "textual": textual,
                "passport_blank_pages": password_blank_pages,"passport_validity": passport_validity,"currency_exit": ccy_exit,
                "currency_arrival": ccy_arrival,'citizenship': cs,'destination': d}
-    return render(request, "app_main/get_info.html", context)
+    return render(request, "app_main/get_visa_info.html", context)
 
 
 def get_country_info(request, d):
     try:
         country_info = requests.get(f"https://restcountries.eu/rest/v2/alpha/{d}").json()
+
         for k, v in country_info.items():
             if k == "name":
                 country_name = v
@@ -531,12 +533,18 @@ def get_country_info(request, d):
                 country_population = v
             elif k == "timezones":
                 country_timezone = v[0]
+            elif k == "currencies":
+                for key, value in v[0].items():
+                    if key == 'code':
+                        ccy_code = value
+                    elif key == 'name':
+                        ccy_name = value
     except:
         messages.warning(request, f"Sorry, there is no country info for {d}.")
-    context_country = { "country_name": country_name, "country_call_code": country_call_code,
+    context = { "country_name": country_name, "country_call_code": country_call_code,
                "country_capital": country_capital, "country_population": country_population,
-               "country_timezone": country_timezone,}
-    return context_country
+               "country_timezone": country_timezone,'ccy_code': ccy_code, 'ccy_name':ccy_name}
+    return render(request, "app_main/get_cty_info.html", context)
 
 
 def get_weather_info(request, country_capital):
