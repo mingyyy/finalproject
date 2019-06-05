@@ -504,7 +504,7 @@ def get_visa_info(request):
                             ccy_arrival = v["arrival"]
                         # if k == "vaccination":
                 except:
-                    messages.warning(request, "Sorry, sending request fail, please try again.")
+                    messages.warning(request, "Sorry, sending request failed, please try again.")
             else:
                 messages.warning(request, "Please select the countries from the list.")
         except:
@@ -513,7 +513,7 @@ def get_visa_info(request):
     context = {"form": form, "requirement": requirement, "allowedstay": allowedstay,
                "portrestriction": portrestriction,"type": type, "textual": textual,
                "passport_blank_pages": password_blank_pages,"passport_validity": passport_validity,"currency_exit": ccy_exit,
-               "currency_arrival": ccy_arrival, }
+               "currency_arrival": ccy_arrival,'citizenship': cs,'destination': d}
     return render(request, "app_main/get_info.html", context)
 
 

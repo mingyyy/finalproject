@@ -1,6 +1,6 @@
 from .models import Trip, Available
 from django import forms
-from app_user.constants import CITIZENSHIP_CHOICE, DESTINATION_CHOICE
+from app_user.constants import CITIZENSHIP_CHOICE_SHORT, DESTINATION_CHOICE_SHORT
 
 
 class TripForm(forms.ModelForm):
@@ -50,7 +50,7 @@ class AvailableDeleteForm(forms.Form):
 
 class EntryRequirementForm(forms.Form):
     citizenship = forms.ChoiceField(label='Passport issued by which country?',
-                              choices=CITIZENSHIP_CHOICE, initial="US")
+                              choices=CITIZENSHIP_CHOICE_SHORT, initial="US")
 
     destination = forms.ChoiceField(label='Which country are you visiting as a tourist?',
-                              choices=DESTINATION_CHOICE, initial="VN")
+                              choices=DESTINATION_CHOICE_SHORT, initial="VN")
