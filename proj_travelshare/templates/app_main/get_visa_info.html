@@ -22,7 +22,7 @@
             <form action="" method="get">
                 {% csrf_token %}
                 {{ form|crispy }}
-            <button class="btn btn-info"  type="submit" value="Submit" name="get_visa_info" onclick="$('#loading').show();$('#before').hide();">
+            <button class="btn btn-info" id="btn" type="submit" value="Submit" name="get_visa_info" onclick="$('#loading').show();$('#before').hide();">
                     <div id="before">Submit</div>
                     <div id="loading" style="display:none;">
                          <span class="spinner-border spinner-border-sm"></span>
@@ -30,6 +30,12 @@
                     </div>
                 </button>
             </form>
+
+            <br>
+
+            <div>
+                <p>Please tell me about the destination <i class="fa fa-info-circle" style="color:blue"></i></p>
+            </div>
         </div>
 
         <div class="col-md-9">
@@ -75,15 +81,23 @@
                 <p><strong>Currency at Exit:</strong> {{ currency_exit }}</p>
               </div>
             </div>
-
-
         </div>
 
         <div class="col-md-4">
-
         </div>
+    </div>
+    <br>
+        <div class="row">
+        <div class="col-md-6">
+            <div class="jumbotron jumbotron-fluid" style="padding: 4px; display: none;">
 
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="jumbotron jumbotron-fluid" style="padding: 4px; display: none;">
 
+            </div>
+        </div>
     </div>
 
 </div>
@@ -115,6 +129,10 @@ $(document).ready(function(){
   $("#fafa").on("click", function(){
     $(".jumbotron").slideToggle();
     $("#fafa").find('i').toggleClass("fa-minus-circle fa-plus-circle");});
+
+    $("#btn").click(function(){
+      alert("Value: " + $(".form").val());
+    });
 
 });
 </script>
