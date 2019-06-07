@@ -7,7 +7,8 @@ Simple landing page with description of the project and how to use it, who shoul
 NavBar: 
 1. *Register as Traveler or Organization* 
 2. *Login* (or *Logout* and *Profile Update* for logged-in users)
-3. Find *Traveler* info and *Organization* info.
+3. Links to  *Traveler* and *Organization* info
+4. Links to *Trip* and *Availability*
 
 Content:
 1. Overview of the webapp
@@ -30,8 +31,7 @@ Or Social Authentication (v2)
 #### 3. Update Profile (@login_required @type_required)
 
 ##### Travelers
-**Page 1** 
-with progress bar
+**Page 1** (with progress bar)
 
 Basic Info:
 - first name *(default: username)
