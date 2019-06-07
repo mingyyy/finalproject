@@ -78,41 +78,39 @@ Traveler offer (more than one topic - allowed):
 **Page 1** (with progress bar)
 
 Basic Info:
-- org name *(default: username)
-- org type *(list)
-- languages * (language in talks)
-- phone number (whatsapp, wechat, line, )
-- address *
-- description of the org (default: Hello, world!)
+- profile photo
+- org name*
+- org type* (list)
+- phone number
+- description of the org
+- address* (google autocomplete)
+(google map and geolocation auto)
 
-**Page 2** 
-with progress bar
+
+**Page 2** (with progress bar)
 
 More about the org:
-- profile photo (default pic)
-- area of interests (multiple choices with tag) 
-- more about what we want (text area)
 
-**Page 3** 
-Add my links:
-  - Google
-  - Facebook
-  - LinkedIn
-  - Twitter
-  - Instagram
-  - Own Website
-  - Other channels
+- area of interests (multiple choices) 
+- more about what we want (text area)
+- languages (multiple choices)
+
+**Page 3** (with progress bar)
+
+Add social links:
+- Social links (e.g. facebook, linkedin, etc)
+- Personal Website
+- Other channels
   
-**Page 4** 
-with progress bar
+**Page 4** (with progress bar)
 
 What we can offer: 
 - title
-- type of offer
-- details
+- details(text area)
     - physical space
     - equipments
-    - others (text area)
+    - others 
+- photo
 
 #### 4. Update Trips/Availability (@login_required @type_required)
 
