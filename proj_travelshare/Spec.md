@@ -34,53 +34,48 @@ Or Social Authentication (v2)
 **Page 1** (with progress bar)
 
 Basic Info:
-- first name *(default: username)
-- last name *
+- first name* (default: username)
+- last name*
 - gender* (f/m/o)
-- nationality (choose from country list)
-- languages * (lang list, level: professional/causal)
-- phone number (optional for whatsapp, wechat, line)
+- birthdate* (datepicker)
+- nationality* (country list)
+- phone number 
+- languages* (multiple choices)
+- profile photo
 
-**Page 2** 
-with progress bar
+**Page 2** (with progress bar)
 
-More about me:
-- profile photo (default pic)
-- bio (default: Hello, world! I am {first_name}. Tell us more about your)
+Professional Info:
+- bio (Tell us more about your)
 - area of expertise (multiple choice with tag) 
-- details (professional experiences)
+- experiences
 
-**Page 3**
-Add links: (Model: links)
-  - Google
-  - Facebook
-  - LinkedIn
-  - Twitter
-  - Instagram
-  - Github
-  - Own Website
-  - Other channels
+**Page 3** (with progress bar)
+
+Add social links:
+- Social links (e.g. facebook, linkedin, etc)
+- Personal Website
+- Other channels
 
 
-**Page 4** 
-with progress bar
+**Page 4** (with progress bar)
 
-What do you offer (more than one topic - allowed):
+Traveler offer (more than one topic - allowed):
 
-- Offer type * (choose from Event_List:talk/workshop/lecture...)
-- Duration *
-  - One time (<=2h, 2-4h, 4-8h, >1 day)
+- Subject* (list)
+- Type* (Event Type List)
+- Frequency*
+  - One time 
   - Multiple (x times)
   - Flexi 
-- Topic *(multiple choices tag)
-- Title *
-- Description
-- Requirements (projector, internet, equipments etc)
+- Duration* per section(<=2h, 2-4h, 4-8h, >8h)
+- Title*
+- Description*
+- Requirement* (projector, internet, equipments etc)
 
 
 ##### Local Hosts
-**Page 1** 
-with progress bar
+**Page 1** (with progress bar)
 
 Basic Info:
 - org name *(default: username)
