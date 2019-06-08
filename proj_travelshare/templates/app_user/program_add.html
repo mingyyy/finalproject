@@ -39,7 +39,7 @@
             {% csrf_token %}
             <script src="{% static 'ktag/js/tagify.min.js' %}"> </script>
             <fieldset class="form-group" >
-
+                <legend class="border-bottom mb-4">
                     <span class="badge badge-primary">
                     {% if user.type == '0' %}
                         {% if program.count == 0 %}
@@ -59,7 +59,7 @@
                         {% endif %}
                     {% endif %}
                     </span>
-
+                </legend>
                 <ul>
                     {% for item in program %}
                         <li style="list-style-type: circle; "><a href="{% url 'program_detail' item.id %}">{{ item.title }}</a></li>

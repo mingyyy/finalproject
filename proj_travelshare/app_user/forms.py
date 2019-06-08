@@ -130,6 +130,26 @@ class DeleteSpaceForm(forms.ModelForm):
         model = Space
         fields = []
 
+# testing dynamic form - link
+class LinkForm(forms.Form):
+    name = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'label': 'Link name',
+            'class': 'form-control',
+            'placeholder': 'e.g. facebook'
+        })
+    )
+
+    url = forms.URLField(
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'e.g. www.facebook.com/your account/',
+            'rows': 1,
+            'cols': 20,
+        })
+    )
+
+LinkFormset = formset_factory(LinkForm, extra=1)
 
 class DeleteLinkForm(forms.ModelForm):
     class Meta:
@@ -160,23 +180,4 @@ class FormLanguage(forms.ModelForm):
         labels = {'language': 'Languages'}
 
 
-# testing dynamic form - link
-class LinkForm(forms.Form):
-    name = forms.CharField(
-        widget=forms.TextInput(attrs={
-            'label': 'Link name',
-            'class': 'form-control',
-            'placeholder': 'e.g. facebook'
-        })
-    )
 
-    url = forms.URLField(
-        widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'e.g. www.facebook.com/your account/',
-            'rows': 1,
-            'cols': 20,
-        })
-    )
-
-LinkFormset = formset_factory(LinkForm, extra=1)

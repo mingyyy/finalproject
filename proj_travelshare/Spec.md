@@ -104,7 +104,7 @@ Add social links:
   
 **Page 4** (with progress bar)
 
-What we can offer: 
+Add local host's offer: 
 - title
 - details(text area)
     - physical space
@@ -114,27 +114,36 @@ What we can offer:
 
 #### 4. Update Trips/Availability (@login_required @type_required)
 
-##### Travelers Event Page
-- New event
-    - location (country->city lists jquery)
-    - description
+##### Travelers Calendar Update
+- Previous/Next month
+- New Trip
     - start date
     - end date
-- Update event
-- Delete event
+    - destination (country list)
+    - details
+- Links to Trip Details
+    - Update Trip
+        - start date
+        - end date
+        - destination (country list)
+        - details
+    - Delete Trip
 
-travel time, destination 
-(traveling info helper, e.g. visa requirements. local ccy, weather etc)
+##### Local Host Availability Calendar
 
-##### Local Host Availability Page
-- Create
-    - address (default org address)
-    - extra info (beyond the profile)
+- Previous/Next month
+- New Trip
     - start date
     - end date
-- Update 
-- Delete
-
+    - title
+    - details
+- Links to Trip Details
+    - Update Trip
+        - start date
+        - end date
+        - title
+        - details
+    - Delete Trip
 
 #### 5. List of Travelers 
 Search based on the following:
@@ -150,13 +159,17 @@ Search bar:
 
 Summary: List of results per org
 
-##### 7. Detail page - per Traveler (@login_required)
-detailed traveler profile
-travel calendar
+#### 7. Profile page - per Traveler 
+- detailed traveler profile
+- travel offers
 
-##### 8. Detail page - per Local host (@login_required)
-detailed organization profile
-availability calendar
+#### 8. Profile page - per Local host 
+- detailed organization profile
+- local host offers
+
+#### 9. List of Trips
+
+#### 10. List of Availables
 
 
 ## Folder structure of the project
@@ -175,148 +188,176 @@ github repository: finalproject
                             -| Username
                             -| Password
                         -| FormLogout
-                        -| FormPersonBasic
-                        -| FormPersonMore
-                        -| FormPersonOffer                       
-                        -| FormOrgBasic
-                        -| FormOrgMore
-                        -| FormOrgOffer
+                        -| FormUserUpdate
+                        -| FormProfileTravelerUpdate
+                        -| FormProfileTravelerUpdate2
+                        -| FormProgram
+                        -| DeleteProgramForm                     
+                        -| FormProfileHostUpdate
+                        -| FormProfileHostUpdate2
+                        -| FormSpace
+                        -| DeleteSpaceForm
+                        -| LinkForm
+                        -| DeleteLinkForm
 
                     -| models.py
-                        -| User
+                        -| User (AbstractUser)
                             -| type
-                            -| username
-                            -| email
-                            -| password
-                            -| first_name
-                            -| last_name
                         -| ProfileTraveler (extension of User)
+                            -| user (one to one)
                             -| gender (Choice)
                             -| nationality (Choice)
+                            -| birthdate
                             -| phone (PhoneNumberField)
                             -| photo (image)
                             -| bio (Text)
-                            -| expertise (ManyToMany: Expertise)
-                            -| links (ManyToMany: Link)
+                            -| experience (Text)
+                            -| expertise (ManyToMany: Expertise) 
                             -| language (ManyToMany: Language)
                         -| ProfileHost (extension of User)
-                            -| host Name (Char)
-                            -| host Type (Dropdown)
-                            -| host Description (Text)
-                            -| phone ()
-                            -| language (ManyToMany: Language)
-                            -| address (Google API)
+                            -| User (one to one)
+                            -| Name (Char)
+                            -| Type (choice)
+                            -| Description (Text)
+                            -| phone (PhoneNumberField)
                             -| photo (image)
+                            -| address (Google API)
+                            -| geolocation (Google API)
+                            -| language (ManyToMany: Language)
                             -| interests (ManyToMany: Expertise)
-                            -| interests_details (Text)
-                            -| links (ManyToMany: Link)
-                                                        
-                        -| Traveler_Offer (User One to Many)
-                            -| event type (ManyToMany: EventType)
-                            -| topic (ManyToMany: Topics)
+                            -| interest_details (Text)
+                          
+                        -| Program 
+                            -| owner (foreign key)
+                            -| subject (choice)
+                            -| type (choice)
                             -| title (Char)
+                            -| frequency ()
                             -| duration (Choice)
-                            -| details (Text)   
+                            -| description (Text)   
                             -| requirements (Text)
                             
-                        -| Host_Offer (User One to Many)
+                        -| Space 
+                            -| owner (foreign key)
                             -| title (char)
                             -| details (text) 
+                            -| photo (image)
                             
                         -| Language
-                            -| UserID (ManyToMany)
-                            -| Name
-                        -| OrgType
-                            -| UserID (ManyToMany)
-                            -| Name
-                        -| Address
-                            -| Street
-                            -| City
-                            -| Country
-                            -| PostCode
-                        -| Expertise
-                            -| UserID (ManyToMany)
-                            -| Name
-                            -| Level
+                            -| language      
                         -| Topics - tag
-                            -| UserID (ManyToMany)
-                            -| Name                      
+                            -| topic                   
                         -| Links
-                            -| UserID (ManyToMany)
-                            -| Name                                 
-                                                                               
+                            -| user (foreign key)
+                            -| Name 
+                            -| Url                                                                           
+                    -| urls.py
+                        -| password_reset_complete
+                        -| password_reset_confirm
+                        -| password_reset
+                        -| password_reset_done
+                    -| views.py
+                        -| viewregister
+                        -| viewindex
+                        -| UserLogin
+                        -| UserLogout
+                        -| profile_update_traveler
+                        -| profile_update_traveler2
+                        -| profile_update_traveler3
+                        -| program_add
+                        -| program_update
+                        -| program_delete
+                        -| program_detail
+                        -| program_list
+                        -| profile_update_host
+                        -| profile_update_host2
+                        -| profile_update_host3 
+                        -| space_add
+                        -| space_update
+                        -| space_delete
+                        -| space_detail
+                        -| space_list
+                        -| link_add
+                        -| link_delete
+                        -| link_update
+                        -| link_detail  
+                        -| link_list                  
+                        -| profile_traveler
+                        -| profile_host
+                -| app_main
+                    -| forms.py
+                        -| TripForm(ModelForm)
+                        -| TripDeleteForm (Form)
+                        -| AvailableForm (ModelForm)
+                        -| AvailableDeleteForm (Form)
+                        -| EntryRequirementForm (Form)
+                        
+                    -| models.py
+                        -| Trip 
+                            -| user (foreign key)
+                            -| destination (Char)
+                            -| Details (Text)
+                            -| Start_Time (DateTime)
+                            -| End_Time (DateTime)
+                        -| Available 
+                            -| user (foreign key)
+                            -| summary (Text)
+                            -| Extra_info (Text)
+                            -| Start_Time (DateTime)
+                            -| End_Time (DateTime)
+                    -| urls.py
+                        -| home
+                        -| info
+                        -| travelers
+                        -| hosts
+                        -| trip_list
+                        -| available_list
+                        -| calendar_trip
+                        -| calendar_available
+                        -| calendar_trip_traveler
+                        -| calendar_available_host
+                        -| calendar_trip_private
+                        -| calendar_available_private
+                        -| trip_edit
+                        -| trip_detail                       
+                        -| trip_new
+                        -| available_edit   
+                        -| available_detail
+                        -| available_new                                                                                              
+                    -| views.py
+                        -| home
+                        -| travelers
+                        -| hosts
+                        -| CalendarView (ListView)
+                        -| CalendarViewTripPrivate (ListView)
+                        -| CalendarViewAvailablePrivate (ListView)
+                        -| CalendarViewTripTraveler (ListView)
+                        -| CalendarViewAvailableHost (ListView)
+                        -| CalendarViewTrip (ListView)
+                        -| CalendarViewAvailable (ListView)
+                        -| trip
+                        -| trip_list 
+                        -| available_new
+                        -| available
+                        -| available_list
+                        -| trip_view
+                        -| available_view
+                        -| info
+                    
+                -| app_info
+                    - forms.py
+                    - views.py
+
+                -| proj_travelshare
+                    -| settings.py
                     -| urls.py
                         -| register
                         -| login
                         -| logout
-                        -| password_change
-                        -| password_change/done
-                        -| password_reset
-                        -| password_reset/done
-                        -| reset/<uidb64>/<token>
-                        -| reset/done
                         -| profile_update_person
                         -| profile_view_person
                         -| profile_update_org
                         -| profile_view_org
-                        
-                    -| views.py
-                        -| register
-                        -| UserLogin
-                        -| UserLogout
-                        -| profiletraveler
-                        -| profilehost
-                    
-                -| app_main
-                    -| forms.py
-                        -| FormTrip(ModelForm)
-                        -| FormTravelerTrip (Form)
-                        -| FormHostAvailability (ModelForm)
-                    -| models.py
-
-                        -| Traveler_Trip (User One to Many)
-                            - Location (Char)
-                            - Details (Text)
-                            - Start_Time (DateTimePicker)
-                            - End_Time (DateTimePicker)
-                        -| Host_Availability (User one to Many)
-                            - Address (Google Map)
-                            - Extra_info (Text)
-                            - Start_Time (DateTimePicker)
-                            - End_Time (DateTimePicker)
-                    -| urls.py
-                        -| traveler_trip_update
-                        -| traveler_trip_create
-                        -| host_availability_update
-                        -| host_availability_create
-                        -| searchperson
-                        -| searchorg
-                        -| triplist
-                    -| views.py
-                        -| ViewCreateTrip
-                        -| ViewUpdateTrip
-                        -| ViewCreateSpace
-                        -| ViewUpdateSpace
-                        -| ViewSearchPerson
-                        -| ViewSearchOrg
-                        -| ViewTripList
-                    
-                -| app_info
-                    - forms.py
-                        - FormVisa (Form)
-                            - nationality (Country_List)
-                            - destination (Country_List)
-                            
-                    - views.py
-                        - view_visa
-                            - retrieve visa info using Sherpa API
-                            - retrieve weather info using destination 
-                            - retrieve country info using destination
-                            - retrieve currency info using nationality/destination ccy (v2)
-                
-                -| proj_travelshare
-                    -| settings.py
-                    -| urls.py
 
                 -| media
                     -|profile_traveler
