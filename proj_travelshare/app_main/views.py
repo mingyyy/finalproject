@@ -511,10 +511,57 @@ def get_visa_info(request):
         except:
             messages.warning(request, "Please select from the country lists and submit the request.")
 
+    try:
+        country_info = requests.get(f"https://restcountries.eu/rest/v2/alpha/{d}").json()
+
+        for k, v in country_info.items():
+            if k == "name":
+                country_name = v
+            elif k == "callingCodes":
+                country_call_code = v[0]
+            elif k == "capital":
+                country_capital = v
+            elif k == "population":
+                country_population = v
+            elif k == "timezones":
+                country_timezone = v[0]
+            elif k == "currencies":
+                for key, value in v[0].items():
+                    if key == 'code':
+                        ccy_code = value
+                    elif key == 'name':
+                        ccy_name = value
+    except:
+        messages.warning(request, f"Sorry, there is no country info for {d}.")
+
+    weather_desc = []
+    try:
+        path = f"https://api.openweathermap.org/data/2.5/weather?q={country_capital}&units=metric&appid={mimi.OPEN_WEATHER_API}"
+        weather_info = requests.get(path).json()
+
+        for k, v in weather_info.items():
+            if k == "weather":
+                for x in v:
+                    weather_desc.append(x["main"])
+            if k == "main":
+                weather_temp = v["temp"]
+                weather_temp_min = v["temp_min"]
+                weather_temp_max = v["temp_max"]
+                weather_humidity = v["humidity"]
+    except:
+        messages.warning(request, "Sorry, there is no weather info for this city.")
+
     context = {"form": form, "requirement": requirement, "allowedstay": allowedstay,
                "portrestriction": portrestriction,"type": type, "textual": textual,
                "passport_blank_pages": password_blank_pages,"passport_validity": passport_validity,"currency_exit": ccy_exit,
-               "currency_arrival": ccy_arrival,'citizenship': cs,'destination': d}
+               "currency_arrival": ccy_arrival,'citizenship': cs,'destination': d,
+               "country_name": country_name, "country_call_code": country_call_code,
+               "country_capital": country_capital, "country_population": country_population,
+               "country_timezone": country_timezone, 'ccy_code': ccy_code, 'ccy_name': ccy_name,
+               "weather_desc": weather_desc, "weather_temp": weather_temp,
+               "weather_temp_min": weather_temp_min, "weather_temp_max": weather_temp_max,
+               "weather_humidity": weather_humidity
+               }
     return render(request, "app_main/get_visa_info.html", context)
 
 

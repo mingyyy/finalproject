@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     # my apps
     'app_main',
     'app_user',
-    'app_info',
     # third party
     'phonenumber_field',
     'crispy_forms',

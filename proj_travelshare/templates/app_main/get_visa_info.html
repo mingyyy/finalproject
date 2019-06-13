@@ -18,7 +18,7 @@
     </div>
 
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-4">
             <form action="" method="get">
                 {% csrf_token %}
                 {{ form|crispy }}
@@ -33,12 +33,33 @@
 
             <br>
 
-            <div>
-                <p>Please tell me about the destination <i class="fa fa-info-circle" style="color:blue"></i></p>
+            <div class="jumbotron jumbotron-fluid" style="padding: 2px; display: none;">
+                  <div class="container">
+                        <br>
+                        <h4 style="text-center" class="border-bottom mb-2">{{ country_name }}</h4>
+                            {% if country_population >= 1000000 %}
+                              <p><strong>Population:</strong> {{ country_population|intword }} </p>
+                            {% else %}
+                              <p><strong>Population:</strong> {{ country_population|intcomma }} </p>
+                            {% endif %}
+                            <p><strong>Call code:</strong> +{{ country_call_code }}</p>
+                            <p class="border-bottom" ><strong>Timezone:</strong> {{ country_timezone }}</p>
+                            <p><strong>Capital:</strong> {{ country_capital }} </p>
+                            <p><strong>Current Weather:</strong>
+                                {% for desc in weather_desc %} {{ desc }} {% endfor %}
+                            </p>
+                            <p><strong>Temperature:</strong> {{ weather_temp }}<span aria-label="°Celsius">°C</span></p>
+                            <p>
+                                <strong><i class="fa fa-thermometer"></i> Min - Max:
+                                </strong>
+                                {{ weather_temp_min }}<span aria-label="°Celsius">°C</span> - {{ weather_temp_max }}<span aria-label="°Celsius">°C</span>
+                            </p>
+                            <p><strong>Humidity:</strong> {{ weather_humidity }}%</p>
+                  </div>
             </div>
         </div>
 
-        <div class="col-md-9">
+        <div class="col-md-8">
             <h2>Visa Requirement </h2>
 
             {% if requirement == "EMBASSY_VISA" %}
@@ -74,9 +95,9 @@
                 <p><strong>Visa requirement:</strong> {{ requirement }}</p>
                 <p><strong>Allowed stay:</strong> {{ allowedstay}} </p>
                 <p> <strong>Port Restriction:</strong> {{ portrestriction }}</p>
-                <p class="border-bottom "><strong>Type:</strong> {{ type }}</p>
+                <p class="border-bottom:double;"><strong>Type:</strong> {{ type }}</p>
                 <p><strong>Passport validity:</strong> {{ passport_validity }}</p>
-                <p class="border-bottom "><strong>Passport blank pages:</strong> {{ passport_blank_pages }}</p>
+                <p class="border-bottom-dark"><strong>Passport blank pages:</strong> {{ passport_blank_pages }}</p>
                 <p><strong>Currency at Arrival:</strong> {{ currency_arrival }}</p>
                 <p><strong>Currency at Exit:</strong> {{ currency_exit }}</p>
               </div>
@@ -87,18 +108,6 @@
         </div>
     </div>
     <br>
-        <div class="row">
-        <div class="col-md-6">
-            <div class="jumbotron jumbotron-fluid" style="padding: 4px; display: none;">
-
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="jumbotron jumbotron-fluid" style="padding: 4px; display: none;">
-
-            </div>
-        </div>
-    </div>
 
 </div>
 
@@ -120,6 +129,8 @@
     <!--});-->
 
 <script>
+
+
 $(document).ready(function(){
 
   $(".jumbotron").find("p").hover(
