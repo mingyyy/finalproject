@@ -1,6 +1,6 @@
 {% extends 'app_main/base.html' %}
 {% load static %}
-
+{% load user_extras %}
 {% block content %}
 
     <h3>Traveler Profile</h3>
@@ -114,7 +114,17 @@
                     {% if link %}
                         <ul>
                             {% for v in link %}
-                                <li>{{v}}</li>
+                                <li>
+                                    {% with v|split:"-" as url %}
+                                        {% for x in url %}
+                                            {% if forloop.counter == 1%}
+                                                {{x}} -
+                                            {% else %}
+                                                <a href="{{x}}">{{ x }}</a>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endwith %}
+                                </li>
                             {% endfor %}
                         </ul>
                     {% endif %}
