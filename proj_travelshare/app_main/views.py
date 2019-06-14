@@ -27,28 +27,32 @@ def home(request):
 def travelers(request):
     profile_list = ProfileTraveler.objects.all()
     page = request.GET.get('page', 1)
-    paginator = Paginator(profile_list, 3)
+    paginator = Paginator(profile_list, 5)
     try:
         profile = paginator.page(page)
     except PageNotAnInteger:
         profile = paginator.page(1)
     except EmptyPage:
         profile = paginator.page(paginator.num_pages)
-    context = {'profile': profile}
+
+    num_traveler = profile_list.count()
+    context = {'profile': profile, "num_traveler": num_traveler}
     return render(request,'app_main/travelers.html', context)
 
 
 def hosts(request):
     profile_list = ProfileHost.objects.all()
     page = request.GET.get('page', 1)
-    paginator = Paginator(profile_list, 1)
+    paginator = Paginator(profile_list, 5)
     try:
         profile = paginator.page(page)
     except PageNotAnInteger:
         profile = paginator.page(1)
     except EmptyPage:
         profile = paginator.page(paginator.num_pages)
-    context = {'profile': profile}
+
+    num_host = profile_list.count()
+    context = {'profile': profile,"num_host": num_host}
     return render(request,'app_main/hosts.html', context)
 
 
