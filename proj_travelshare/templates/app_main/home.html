@@ -1,18 +1,24 @@
 {% extends 'app_main/base.html' %}
 {% load static %}
 {% block content %}
-
+<link href='https://fonts.googleapis.com/css?family=Open Sans Condensed:300' rel='stylesheet'>
 <div class="jumbotron shadow-lg p-4 mb-4 bg-white">
-  <img src="{% static 'pic/tts_logo.png' %}" alt="logo" class="mx-auto d-block">
+  <img src="{% static 'pic/tts.png' %}" alt="logo" class="mx-auto d-block"> <span class="text-center d-block" style="font-family: Open Sans Condensed;font-weight:bold; font-size: 45px;">Travel To Share</span>
   <br>
-  <p style="font-family: futura">A FREE webapp that provides the platform for travelers to share their experience, stories and skills with the locals,
-in the form of a talk/speech, series of workshops or others. On the other hand, locals could benefit from these
-      kind of on-site events while local organizations act like the localhosts to help make this happen by organizing those events.
-  This platform is a dedicated virtual space that aiming to make this exchange as easy as possible. </p>
+    <p style="font-family: Open Sans Condensed; font-size: 22px;">
+        A FREE webapp that provides the platform for travelers to share their experience, stories and skills with the locals,
+        in the form of a talk/speech, series of workshops or others. Meanwhile, local organizations perform the role of localhosts to help organize those events.
+    </p>
+
+    <p style="font-family: Open Sans Condensed; font-size: 22px;">
+    This site is a dedicated virtual space that aiming to make this exchange of information as easy as possible.
+        Therefore, locals could benefit from those on-site events offered by travelers.
+    </p>
+
 </div>
 
 <br>
-<h3>What is this about? </h3>
+<h1 style="font-family: Open Sans Condensed; font-weight:bold" class="text-center">Main Features </h1>
 
 <div class="row shadow-lg p-4 mb-4 bg-white">
   <div class="col bg-light text-center border" style="padding: 12px; margin: 4px"><i class="fa fa-money fa-4x d-block"></i><h2>Free</h2> <p>No charge</p></div>
@@ -22,17 +28,55 @@ in the form of a talk/speech, series of workshops or others. On the other hand, 
 </div>
 <br>
 
-<h3>Want to join us?</h3>
+<h1 style="font-family: Open Sans Condensed; font-weight:bold" class="text-center">Are you one of us?</h1>
+<div class="card-deck shadow-lg p-4 mb-4 bg-white">
+  <div class="card align-self-center">
+    <div class="card-body ">
+      <p class="card-text">
+          <h4 class="border-bottom text-center">If you are:</h4>
+            <ul class="fa-ul">
+                <li><i class="fa-li fa fa-check-square-o"></i>Open-minded and Grateful</li>
+                <li><i class="fa-li fa fa-check-square-o"></i>Like to travel</li>
+                <li><i class="fa-li fa fa-check-square-o"></i>Want to help others</li>
+                <li><i class="fa-li fa fa-check-square-o"></i>Have a few words to share</li>
+            </ul>
+      </p>
+    </div>
+  </div>
+
+  <div class="card align-self-center">
+    <div class="card-body ">
+      <p class="card-text">
+        <h4 class="border-bottom text-center">If you have:</h4>
+            <ul class="fa-ul">
+                <li><i class="fa-li fa fa-check-square-o"></i>Space to hold an event</li>
+                <li><i class="fa-li fa fa-check-square-o"></i>People interested in certain topics</li>
+                <li><i class="fa-li fa fa-check-square-o"></i>Want to communicate and learn</li>
+                <li><i class="fa-li fa fa-check-square-o"></i>Willing to organize an event</li>
+            </ul>
+      </p>
+    </div>
+  </div>
+
+</div>
+    <div class="card shadow-lg p-4 mb-4 bg-white">
+        <h3 style="font-family: Open Sans Condensed; font-weight:bold" class="text-center">
+            Any of the above look familiar? Then you should definitely <a href="{% url 'register' %}">JOIN US</a>!
+        </h3>
+    </div>
+<br>
+
+<h1 style="font-family: Open Sans Condensed; font-weight:bold" class="text-center">How does this work?</h1>
 <div class="card-columns shadow-lg p-4 mb-4 bg-white">
   <div class="card" style="background:#baf8fc">
     <div class="card-body text-center">
       <p class="card-text"><h3>Travelers</h3></p>
       <ul class="fa-ul">
-        <li><i class="fa-li fa fa-check-square-o"></i> Register as a Traveler </li>
-        <li><i class="fa-li fa fa-check-square-o"></i> Complete your profile </li>
-        <li><i class="fa-li fa fa-check-square-o"></i> Tell us what you offer </li>
-        <li><i class="fa-li fa fa-check-square-o"></i> Add your trip details </li>
-        <li><i class="fa-li fa fa-check-square-o"></i> Connect with Local hosts! </li>
+        <li><i class="fa-li fa fa-arrow-circle-down"></i> Register as a Traveler </li>
+        <li><i class="fa-li fa fa-arrow-circle-down"></i> Complete your profile </li>
+        <li><i class="fa-li fa fa-arrow-circle-down"></i> Tell us what you offer </li>
+        <li><i class="fa-li fa fa-arrow-circle-down"></i> Add your trip details </li>
+        <li><i class="fa-li fa fa-arrow-circle-down"></i> Connect with Local hosts! </li>
       </ul>
     </div>
   </div>
@@ -48,11 +92,11 @@ in the form of a talk/speech, series of workshops or others. On the other hand, 
     <div class="card-body text-center">
       <p class="card-text"><h3>Localhosts</h3></p>
        <ul class="fa-ul">
-          <li><i class="fa-li fa fa-check-square-o"></i> Register as a LocalHost </li>
-          <li><i class="fa-li fa fa-check-square-o"></i> Complete organization profile </li>
-          <li><i class="fa-li fa fa-check-square-o"></i> Tell us what you want </li>
-          <li><i class="fa-li fa fa-check-square-o"></i> Add your space and availability </li>
-          <li><i class="fa-li fa fa-check-square-o"></i> Connect with Travelers! </li>
+          <li><i class="fa-li fa fa-arrow-circle-down"></i> Register as a LocalHost </li>
+          <li><i class="fa-li fa fa-arrow-circle-down"></i> Complete organization profile </li>
+          <li><i class="fa-li fa fa-arrow-circle-down"></i> Tell us what you want </li>
+          <li><i class="fa-li fa fa-arrow-circle-down"></i> Add your space and availability </li>
+          <li><i class="fa-li fa fa-arrow-circle-down"></i> Connect with Travelers! </li>
         </ul>
     </div>
   </div>
