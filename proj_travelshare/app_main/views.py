@@ -290,9 +290,10 @@ def trip_list(request, sort_choice=None):
             trips = Trip.objects.all().order_by("user")
     else:
         trips = Trip.objects.all().order_by('start_date')
+    num_trips = Trip.objects.all().count()
 
     page = request.GET.get('page', 1)
-    paginator = Paginator(trips, 3)
+    paginator = Paginator(trips, 5)
     try:
         trips = paginator.page(page)
     except PageNotAnInteger:
@@ -300,7 +301,8 @@ def trip_list(request, sort_choice=None):
     except EmptyPage:
         trips = paginator.page(paginator.num_pages)
 
-    context = {'trips': trips, 'selected': sort_choice}
+
+    context = {'trips': trips, 'selected': sort_choice, "num_trips": num_trips}
     return render(request, 'app_main/trip_list.html', context)
 
 
@@ -324,8 +326,10 @@ def available_list(request, sort_choice=None):
     else:
         available = Available.objects.all().order_by('start_date')
 
+    num_available = Available.objects.all().count()
+
     page = request.GET.get('page', 1)
-    paginator = Paginator(available, 3)
+    paginator = Paginator(available, 5)
     try:
         available = paginator.page(page)
     except PageNotAnInteger:
@@ -333,7 +337,7 @@ def available_list(request, sort_choice=None):
     except EmptyPage:
         available = paginator.page(paginator.num_pages)
 
-    context = {'available': available, 'selected': sort_choice}
+    context = {'available': available, 'selected': sort_choice, "num_available": num_available}
     return render(request, 'app_main/available_list.html', context)
 
 
