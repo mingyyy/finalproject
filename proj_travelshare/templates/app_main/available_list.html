@@ -6,21 +6,27 @@
 
 <p>In total, {{num_available}} localhost availabilities are found. </p>
 <div class="container">
-  <label for="sel1">Sort by (select one):</label>
-    <form action="" method="post">
-        {% csrf_token %}
-      <div class="input-group mb-3">
-        <select class="form-control" id="sel1" name="select">
-            <option value="1">Start date</option>
-            <option value="2">End date</option>
-            <option value="3">Localhost</option>
-            <option value="4">Summary</option>
-        </select>
-        <div class="input-group-append">
-            <button class="btn btn-secondary" type="submit">Sort</button>
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="container">
+              <label for="sel1">Sort by (select one):</label>
+                <form action="" method="post">
+                    {% csrf_token %}
+                  <div class="input-group mb-3">
+                        <select class="form-control" id="sel1" name="select">
+                            <option value="1">Start date</option>
+                            <option value="2">End date</option>
+                            <option value="3">Localhost</option>
+                            <option value="4">Summary</option>
+                        </select>
+                        <div class="input-group-append">
+                            <button class="btn btn-secondary" type="submit">Sort</button>
+                        </div>
+                  </div>
+                </form>
+            </div>
         </div>
-      </div>
-    </form>
+    </div>
 </div>
 
 <br>
