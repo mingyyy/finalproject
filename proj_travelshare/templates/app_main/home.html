@@ -103,5 +103,45 @@
 
 </div>
 
+<link rel="stylesheet" type="text/css" href="{% static 'css/acco.css' %}">
+<div class="card shadow-lg p-4 mb-4 bg-white">
+    <h3 class="home_title">
+        FAQs
+    </h3>
+    <div id="accordion">
+          <div class="card">
+            <div class="card-header" id="heading-1">
+              <h5 class="mb-0 home_text">
+                <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-1" aria-expanded="false" aria-controls="collapse-1">
+                  1. Why should I signup?
+                </a>
+              </h5>
+            </div>
+            <div id="collapse-1" class="collapse" data-parent="#accordion" aria-labelledby="heading-1">
+              <div class="card-body home_sm">
+                <p>Only signed up users can post your information online </p>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="card">
+            <div class="card-header" id="heading-2">
+              <h5 class="mb-0 home_text">
+                <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
+                  2. Can I register as Traveler and Host?
+                </a>
+              </h5>
+            </div>
+            <div id="collapse-2" class="collapse" data-parent="#accordion" aria-labelledby="heading-2">
+              <div class="card-body home_sm">
+                <p>You have to register twice. One account as a Traveler and another one as a Host.</p>
+              </div>
+            </div>
+          </div>
+    </div>
+
+
+</div>
 
 {% endblock %}
