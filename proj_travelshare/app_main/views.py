@@ -38,8 +38,8 @@ def contact(request):
                 print(response.status_code)
             except BadHeaderError as e:
                 return HttpResponse(e.message)
-            return redirect('blog:blog-home')
-    return render(request, "blog/contact.html", {'form': form})
+            return redirect('app_main:home')
+    return render(request, "app_main/contact.html", {'form': form})
 
 
 def home(request):

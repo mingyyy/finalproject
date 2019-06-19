@@ -18,7 +18,7 @@ from django.urls import path
 from .views import home, travelers, hosts, trip, CalendarViewTrip, CalendarViewAvailable, \
     available, available_new, trip_list, available_list, info, CalendarViewTripPrivate, \
     CalendarViewAvailablePrivate, CalendarViewAvailableHost, CalendarViewTripTraveler, \
-    trip_view, available_view, get_visa_info
+    trip_view, available_view, get_visa_info, contact
 
 app_name = "app_main"
 
@@ -26,6 +26,7 @@ urlpatterns = [
     path('', home, name='home'),
     path('info/', info, name='info'),
     path('get_info/', get_visa_info, name='get_info'),
+    path('contact/', contact, name='contact'),
 
     path('travelers/', travelers, name='travelers'),
     path('hosts/', hosts, name='hosts'),
