@@ -3,6 +3,12 @@ from django import forms
 from app_user.constants import CITIZENSHIP_CHOICE_SHORT, DESTINATION_CHOICE_SHORT
 
 
+class ContactForm(forms.Form):
+    from_email = forms.EmailField(required=True)
+    subject = forms.CharField(max_length=50,required=True, help_text='50 characters max.')
+    content = forms.CharField(widget= forms.Textarea(attrs={'placeholder': 'Enter your message here.'}),
+                        required=True)
+
 class TripForm(forms.ModelForm):
     class Meta:
         model = Trip

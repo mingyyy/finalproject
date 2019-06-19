@@ -1,4 +1,5 @@
-from django.shortcuts import render, get_object_or_404, redirect, HttpResponseRedirect, reverse
+from django.shortcuts import render, get_object_or_404, redirect, HttpResponseRedirect, reverse, HttpResponse
+from django.core.mail import BadHeaderError
 from app_user.models import ProfileTraveler,ProfileHost, Topic, User
 from .models import Trip, Available
 from django.views.generic import ListView
@@ -9,11 +10,36 @@ from django.conf import settings
 from datetime import datetime, date, timedelta
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .forms import TripForm, TripDeleteForm, AvailableForm, AvailableDeleteForm, EntryRequirementForm
+from .forms import TripForm, TripDeleteForm, AvailableForm, AvailableDeleteForm, EntryRequirementForm, ContactForm
 import requests
-import mimi
+from mimi import SENDGRID_API_KEY
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from pprint import pprint
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+
+
+def contact(request):
+    if request.method == 'GET':
+        form = ContactForm()
+    else:
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            message = Mail(
+                from_email=form.cleaned_data['from_email'],
+                # to_emails=form.cleaned_data['to_email'],
+                to_emails="j.yanming@gmail.com",
+                subject=form.cleaned_data['subject'],
+                html_content=form.cleaned_data['content'],)
+            try:
+                # send_mail(subject, message, from_email, ['j.yanming@gmail.com'])
+                sg = SendGridAPIClient(SENDGRID_API_KEY)
+                response = sg.send(message)
+                messages.success(request, "Your message has been sent! Thank you for contacting us.")
+                print(response.status_code)
+            except BadHeaderError as e:
+                return HttpResponse(e.message)
+            return redirect('blog:blog-home')
+    return render(request, "blog/contact.html", {'form': form})
 
 
 def home(request):
