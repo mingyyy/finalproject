@@ -78,6 +78,15 @@ class ProfileTraveler(models.Model):
     def get_absolute_url(self):
         return reverse('profile_traveler', kwargs={'userid': self.user.id})
 
+
+class ProfileHostManager(models.Manager):
+    def search(self, query=None):
+        qs = self.get_queryset()
+        if query is not None:
+            qs = qs.filter(models.Q(languages__language__icontains=query)).distinct()
+        return qs
+
+
 class ProfileHost(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, blank=False, null=False)
@@ -90,6 +99,8 @@ class ProfileHost(models.Model):
     interests = models.ManyToManyField(Topic)
     interest_details = models.TextField(blank=True)
     languages = models.ManyToManyField(Language)
+
+    objects = ProfileHostManager()
 
     def __str__(self):
         return self.user.username
@@ -106,6 +117,8 @@ class ProfileHost(models.Model):
         except FileNotFoundError as e:
                 pass
 
+    def get_absolute_url(self):
+        return reverse('profile_host', kwargs={'userid': self.user.id})
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_user_profile(sender, instance, created, **kwargs):

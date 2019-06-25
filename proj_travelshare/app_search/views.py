@@ -20,17 +20,29 @@ class SearchView(ListView):
         request = self.request
         query = request.GET.get('q', None)
 
-        if query is not None:
-            res = ProfileTraveler.objects.search(query)
+        checked_traveler = self.request.GET.get('traveler')
+        checked_host = self.request.GET.get('host')
 
-
+        if query is not None and checked_host is not None and checked_traveler is None:
+            res_host = ProfileHost.objects.search(query)
+            qs = sorted(res_host,
+                        key=lambda instance: instance.pk,
+                        reverse=True)
+            self.count = len(qs)  # since qs is actually a list
+            return qs
+        elif query is not None and checked_host is None and checked_traveler is not None:
+            res_traveler = ProfileTraveler.objects.search(query)
+            qs = sorted(res_traveler,
+                        key=lambda instance: instance.pk,
+                        reverse=True)
+            self.count = len(qs)  # since qs is actually a list
+            return qs
+        elif query is not None and checked_host is not None and checked_traveler is not None:
+            res_traveler = ProfileTraveler.objects.search(query)
+            res_host = ProfileHost.objects.search(query)
             # combine querysets
-            # queryset_chain = chain(
-            #     blog_results,
-            #     lesson_results,
-            #     profile_results
-            # )
-            qs = sorted(res,
+            queryset_chain = chain(res_traveler, res_host)
+            qs = sorted(queryset_chain,
                         key=lambda instance: instance.pk,
                         reverse=True)
             self.count = len(qs)  # since qs is actually a list
