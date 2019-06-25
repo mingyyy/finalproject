@@ -42,7 +42,12 @@ class ProfileTravelerManager(models.Manager):
     def search(self, query=None):
         qs = self.get_queryset()
         if query is not None:
-            qs = qs.filter(models.Q(languages__language__icontains=query)).distinct()
+            or_lookup = (models.Q(languages__language__icontains=query) |
+                         models.Q(expertise__topic__icontains=query) |
+                         models.Q(bio__icontains=query) |
+                         models.Q(experience__icontains=query)
+                         )
+            qs = qs.filter(or_lookup).distinct()
         return qs
 
 
@@ -83,7 +88,12 @@ class ProfileHostManager(models.Manager):
     def search(self, query=None):
         qs = self.get_queryset()
         if query is not None:
-            qs = qs.filter(models.Q(languages__language__icontains=query)).distinct()
+            or_lookup = (models.Q(languages__language__icontains=query) |
+                         models.Q(interests__topic__icontains=query) |
+                         models.Q(description__icontains=query) |
+                         models.Q(interest_details__icontains=query)
+                         )
+            qs = qs.filter(or_lookup).distinct()
         return qs
 
 
