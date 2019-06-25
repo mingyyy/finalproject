@@ -6,16 +6,15 @@ from django.views.generic import ListView
 from .utils import CalendarTrip,CalendarAvail, CalendarAvailPriv, CalendarTripPriv, CalendarTripTraveler, CalendarAvailHost
 from django.utils.safestring import mark_safe
 import calendar
-from django.conf import settings
 from datetime import datetime, date, timedelta
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import TripForm, TripDeleteForm, AvailableForm, AvailableDeleteForm, EntryRequirementForm, ContactForm
 import requests
-from mimi import SENDGRID_API_KEY
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
+from decouple import config
 
 
 def contact(request):
@@ -32,7 +31,7 @@ def contact(request):
                 html_content=form.cleaned_data['content'],)
             try:
                 # send_mail(subject, message, from_email, ['j.yanming@gmail.com'])
-                sg = SendGridAPIClient(SENDGRID_API_KEY)
+                sg = SendGridAPIClient(config('SENDGRID_API_KEY'))
                 response = sg.send(message)
                 messages.success(request, "Your message has been sent! Thank you for contacting us.")
                 print(response.status_code)
@@ -331,7 +330,6 @@ def trip_list(request, sort_choice=None):
     except EmptyPage:
         trips = paginator.page(paginator.num_pages)
 
-
     context = {'trips': trips, 'selected': sort_choice, "num_trips": num_trips}
     return render(request, 'app_main/trip_list.html', context)
 
@@ -405,7 +403,7 @@ def info(request):
     else:
         url = "https://requirements-api.sandbox.joinsherpa.com/v2/entry-requirements"
         querystring = {"citizenship": cs, "destination": d, "language": lan,
-                       "key": mimi.SHERPA_API_KEY}
+                       "key": config('SHERPA_API_KEY')}
         headers = {'accept': '*/*'}
         try:
             response = requests.request("GET", url, headers=headers, params=querystring)
@@ -454,7 +452,7 @@ def info(request):
     weather_desc = []
 
     try:
-        path = f"https://api.openweathermap.org/data/2.5/weather?q={country_capital}&units=metric&appid={mimi.OPEN_WEATHER_API}"
+        path = f"https://api.openweathermap.org/data/2.5/weather?q={country_capital}&units=metric&appid={config('OPEN_WEATHER_API')}"
         weather_info = requests.get(path).json()
         for k, v in weather_info.items():
             if k == "weather":
@@ -508,10 +506,12 @@ def get_visa_info(request):
         textual = ["Probably you don't need a visa to visit your country."]
     else:
         try:
+            key = config('SHERPA_API_KEY')
+
             if request.GET['get_visa_info'] == 'Submit':
                 url = "https://requirements-api.sandbox.joinsherpa.com/v2/entry-requirements"
                 querystring = {"citizenship": cs, "destination": d, "language": lan,
-                               "key": mimi.SHERPA_API_KEY}
+                               "key": key}
                 headers = {'accept': '*/*'}
                 try:
                     response = requests.request("GET", url, headers=headers, params=querystring)
@@ -569,8 +569,11 @@ def get_visa_info(request):
         messages.warning(request, f"Sorry, there is no country info for {d}.")
 
     weather_desc = []
+    if not country_capital:
+        country_capital = 'Hanoi'
+    key = config('OPEN_WEATHER_API')
     try:
-        path = f"https://api.openweathermap.org/data/2.5/weather?q={country_capital}&units=metric&appid={mimi.OPEN_WEATHER_API}"
+        path = f"https://api.openweathermap.org/data/2.5/weather?q={country_capital}&units=metric&appid={key}"
         weather_info = requests.get(path).json()
 
         for k, v in weather_info.items():
@@ -631,7 +634,7 @@ def get_country_info(request, d):
 def get_weather_info(request, country_capital):
     weather_desc = []
     try:
-        path = f"https://api.openweathermap.org/data/2.5/weather?q={country_capital}&units=metric&appid={mimi.OPEN_WEATHER_API}"
+        path = f"https://api.openweathermap.org/data/2.5/weather?q={country_capital}&units=metric&appid={config('OPEN_WEATHER_API')}"
         weather_info = requests.get(path).json()
         for k, v in weather_info.items():
             if k == "weather":
@@ -665,3 +668,7 @@ def available_view(request, available_id=None):
 
     context = {'available': available, "profile": profile}
     return render(request, 'app_main/available_view.html',context)
+
+
+class search_view(ListView):
+    pass
