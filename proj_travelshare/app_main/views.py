@@ -403,7 +403,7 @@ def info(request):
     else:
         url = "https://requirements-api.sandbox.joinsherpa.com/v2/entry-requirements"
         querystring = {"citizenship": cs, "destination": d, "language": lan,
-                       "key": os.environ.get('SHERPA_API_KEY')}
+                       "key": config('SHERPA_API_KEY')}
         headers = {'accept': '*/*'}
         try:
             response = requests.request("GET", url, headers=headers, params=querystring)
