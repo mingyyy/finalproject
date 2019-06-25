@@ -91,7 +91,8 @@ class ProfileHostManager(models.Manager):
             or_lookup = (models.Q(languages__language__icontains=query) |
                          models.Q(interests__topic__icontains=query) |
                          models.Q(description__icontains=query) |
-                         models.Q(interest_details__icontains=query)
+                         models.Q(interest_details__icontains=query) |
+                         models.Q(address__icontains=query)
                          )
             qs = qs.filter(or_lookup).distinct()
         return qs
@@ -129,6 +130,7 @@ class ProfileHost(models.Model):
 
     def get_absolute_url(self):
         return reverse('profile_host', kwargs={'userid': self.user.id})
+
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_user_profile(sender, instance, created, **kwargs):

@@ -3,6 +3,18 @@ from django.conf import settings
 from app_user.constants import CITIZENSHIP_CHOICE
 from django.shortcuts import reverse
 from PIL import Image
+from django.db.models import Q
+
+
+class TripManager(models.Manager):
+    def search(self, query=None):
+        qs = self.get_queryset()
+        if query is not None:
+            or_lookup = (Q(destination__icontains=query) |
+                         Q(details__icontains=query)
+                        )
+            qs = qs.filter(or_lookup).distinct() # distinct() is often necessary with Q lookups
+        return qs
 
 
 class Trip(models.Model):
@@ -11,12 +23,17 @@ class Trip(models.Model):
     end_date = models.DateTimeField()
     destination = models.CharField(choices=CITIZENSHIP_CHOICE, max_length=30)
     details = models.TextField()
+    objects = TripManager()
 
     def __str__(self):
         return self.destination
 
     class Meta:
         ordering = ('start_date',)
+
+    def get_absolute_url(self):
+        return reverse('profile_traveler', kwargs={'userid': self.user.id})
+
 
     @property
     def get_html_url(self):

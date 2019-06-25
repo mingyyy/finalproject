@@ -184,3 +184,19 @@ padding: 10;
 .home_sm{font-family: Open Sans Condensed;
             font-weight:bold;
             font-size: 18px;}
+
+ul.c {
+  list-style-type: circle;
+}
+
+ul.s {
+  list-style-type: square;
+}
+
+ol.u {
+  list-style-type: upper-roman;
+}
+
+ol.l {
+  list-style-type: lower-alpha;
+}
