@@ -23,13 +23,13 @@
        <h4 style="">
             <a href="{% url 'profile_traveler' item.user_id %}" >
                 {% if item.user.first_name %}
-                    {{item.user.first_name.title}} {{item.user.last_name.title}}
+                    {{ item.user.first_name.title }} {{ item.user.last_name.title }}
                 {% else %}
-                    {{item.user.username.title}}
+                    {{ item.user.username.title }}
                 {% endif %}
             </a>
-        </h4>
-        <small><i style="color: grey; display: inline"> Joined on {{item.user.date_joined}}</i></small>
+       </h4>
+       <small><i style="color: grey; display: inline"> Joined on {{item.user.date_joined}}</i></small>
 
     <p>{{item.bio|slice:":250"}}...</p>
     <p>

@@ -7,10 +7,13 @@ from django.contrib.auth.decorators import login_required
 from .decorators import traveler_required, host_required
 from django.views.generic import DetailView
 from .models import ProfileTraveler, ProfileHost, Space, Program, Language, Link
+from app_main.models import Trip
 from django.contrib.auth import logout, login, authenticate
 from .constants import BRAND_LIST
 from .forms import LinkFormset
 from decouple import config
+from django.db.models import Q
+from django.utils.timezone import localdate
 
 
 def viewregister(request):
@@ -336,7 +339,9 @@ def profile_traveler(request, userid):
     expertise = profile.expertise.all()
     link = Link.objects.filter(user_id=userid)
     offer = Program.objects.filter(owner_id=userid)
-    context = {"profile": profile, 'lan': lan, 'expertise': expertise, "link": link,'offer':offer}
+    trips = Trip.objects.filter(user_id=userid, end_date__gt=localdate())
+    context = {"profile": profile, 'lan': lan, 'expertise': expertise, "link": link,
+               'offer': offer, 'trips': trips}
 
     return render(request, 'app_user/preview_traveler.html', context)
 
@@ -348,9 +353,10 @@ def profile_host(request, userid):
     lat, lon = profile.geolocation.lat, profile.geolocation.lon
     link = Link.objects.filter(user_id=userid)
     offer = Space.objects.filter(owner_id=userid)
+
     key = config('GOOGLE_MAPS_API_KEY')
     context = {"profile": profile, 'lan': lan, 'interest': interest, 'link': link,
-               'offer': offer, 'lat': lat, 'lon': lon, 'key':key}
+               'offer': offer, 'lat': lat, 'lon': lon, 'key': key}
 
     return render(request, 'app_user/preview_host.html', context)
 
