@@ -8,6 +8,7 @@ from .constants import CITIZENSHIP_CHOICE, GENDER_CHOICES, ORG_TYPE_CHOICE, SUBJ
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django_google_maps.fields import AddressField, GeoLocationField
+from django.urls import reverse
 
 
 class User(AbstractUser):
@@ -37,6 +38,14 @@ class Topic(models.Model):
         ordering = ('topic',)
 
 
+class ProfileTravelerManager(models.Manager):
+    def search(self, query=None):
+        qs = self.get_queryset()
+        if query is not None:
+            qs = qs.filter(models.Q(languages__language__icontains=query)).distinct()
+        return qs
+
+
 class ProfileTraveler(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     gender = models.CharField(choices=GENDER_CHOICES, max_length=10)
@@ -48,6 +57,8 @@ class ProfileTraveler(models.Model):
     languages = models.ManyToManyField(Language)
     expertise = models.ManyToManyField(Topic)
     experience = models.TextField(null=True, blank=True)
+
+    objects = ProfileTravelerManager()
 
     def __str__(self):
         return self.user.username
@@ -64,6 +75,8 @@ class ProfileTraveler(models.Model):
         except FileNotFoundError as e:
                 pass
 
+    def get_absolute_url(self):
+        return reverse('profile_traveler', kwargs={'userid': self.user.id})
 
 class ProfileHost(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

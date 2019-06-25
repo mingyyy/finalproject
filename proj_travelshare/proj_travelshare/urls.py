@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from app_user import views as user_views
+from app_search.views import SearchView
 from django.contrib.auth.views import (LogoutView, LoginView, PasswordResetView,
                                        PasswordResetDoneView,PasswordResetConfirmView, PasswordResetCompleteView)
 from django.conf import settings
@@ -24,6 +25,8 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('app_main.urls')),
+
+    path('search/', SearchView.as_view(), name='search'),
 
     path('register/', user_views.viewregister, name='register'),
     path('login/', LoginView.as_view(template_name="app_user/login.html"), name="login"),
