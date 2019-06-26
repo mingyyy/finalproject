@@ -2,16 +2,13 @@
 {% load static %}
 {% block content %}
 
-<h2>List of Localhosts</h2>
-
-<p>In total, {{num_host}} localhosts published their profiles at the moment.</p>
-
+<h2>List of Localhosts <span class="badge badge-info">{{num_host}} </span></h2>
+<br>
 {% for item in profile %}
-
     <div class="media border p-3">
         <p><img src="{{item.photo.url}}" alt="John Doe" class="mr-3 mt-3" style="width:108px;"></p>
 
-  <div class="media-body">
+    <div class="media-body">
        <h4 style="">
             <a href="{% url 'profile_host' item.user_id %}" >
                 {% if item.name %}
@@ -23,20 +20,21 @@
         </h4>
         <small><i style="color: grey; display: inline"> Joined on {{item.user.date_joined}}</i></small>
 
-    <p>{{item.description|slice:":250"}}...</p>
-    <p>
-        {%if item.languages.all %}
-            {% for l in item.languages.all %}
-                <span class="badge badge-primary"><small>{{l.language}}</small></span>
-            {% endfor %}
-        {% else %}
-            <span class="badge badge-secondary"><small>No yet provided</small></span>
-        {% endif %}
-    </p>
+        <p>{{item.description|slice:":250"}}...</p>
+        <p>
+            {%if item.languages.all %}
+                {% for l in item.languages.all %}
+                    <span class="badge badge-primary"><small>{{l.language}}</small></span>
+                {% endfor %}
+            {% else %}
+                <span class="badge badge-secondary"><small>No yet provided</small></span>
+            {% endif %}
+        </p>
 
-  </div>
-</div>
+    </div>
 
+    </div>
+    <br>
 {% endfor %}
 <br>
 {% if profile.has_other_pages %}

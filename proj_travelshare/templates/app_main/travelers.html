@@ -3,14 +3,8 @@
 
 {% block content %}
 
-<h2>List of Travelers</h2>
-
-<p>In total, {{num_traveler}} travelers published their profiles at the moment.</p>
-
-<p>Type something in the input field to search for specific items(e.g. English):</p>
-<input class="form-control" id="myInput" type="text" placeholder="Search..">
+<h2>List of Travelers <span class="badge badge-info">{{num_traveler}} </span> </h2>
 <br>
-
 {% for item in profile %}
 <div class="media border p-3">
 
@@ -19,7 +13,7 @@
       <figcaption><a href="{% url 'profile_traveler' item.user_id %}" >{{item.user.username}}</a></figcaption>
     </figure>
 
-  <div class="media-body" id="myDIV">
+    <div class="media-body" id="myDIV">
        <h4 style="">
             <a href="{% url 'profile_traveler' item.user_id %}" >
                 {% if item.user.first_name %}
@@ -41,10 +35,10 @@
             <span class="badge badge-secondary"><small>No yet provided</small></span>
         {% endif %}
     </p>
-  </div>
+    </div>
 </div>
+<br>
 {% endfor %}
-
 <br>
 
 {% if profile.has_other_pages %}
@@ -71,17 +65,4 @@
     </ul>
 {% endif %}
 
-{% endblock %}
-
-{% block script %}
-<script>
-$(document).ready(function(){
-  $("#myInput").on("keyup", function() {
-    var value = $(this).val().toLowerCase();
-    $("#myDIV *").filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-    });
-  });
-});
-</script>
 {% endblock %}

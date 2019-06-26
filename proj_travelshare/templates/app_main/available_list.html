@@ -2,17 +2,16 @@
 {% load static %}
 {% block content %}
 
-<h2>Localhost Availability</h2>
+<h2>Localhost Availability <span class="badge badge-info">{{num_available}} </span></h2>
 
-<p>In total, {{num_available}} localhost availabilities are found. </p>
 <div class="container">
     <div class="row">
+        <div class="col-sm-9"></div>
         <div class="col-sm-3">
             <div class="container">
-              <label for="sel1">Sort by (select one):</label>
                 <form action="" method="post">
                     {% csrf_token %}
-                  <div class="input-group mb-3">
+                  <div class="input-group mb-2 input-group-sm">
                         <select class="form-control" id="sel1" name="select">
                             <option value="1">Start date</option>
                             <option value="2">End date</option>
@@ -28,8 +27,6 @@
         </div>
     </div>
 </div>
-
-<br>
 
 {% for item in available %}
 <div class="media border p-3">
