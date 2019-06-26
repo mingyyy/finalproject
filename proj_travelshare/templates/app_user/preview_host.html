@@ -18,50 +18,52 @@
 
             <br>
 
-            <h5>Available Spaces</h5>
-            <div>
-                <ul class="list-group">
-                    {% for item in offer %}
-                        <li class="list-group-item">
-                              <a href="#" data-toggle="modal" data-target="#myModal{{forloop.counter}}">
-                                <i class="fa fa-location-arrow"></i>  {{ item.title }}
-                              </a>
-                              <div class="modal" id="myModal{{forloop.counter}}">
-                                <div class="modal-dialog">
-                                  <div class="modal-content">
+            {% if offer%}
+                <h5>Available Spaces</h5>
+                <div>
+                    <ul class="list-group">
+                        {% for item in offer %}
+                            <li class="list-group-item">
+                                  <a href="#" data-toggle="modal" data-target="#myModal{{forloop.counter}}">
+                                    <i class="fa fa-location-arrow"></i> <span class="px-2">{{ item.title }}</span>
+                                  </a>
+                                  <div class="modal" id="myModal{{forloop.counter}}">
+                                    <div class="modal-dialog">
+                                      <div class="modal-content">
 
-                                    <!-- Modal Header -->
-                                    <div class="modal-header">
-                                      <h4 class="modal-title">{{ item.title }}</h4>
-                                      <a type="button" class="close" data-dismiss="modal">&times;</a>
-                                    </div>
-
-                                    <!-- Modal body -->
-                                    <div class="modal-body">
-
-                                        <div class="card">
-
-                                          <img class="card-img-left" src="{{item.photo.url}}" alt="Space Picture" width="80%">
-                                          <div class="card-body">
-                                            <p class="card-text">{{ item.detail }}</p>
-                                          </div>
+                                        <!-- Modal Header -->
+                                        <div class="modal-header">
+                                          <h4 class="modal-title">{{ item.title }}</h4>
+                                          <a type="button" class="close" data-dismiss="modal">&times;</a>
                                         </div>
 
-                                    </div>
+                                        <!-- Modal body -->
+                                        <div class="modal-body">
 
-                                    <!-- Modal footer -->
-                                    <div class="modal-footer">
-                                      <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                    </div>
+                                            <div class="card">
+                                              <img class="card-img-left" src="{{item.photo.url}}" alt="Space Picture" width="80%">
+                                              <div class="card-body">
+                                                <p class="card-text">{{ item.detail }}</p>
+                                              </div>
+                                            </div>
 
+                                        </div>
+
+                                        <!-- Modal footer -->
+                                        <div class="modal-footer">
+                                          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                        </div>
+
+                                      </div>
+                                    </div>
                                   </div>
-                                </div>
-                              </div>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% else %}
+                <h5> Space Not Yet Listed</h5>
+            {% endif %}
         </div>
 
         <div class="col-sm-9">
