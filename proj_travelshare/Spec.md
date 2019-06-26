@@ -9,10 +9,13 @@ NavBar:
 2. *Login* (or *Logout* and *Profile Update* for logged-in users)
 3. Links to  *Traveler* and *Organization* info
 4. Links to *Trip* and *Availability*
+5. Link to Visa/Destination *Info* page
+6. Link to *Contact* & *Search* Page
 
 Content:
 1. Overview of the webapp
-2. Upcoming *Trips*
+2. How does the webapp work
+3. FAQs
 
 #### 2. Register Page
 Register Form
@@ -22,9 +25,9 @@ Register Form
 3. password
 
 Or Social Authentication (v2)
-1. Google
+1. Google (not tried yet)
 2. Facebook ( not working yet)
-3. LinkedIn
+3. LinkedIn (no API key)
 4. Twitter (working)
 5. Github (not working yet)
 
@@ -146,37 +149,64 @@ Add local host's offer:
     - Delete Trip
 
 #### 5. List of Travelers 
-Search based on the following:
-- profile: language, gender, country of origin, area of expertise 
-- trip: country, date        
-
-Summary: List of results per traveler
+- Total number of travelers
+- List of results per traveler
 
 #### 6. List of Local Hosts
-Search bar: 
-- profile: org type, area of interests, language, country
-- availability: date
-
-Summary: List of results per org
+- Total number of localhost
+- List of results per host
 
 #### 7. Profile page - per Traveler 
 - detailed traveler profile
 - travel offers
+- coming trips
 
 #### 8. Profile page - per Local host 
 - detailed organization profile
 - local host offers
 
 #### 9. List of Trips
+- sorting based on start-date, end-date,
+destination, traveler
+- Number of trips
+- List of results per trip
 
 #### 10. List of Availables
+- sorting based on start-date, end-date,
+localhost, summary
+- Number of available space
+- List of results per availables
 
+#### 11. Contact
+title, content, email
 
+#### 12. Info
+
+- Choose Destination and Nationality
+- Display Visa Requirements & Destination Info
+
+#### 13. Search
+
+- checkbox of Traveler and Host (default: both checked)
+- search fields
+  - traveler: Language, bio, expertise, trip destination
+  - host: Language, description, interests, address
+
+---
 ## Folder structure of the project
 github repository: finalproject
 
             -| env (virtual environment)
             -| proj_travelshare
+                -| app_search
+                    -| templatetags
+                        -| class_name
+                            -| class_name
+                            -| param_replace(for pagination)
+                    -| views
+                        -| search_view
+                            -| def get_context_data
+                            -| def get_queryset
                 -| app_user
                     -| forms.py
                         -| FormRegister
@@ -342,7 +372,7 @@ github repository: finalproject
                         -| available_list
                         -| trip_view
                         -| available_view
-                        -| info
+                        -| get_info
                     
                 -| app_info
                     - forms.py
@@ -371,6 +401,6 @@ github repository: finalproject
                     -| app_main
                     -| app_info
             -| .gitignore
-            -| mimi.py (secret file)
+            -| .env (for decouple)
             -| README.md
 
