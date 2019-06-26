@@ -15,6 +15,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 from decouple import config
+from django.utils.timezone import localdate
 
 
 def contact(request):
@@ -310,16 +311,16 @@ def trip_list(request, sort_choice=None):
     if request.method == "POST":
         sort_choice = request.POST['select']
         if sort_choice == '1' or None:
-            trips = Trip.objects.all().order_by("start_date")
+            trips = Trip.objects.all().exclude(end_date__lt=localdate()).order_by("start_date")
         elif sort_choice == '2':
-            trips = Trip.objects.all().order_by("end_date")
+            trips = Trip.objects.all().exclude(end_date__lt=localdate()).order_by("end_date")
         elif sort_choice == '3':
-            trips = Trip.objects.all().order_by("destination")
+            trips = Trip.objects.all().exclude(end_date__lt=localdate()).order_by("destination")
         else:
-            trips = Trip.objects.all().order_by("user")
+            trips = Trip.objects.all().exclude(end_date__lt=localdate()).order_by("user")
     else:
-        trips = Trip.objects.all().order_by('start_date')
-    num_trips = Trip.objects.all().count()
+        trips = Trip.objects.all().exclude(end_date__lt=localdate()).order_by('start_date')
+    num_trips = Trip.objects.all().exclude(end_date__lt=localdate()).count()
 
     page = request.GET.get('page', 1)
     paginator = Paginator(trips, 5)
@@ -344,17 +345,17 @@ def available_list(request, sort_choice=None):
     if request.method == "POST":
         sort_choice = request.POST['select']
         if sort_choice == '1' or None:
-            available = Available.objects.all().order_by("start_date")
+            available = Available.objects.all().exclude(end_date__lt=localdate()).order_by("start_date")
         elif sort_choice == '2':
-            available = Available.objects.all().order_by("end_date")
+            available = Available.objects.all().exclude(end_date__lt=localdate()).order_by("end_date")
         elif sort_choice == '3':
-            available = Available.objects.all().order_by("user")
+            available = Available.objects.all().exclude(end_date__lt=localdate()).order_by("user")
         else:
-            available = Available.objects.all().order_by("summary")
+            available = Available.objects.all().exclude(end_date__lt=localdate()).order_by("summary")
     else:
-        available = Available.objects.all().order_by('start_date')
+        available = Available.objects.all().exclude(end_date__lt=localdate()).order_by('start_date')
 
-    num_available = Available.objects.all().count()
+    num_available = Available.objects.all().exclude(end_date__lt=localdate()).count()
 
     page = request.GET.get('page', 1)
     paginator = Paginator(available, 5)
