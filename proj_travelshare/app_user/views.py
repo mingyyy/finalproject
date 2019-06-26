@@ -5,7 +5,6 @@ from .forms import FormRegister, FormUserUpdate, FormProfileTravelerUpdate, Form
     DeleteProgramForm, DeleteSpaceForm, LinkForm, DeleteLinkForm
 from django.contrib.auth.decorators import login_required
 from .decorators import traveler_required, host_required
-from django.views.generic import DetailView
 from .models import ProfileTraveler, ProfileHost, Space, Program, Language, Link
 from app_main.models import Trip
 from django.contrib.auth import logout, login, authenticate
@@ -38,6 +37,7 @@ def viewindex(request):
     return render(request, 'app_main/index.html')
 
 
+@traveler_required()
 @login_required()
 def profile_update_traveler(request):
     if request.method == 'POST':
@@ -59,6 +59,7 @@ def profile_update_traveler(request):
     return render(request, "app_user/profile_traveler.html", context)
 
 
+@traveler_required()
 @login_required()
 def profile_update_traveler2(request):
     if request.method == 'POST':
@@ -80,6 +81,7 @@ def profile_update_traveler2(request):
     return render(request, "app_user/profile_traveler2.html", context)
 
 
+@traveler_required()
 @login_required()
 def profile_update_traveler3(request):
     '''Add social links'''
@@ -114,11 +116,11 @@ def profile_update_traveler3(request):
     }
     return render(request, 'app_user/profile_traveler3.html', context)
 
+
+@traveler_required()
 @login_required()
 def program_add(request):
-
     program = Program.objects.filter(owner=request.user)
-
     if request.method != 'POST':
         form = FormProgram()
     else:
@@ -139,6 +141,7 @@ def program_add(request):
     return render(request, 'app_user/program_add.html', context)
 
 
+@traveler_required()
 @login_required()
 def program_update(request, program_id):
     program = Program.objects.get(id=program_id)
@@ -159,6 +162,7 @@ def program_update(request, program_id):
     return render(request, "app_user/program_update.html", context)
 
 
+@traveler_required()
 @login_required
 def program_delete(request, program_id):
     '''delete an existng program.'''
@@ -174,7 +178,7 @@ def program_delete(request, program_id):
     context = {'program': program, 'form': form}
     return render(request, 'app_user/program_delete.html', context)
 
-
+@traveler_required()
 @login_required
 def program_detail(request, program_id):
     '''show a program'''
@@ -189,7 +193,7 @@ def program_list(request, userid):
     context = {"program": program}
     return render(request, "app_user/program_list.html", context)
 
-
+@host_required()
 @login_required()
 def profile_update_host(request):
     if request.method == 'POST':
@@ -208,6 +212,7 @@ def profile_update_host(request):
     return render(request, "app_user/profile_host.html", context)
 
 
+@host_required()
 @login_required()
 def profile_update_host2(request):
     if request.method == 'POST':
@@ -227,6 +232,8 @@ def profile_update_host2(request):
     context = {'form': form}
     return render(request, "app_user/profile_host2.html", context)
 
+
+@host_required()
 @login_required()
 def profile_update_host3(request):
     heading_message = 'Social links'
@@ -262,6 +269,7 @@ def profile_update_host3(request):
     return render(request, 'app_user/profile_host3.html', context)
 
 
+@host_required()
 @login_required()
 def space_add(request):
     space = Space.objects.filter(owner=request.user)
@@ -282,6 +290,7 @@ def space_add(request):
     return render(request, "app_user/space_add.html", context)
 
 
+@host_required()
 @login_required()
 def space_update(request, space_id):
     space = Space.objects.filter(owner=request.user).get(id=space_id)
@@ -302,6 +311,7 @@ def space_update(request, space_id):
     return render(request, "app_user/space_update.html", context)
 
 
+@host_required()
 @login_required
 def space_detail(request, space_id):
     '''show a program'''
@@ -317,6 +327,7 @@ def space_list(request, userid):
     return render(request, "app_user/space_list.html", context)
 
 
+@host_required()
 @login_required
 def space_delete(request, space_id):
     '''delete an existng space instance.'''
@@ -361,6 +372,7 @@ def profile_host(request, userid):
     return render(request, 'app_user/preview_host.html', context)
 
 
+@host_required()
 @login_required()
 def address_update(request):
     if request.method == 'POST':
@@ -408,7 +420,6 @@ def link_list(request, userid):
     return render(request, "app_user/link_list.html", {'links': links, 'brands': BRAND_LIST})
 
 
-
 @login_required
 def link_delete(request, link_id):
     '''delete an existng space instance.'''
@@ -432,7 +443,7 @@ def link_detail(request, link_id):
     context = {"link": link}
     return render(request, "app_user/link_detail.html", context)
 
-
+@login_required
 def link_update(request): # link_add
     template_name = 'app_user/link_update.html'
     heading_message = 'Social links'
